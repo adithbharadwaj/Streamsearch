@@ -1,0 +1,25 @@
+@startuml
+actor client
+participant "API Gateway" as apigateway
+participant "core-service" as core
+participant "vpn-service" as vpn
+participant "recommendation-service" as recommendation
+database "Mongo" as mongo
+database "Redis" as redis
+
+box "External Systems" #Grey
+participant "TMDB Server" as tmdb
+end box
+
+autonumber
+
+client -> apigateway : GET /recommendation/{movie} request
+activate apigateway
+  apigateway -> recommendation : redirect request to recommendation-service
+  recommendation -> mongo : calls MongoDB to fetch recommendations for movie
+  mongo -> recommendation : MongoDB returns recommendations for movie
+  recommendation -> apigateway : recommendation-service returns recommendations for movie
+  apigateway -> client : GET /vpn/{region} response
+deactivate apigateway
+
+@enduml
