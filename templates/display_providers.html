@@ -11,33 +11,33 @@
     </head>
 <!--    <body style="background-image: url(/static/background.jpg);">-->
     <body>
-    <h1 style="font-family: 'K2D';font-size: 75PX;text-align: center;color: black;">Search For Movies</h1><br><br><br>
+    <h1 style="font-family: 'K2D';font-size: 75PX;text-align: center;color: black;">Movies Providers</h1><br><br><br>
 
-    <form action="http://localhost:5000/search_movie" method='POST' style="padding: 20px; text-align: center;">
-        <input type="text" name="search_movie" placeholder="Enter the Movie" required>
-        <input type="submit" value="SEARCH">
-    </form>
     <p style="padding-bottom: 20px; "></p>
+
     <table border
            style="padding: 10px;border:3px solid black;text-align: center;width: 100%;height: 50%;border-collapse: collapse;text-decoration-color: black;color: black ">
 
         <tr style="height:50px;border-bottom: 3px solid black;border-left: 3px solid black">
             <th>
-                <bold>Movie Name</bold>
+                <bold>Buy</bold>
             </th>
 
             <th>
-                <bold>Movie Overview</bold>
+                <bold>Rent</bold>
             </th>
 
-
+            <th>
+                <bold>Subscription Platforms</bold>
+            </th>
         </tr>
 
         {% for row in result %}
 
-        <tr style="height:50px" id="{{row[2]}}" onclick="sendId(this);">
-            <td><a href="http://localhost:5000/select_movie?id={{row[2]}}">{{row[0]}}</a></td>
+        <tr style="height:50px">
+            <td>{{row[0]}}</td>
             <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
         </tr>
 
         {% endfor %}
