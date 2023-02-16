@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-    return render_template('search.html', all_locales=ALL_LOCALES)
+    return render_template('main.html', all_locales=ALL_LOCALES)
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
