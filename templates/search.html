@@ -10,23 +10,13 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
 
+    <form>
+        <img src="/static/backicon.png" height="60" onclick="history.go(-1)"/>
+    </form>
+
     <body>
-        <h1 style="font-family: 'K2D';font-size: 36px;text-align: center;color: black;">Universal Streaming Search</h1><br><br><br>
-
-        <form action="http://localhost:5000/search" method="POST" style="padding: 20px; text-align: center;">
-            <input type="text" name="search" placeholder="Enter movie or TV show" size=45 required>
-
-            <select name="locale" required>
-                <option value="" disabled>Choose country</option>
-                {% for locale_option in all_locales %}
-                <option value="{{locale_option.alpha_2}}">{{locale_option.name}}</option>
-                {% endfor %}
-            </select><br/>
-
-            Locale: {{locale}}
-
-            <input type="submit" value="Search">
-        </form>
+        <h3 style="font-family: 'K2D';font-size: 50px;font-weight:900;text-align: center;color: black;">Universal Streaming Search</h1><br><br><br>
+        <body style="background-color: rgb(255, 224, 230);">
 
         <p style="padding-bottom: 20px; "></p>
 
