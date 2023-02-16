@@ -7,7 +7,7 @@ import helpers.tmdb as tmdb
 
 from .model import *
 
-LOCALES = sorted(list(pycountry.countries), key=lambda country: country.name)
+ALL_LOCALES = sorted(list(pycountry.countries), key=lambda country: country.name)
 
 def parse_search_results(results):
     results = map(Media.from_json, results)
