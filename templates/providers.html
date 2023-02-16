@@ -13,26 +13,41 @@
     <body>
         <h1 style="font-family: 'K2D';font-size: 24px;text-align: center;color: black;">Providers for {{title}}</h1><br><br><br>
 
-        You can watch {{title}} at the following subscription services:
-        <ul>
-            {% for provider in providers['flatrate'] %}
-                <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
-            {% endfor %}
-        </ul>
+        <!-- Subscription -->
+        {% if providers['flatrate'] %}
+            You can watch {{title}} at the following subscription services:
+            <ul>
+                {% for provider in providers['flatrate'] %}
+                    <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            {{title}} is not available on any subscription services.
+        {% endif %}
 
-        You can buy {{title}} at:
-        <ul>
-            {% for provider in providers['buy'] %}
-                <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
-            {% endfor %}
-        </ul>
+        <!-- Buy -->
+        {% if providers['buy'] %}
+            You can buy {{title}} at:
+            <ul>
+                {% for provider in providers['buy'] %}
+                    <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            {{title}} is not available for purchase.
+        {% endif %}
 
-        You can rent {{title}} from:
-        <ul>
-            {% for provider in providers['rent'] %}
-                <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
-            {% endfor %}
-        </ul>
+        <!-- Rent -->
+        {% if providers['rent'] %}
+            You can rent {{title}} from:
+            <ul>
+                {% for provider in providers['rent'] %}
+                    <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            {{title}} is not available for rent.
+        {% endif %}
 
     </body>
 </html>
