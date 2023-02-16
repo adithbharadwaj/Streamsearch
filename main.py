@@ -4,22 +4,24 @@ from urllib.parse import urljoin
 from flask import Flask, redirect, url_for, request, render_template
 
 from helpers.tmdb import send_search_request, send_metadata_request
-from helpers.parse import parse_search_results, extract_providers, MediaType
+from helpers.parse import parse_search_results, extract_providers, MediaType, LOCALES
 
 app = Flask(__name__)
 
 @app.route('/')
 def main():
-    return render_template('search.html')
+    return render_template('search.html', locales=LOCALES)
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
+        locale = request.form['locale']
         query = request.form['search']
-        results = send_search_request(query)['results']
+        results = send_search_request(query, locale)['results']
         medias = parse_search_results(results)
-
-        return render_template('search.html', medias=medias)
+        return render_template('search.html', medias=medias, locales=LOCALES)
+    else:
+        return render_template('search.html', locales=LOCALES)
 
 @app.route('/providers', methods=['POST', 'GET'])
 def select_movie():

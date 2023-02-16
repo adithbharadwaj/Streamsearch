@@ -1,7 +1,11 @@
 from dataclasses import dataclass
 from enum import Enum
 
+import pycountry
+
 import helpers.tmdb as tmdb
+
+LOCALES = sorted(list(pycountry.countries), key=lambda country: country.name)
 
 class MediaType(Enum):
     MOVIE = 'movie'

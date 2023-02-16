@@ -11,36 +11,44 @@
     </head>
 
     <body>
-    <h1 style="font-family: 'K2D';font-size: 36px;text-align: center;color: black;">Universal Streaming Search</h1><br><br><br>
+        <h1 style="font-family: 'K2D';font-size: 36px;text-align: center;color: black;">Universal Streaming Search</h1><br><br><br>
 
-    <form action="http://localhost:5000/search" method="POST" style="padding: 20px; text-align: center;">
-        <input type="text" name="search" placeholder="Enter movie or TV show" size=45 required>
-        <input type="submit" value="Search">
-    </form>
+        <form action="http://localhost:5000/search" method="POST" style="padding: 20px; text-align: center;">
+            <input type="text" name="search" placeholder="Enter movie or TV show" size=45 required>
 
-    <p style="padding-bottom: 20px; "></p>
+            <select name="locale" required>
+                <option value="" disabled>Choose country</option>
+                {% for locale in locales %}
+                <option value="{{locale.name}}">{{locale.name}}</option>
+                {% endfor %}
+            </select><br/>
 
-    <table border style="padding: 10px;border:3px solid black;text-align: center;width: 90%;height: 50%;border-collapse: collapse;text-decoration-color: black;margin-left: auto;margin-right: auto;">
-        <tr style="height:50px;border-bottom: 3px solid black;border-left: 3px solid black">
-            <th>ID</th>
-            <th>Poster</th>
-            <th>Media type</th>
-            <th>Name</th>
-            <th>Overview</th>
-        </tr>
+            <input type="submit" value="Search">
+        </form>
 
-        {% for media in medias %}
-        <tr style="height:50px" id="{{media.id}}" onclick="sendId(this);">
-            <td>{{media.id}}</td>
-            <td><img src="{{media.poster_path}}"/></td>
-            <td>{{media.media_type.value}}</td>
-            <td><a href="http://localhost:5000/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">{{media.title}}</a></td>
-            <td>{{media.overview}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <p style="padding-bottom: 20px; "></p>
 
-    <p style="padding-bottom: 20px; "></p>
+        <table border style="padding: 10px;border:3px solid black;text-align: center;width: 90%;height: 50%;border-collapse: collapse;text-decoration-color: black;margin-left: auto;margin-right: auto;">
+            <tr style="height:50px;border-bottom: 3px solid black;border-left: 3px solid black">
+                <th>ID</th>
+                <th>Poster</th>
+                <th>Media type</th>
+                <th>Name</th>
+                <th>Overview</th>
+            </tr>
+
+            {% for media in medias %}
+            <tr style="height:50px" id="{{media.id}}" onclick="sendId(this);">
+                <td>{{media.id}}</td>
+                <td><img src="{{media.poster_path}}"/></td>
+                <td>{{media.media_type.value}}</td>
+                <td><a href="http://localhost:5000/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">{{media.title}}</a></td>
+                <td>{{media.overview}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <p style="padding-bottom: 20px; "></p>
 
     </body>
 </html>

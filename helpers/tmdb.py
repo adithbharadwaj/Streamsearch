@@ -9,12 +9,13 @@ TMDB_IMG_BASE_URL = 'https://image.tmdb.org/t/p/'
 TMDB_API_KEY = '00e967be34501054c5adb40c77221a4c'
 TMDB_VERSION = 3
 
-def send_search_request(query):
+def send_search_request(query, locale):
     endpoint = f'{TMDB_VERSION}/search/multi'
     params = {
         'api_key': TMDB_API_KEY,
-        'language': 'en-US',
         'query': query,
+        'region': locale,
+        'language': 'en-US',
         'page': 1,
         'include_adult': 'false'
     }
