@@ -18,7 +18,7 @@ def extract_providers(results, locale):
     results = results[locale]
 
     return {
-        MediaAccessMode.SUBSCRIBE.value: map(Provider.from_json, results[MediaAccessMode.SUBSCRIBE.value]),
-        MediaAccessMode.RENT.value: map(Provider.from_json, results[MediaAccessMode.RENT.value]),
-        MediaAccessMode.BUY.value: map(Provider.from_json, results[MediaAccessMode.BUY.value])
+        MediaAccessMode.SUBSCRIBE.value: map(Provider.from_json, results.get(MediaAccessMode.SUBSCRIBE.value, [])),
+        MediaAccessMode.RENT.value: map(Provider.from_json, results.get(MediaAccessMode.RENT.value, [])),
+        MediaAccessMode.BUY.value: map(Provider.from_json, results.get(MediaAccessMode.BUY.value, []))
     }
