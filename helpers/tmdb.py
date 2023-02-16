@@ -39,4 +39,7 @@ def send_metadata_request(media_id, media_type):
         raise ValueError(f'media_type must be one of {MediaType.values()}, found {media_type}.')
 
 def to_image_path(filename, size):
-    return urljoin(f'{TMDB_IMG_BASE_URL}', f'{size}/{filename.lstrip("/")}')
+    if filename is not None:
+        return urljoin(f'{TMDB_IMG_BASE_URL}', f'{size}/{filename.lstrip("/")}')
+    else:
+        return None
