@@ -35,7 +35,4 @@ def select_movie():
     return render_template('providers.html', providers=providers, title=media_title)
 
 if __name__ == '__main__':
-    app.secret_key = 'super secret key'
-
-    app.debug = True
-    app.run(host='0.0.0.0')
+    app.run()
