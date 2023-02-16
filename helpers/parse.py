@@ -16,7 +16,11 @@ def parse_search_results(results):
     return results
 
 def extract_providers(results, locale):
-    results = results[locale]
+    country_code = locale
+    if country_code in results:
+        results = results[country_code]
+    else:
+        return None
 
     return {
         MediaAccessMode.SUBSCRIBE.value: map(Provider.from_json, results.get(MediaAccessMode.SUBSCRIBE.value, [])),
