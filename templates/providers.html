@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Search</title>
+        <title>Universal Streaming Search</title>
         <link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,26 +11,26 @@
     </head>
 
     <body>
-        <h1 style="font-family: 'K2D';font-size: 75PX;text-align: center;color: black;">Movies Providers</h1><br><br><br>
+        <h1 style="font-family: 'K2D';font-size: 24px;text-align: center;color: black;">Providers for {{title}}</h1><br><br><br>
 
         You can watch {{title}} at the following subscription services:
         <ul>
             {% for provider in providers['flatrate'] %}
-                <li>{{provider.name}}</li>
+                <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
             {% endfor %}
         </ul>
 
         You can buy {{title}} at:
         <ul>
             {% for provider in providers['buy'] %}
-                <li>{{provider.name}}</li>
+                <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
             {% endfor %}
         </ul>
 
         You can rent {{title}} from:
         <ul>
             {% for provider in providers['rent'] %}
-                <li>{{provider.name}}</li>
+                <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
             {% endfor %}
         </ul>
 
