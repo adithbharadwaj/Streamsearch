@@ -11,7 +11,8 @@ LOCALES = sorted(list(pycountry.countries), key=lambda country: country.name)
 
 def parse_search_results(results):
     results = map(Media.from_json, results)
-    results = filter(lambda x: x is not None, results)
+    results = filter(lambda media: media is not None, results)      # Removing non-media results.
+    results = sorted(results, key=lambda media: -media.popularity)  # Sorting by decreasing popularity.
     return results
 
 def extract_providers(results, locale):

@@ -35,6 +35,7 @@
                 <th>Media type</th>
                 <th>Name</th>
                 <th>Overview</th>
+                <th>Popularity</th>
             </tr>
 
             {% for media in medias %}
@@ -44,6 +45,7 @@
                 <td>{{media.media_type.value}}</td>
                 <td><a href="http://localhost:5000/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">{{media.title}}</a></td>
                 <td>{{media.overview}}</td>
+                <td>{{media.popularity}}</td>
             </tr>
             {% endfor %}
         </table>
