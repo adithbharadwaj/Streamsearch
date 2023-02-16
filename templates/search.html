@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Search</title>
+        <title>Universal Streaming Search</title>
         <link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,39 +9,33 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
-<!--    <body style="background-image: url(/static/background.jpg);">-->
+
     <body>
     <h1 style="font-family: 'K2D';font-size: 75PX;text-align: center;color: black;">Search For Movies</h1><br><br><br>
 
-    <form action="http://localhost:5000/search_movie" method='POST' style="padding: 20px; text-align: center;">
-        <input type="text" name="search_movie" placeholder="Enter the Movie" required>
-        <input type="submit" value="SEARCH">
+    <form action="http://localhost:5000/search" method="POST" style="padding: 20px; text-align: center;">
+        <input type="text" name="search" placeholder="Enter movie or TV show" size=45 required>
+        <input type="submit" value="Search">
     </form>
+
     <p style="padding-bottom: 20px; "></p>
-    <table border
-           style="padding: 10px;border:3px solid black;text-align: center;width: 100%;height: 50%;border-collapse: collapse;text-decoration-color: black;color: black ">
 
+    <table border style="padding: 10px;border:3px solid black;text-align: center;width: 90%;height: 50%;border-collapse: collapse;text-decoration-color: black;margin-left: auto;margin-right: auto;">
         <tr style="height:50px;border-bottom: 3px solid black;border-left: 3px solid black">
-            <th>
-                <bold>Movie Name</bold>
-            </th>
-
-            <th>
-                <bold>Movie Overview</bold>
-            </th>
-
-
+            <th>ID</th>
+            <th>Media type</th>
+            <th>Name</th>
+            <th>Overview</th>
         </tr>
 
-        {% for row in result %}
-
-        <tr style="height:50px" id="{{row[2]}}" onclick="sendId(this);">
-            <td><a href="http://localhost:5000/select_movie?id={{row[2]}}">{{row[0]}}</a></td>
-            <td>{{row[1]}}</td>
+        {% for media in medias %}
+        <tr style="height:50px" id="{{media.id}}" onclick="sendId(this);">
+            <td>{{media.id}}</td>
+            <td>{{media.media_type.value}}</td>
+            <td><a href="http://localhost:5000/select_movie?id={{media.id}}">{{media.title}}</a></td>
+            <td>{{media.overview}}</td>
         </tr>
-
         {% endfor %}
-
     </table>
 
     <p style="padding-bottom: 20px; "></p>
