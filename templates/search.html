@@ -32,7 +32,7 @@
         <tr style="height:50px" id="{{media.id}}" onclick="sendId(this);">
             <td>{{media.id}}</td>
             <td>{{media.media_type.value}}</td>
-            <td><a href="http://localhost:5000/select_movie?id={{media.id}}">{{media.title}}</a></td>
+            <td><a href="http://localhost:5000/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">{{media.title}}</a></td>
             <td>{{media.overview}}</td>
         </tr>
         {% endfor %}

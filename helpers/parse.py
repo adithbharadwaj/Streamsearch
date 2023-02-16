@@ -41,7 +41,38 @@ class Media:
         else:
             return None
 
+class Provider:
+    UNKNOWN_ID = -1
+
+    def __init__(self, id, name, logo_path):
+        self.id = id
+        self.name = name
+        self.logo_path = logo_path
+
+    @staticmethod
+    def from_json(json_str):
+        print(json_str)
+        return Provider(
+            json_str.get('provider_id', Provider.UNKNOWN_ID),
+            json_str.get('provider_name', 'NA'),
+            json_str.get('logo_path', None)
+        )
+
+class MediaAccessMode(Enum):
+    SUBSCRIBE = 'flatrate'
+    RENT = 'rent'
+    BUY = 'buy'
+
 def parse_search_results(results):
     results = map(Media.from_json, results)
     results = filter(lambda x: x is not None, results)
     return results
+
+def extract_providers(results, locale):
+    results = results[locale]
+
+    return {
+        MediaAccessMode.SUBSCRIBE.value: map(Provider.from_json, results[MediaAccessMode.SUBSCRIBE.value]),
+        MediaAccessMode.RENT.value: map(Provider.from_json, results[MediaAccessMode.RENT.value]),
+        MediaAccessMode.BUY.value: map(Provider.from_json, results[MediaAccessMode.BUY.value])
+    }
