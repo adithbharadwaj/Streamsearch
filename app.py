@@ -6,7 +6,7 @@ import pycountry
 import secrets
 
 from helpers.tmdb import send_search_request, send_metadata_request
-from helpers.parse import parse_search_results, extract_providers, MediaType, ALL_LOCALES
+from helpers.parse import filter_on_region, parse_search_results, extract_providers, MediaType, ALL_LOCALES
 
 app = Flask(__name__)
 
@@ -22,6 +22,7 @@ def search():
         results = send_search_request(query, locale.alpha_2)['results']
         session['locale'] = locale.alpha_2
         medias = parse_search_results(results)
+        medias = filter_on_region(medias, locale.alpha_2)
         return render_template('search.html', medias=medias, all_locales=ALL_LOCALES)
     else:
         return render_template('search.html', all_locales=ALL_LOCALES)
