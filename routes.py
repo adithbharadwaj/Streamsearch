@@ -1,9 +1,5 @@
-import requests
-from urllib.parse import urljoin
-
 from flask import Flask, redirect, url_for, request, render_template, session
 import pycountry
-import secrets
 
 from helpers.tmdb import send_search_request, send_metadata_request
 from helpers.parse import filter_on_region, parse_search_results, extract_providers, MediaType, ALL_LOCALES
@@ -36,8 +32,3 @@ def select_movie():
 
     return render_template('providers.html', providers=providers, title=media_title)
 
-if __name__ == '__main__':
-    app.secret_key = secrets.token_bytes(32)
-
-    app.debug = True
-    app.run(host='0.0.0.0')
