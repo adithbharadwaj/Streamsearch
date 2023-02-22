@@ -25,13 +25,39 @@
       display:inline;
     }
     body{
-      background-color: #212121;
+      background: -webkit-linear-gradient(top left, rgba(0, 0, 0,1) 0%, rgba(10,10,10,1) 16%, rgba(50,50,50,1) 46%, rgba(80,80,80,1) 77%, rgba(110,110,110,1) 95%, rgba(150,150,150,1) 100%);
     }
     .movie-image {
         float:left;
         width:152px;
         height:214px;
         position:relative;
+    }
+    /* Child Text Container */
+    .movie-image div{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: black;
+        color: white;
+        margin-bottom: 5px;
+        font-family: sans-serif;
+        opacity: 0;
+        visibility: hidden;
+        -webkit-transition: visibility 0s, opacity 0.5s linear;
+        transition: visibility 0s, opacity 0.5s linear;
+    }
+
+    /* Hover on Parent Container */
+    .movie-image:hover{
+        cursor: pointer;
+    }
+
+    .movie-image:hover div{
+        width: 152px;
+        padding: 8px 15px;
+        visibility: visible;
+        opacity: 0.9;
     }
   </style>
 
@@ -45,6 +71,7 @@
               <a href="http://localhost:5000/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">
                 <div class="movie-image">
                     <img id="media" src="{{media.poster_path}}" />
+                    <div>{{media.title}}</div>
                 </div>
               </a>
           </div>
