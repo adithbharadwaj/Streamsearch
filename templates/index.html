@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" >
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<title>movie search</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+  <style>
+    .c {
+      float: left;
+      display: grid;
+      align-items: center;
+      padding-left: 10px;
+      margin: 55px;
+      margin-bottom: 30px;
+    }
+    #media{
+      margin-left: 15px ;
+      margin-right: 15px;
+      height: 180px;
+      width: 160px;
+      position: relative;
+      z-index:2;
+      display:inline;
+    }
+    body{
+      background-color: #212121;
+    }
+    .movie-image {
+        float:left;
+        width:152px;
+        height:214px;
+        position:relative;
+    }
+  </style>
+
+    <body style="margin: 150px;">
+        <form>
+            <center><img src="/static/UniStreamSearch.png" height="100" width="700" style="margin-bottom: 100px; margin-top: -80px"></center>
+        </form>
+
+          {% for media in medias %}
+          <div class="c">
+              <a href="http://localhost:5000/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">
+                <div class="movie-image">
+                    <img id="media" src="{{media.poster_path}}" />
+                </div>
+              </a>
+          </div>
+          {% endfor %}
+
+        </div>
+    </body>
+</html>
