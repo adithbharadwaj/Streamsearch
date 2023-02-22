@@ -10,41 +10,85 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
 
-    <body>
-        <h1 style="font-family: 'K2D';font-size: 24px;text-align: center;color: black;">Providers for {{title}}</h1><br><br><br>
+    <style>
+    .c {
+      float: left;
+      display: grid;
+      align-items: center;
+      padding-left: 10px;
+      margin-left: 55px;
+      margin-bottom: 80px;
+    }
+    .media{
+      margin-left: 15px ;
+      margin-right: 15px;
+      height: 180px;
+      width: 160px;
+      border: 6px solid white;
+    }
+    body{
+      background: -webkit-linear-gradient(top left, rgba(0, 0, 0,1) 0%, rgba(10,10,10,1) 16%, rgba(50,50,50,1) 46%, rgba(80,80,80,1) 77%, rgba(110,110,110,1) 95%, rgba(150,150,150,1) 100%);
+      color: white;
+    }
+    .movie-image{
+        float: left;
+        width: 152px;
+        height: 214px;
+        position: relative;
+    }
+  </style>
 
+    <body style="margin: 150px;">
+    <form>
+            <center><img src="/static/UniStreamSearch.png" height="100" width="700" style="margin-bottom: 100px; margin-top: -60px"></center>
+        </form>
         <!-- Subscription -->
         {% if providers['flatrate'] %}
-            You can watch {{title}} at the following subscription services:
-            <ul>
-                {% for provider in providers['flatrate'] %}
-                    <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
-                {% endfor %}
-            </ul>
+            <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold">You can watch {{title}} at the following subscription services:</h1>
+
+            {% for provider in providers['flatrate'] %}
+                <div class="c">
+                    <div class="movie-image">
+                        <img class="media" src="{{provider.logo_path}}"/>
+                    </div>
+                </div>
+            {% endfor %}
+
         {% else %}
             {{title}} is not available on any subscription services.
         {% endif %}
 
-        <!-- Buy -->
+        <p style="padding-bottom: 90px; padding-top: 200px"></p>
+
         {% if providers['buy'] %}
-            You can buy {{title}} at:
-            <ul>
-                {% for provider in providers['buy'] %}
-                    <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
-                {% endfor %}
-            </ul>
+            <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold">You can buy {{title}} at: </h1>
+
+        {% for provider in providers['buy'] %}
+            <div class="c">
+                <div class="movie-image">
+                    <img class="media"  src="{{provider.logo_path}}"/>
+                </div>
+            </div>
+        {% endfor %}
+
         {% else %}
             {{title}} is not available for purchase.
         {% endif %}
 
+        <p style="padding-bottom: 80px; padding-top: 100px; padding:300px;"></p>
+
         <!-- Rent -->
         {% if providers['rent'] %}
-            You can rent {{title}} from:
-            <ul>
-                {% for provider in providers['rent'] %}
-                    <li><img src="{{provider.logo_path}}"/> {{provider.name}}</li>
-                {% endfor %}
-            </ul>
+            <h1 style="padding-left: 90px; margin-bottom: 50px; font-family: cursive; font-weight: bold"> You can rent {{title}} from: </h1>
+
+        {% for provider in providers['rent'] %}
+            <div class="c">
+                <div class="movie-image">
+                    <img class="media"  src="{{provider.logo_path}}"/>
+                </div>
+            </div>
+        {% endfor %}
+
         {% else %}
             {{title}} is not available for rent.
         {% endif %}
