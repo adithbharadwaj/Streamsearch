@@ -20,11 +20,11 @@ def search():
         medias = parse_search_results(results)
         medias = filter_on_region(medias, locale.alpha_2)
         if medias:
-            return render_template('search.html', medias=medias, all_locales=ALL_LOCALES)
+            return render_template('index.html', medias=medias, all_locales=ALL_LOCALES)
         else:
             return render_template('movies_not_found.html')
     else:
-        return render_template('search.html', all_locales=ALL_LOCALES)
+        return render_template('index.html', all_locales=ALL_LOCALES)
 
 @app.route('/providers', methods=['POST', 'GET'])
 def select_movie():
