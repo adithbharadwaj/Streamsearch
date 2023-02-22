@@ -28,7 +28,9 @@ def search():
 
 @app.route('/providers', methods=['POST', 'GET'])
 def select_movie():
-    locale_code = session['locale']
+    locale_code = 'US'
+    if 'locale' in session:
+        locale_code = session['locale']
     media_id, media_title, media_type = request.args['id'], request.args['title'], MediaType(request.args['media_type'])
     results = send_metadata_request(media_id, media_type)['results']
     providers = extract_providers(results, locale_code)
