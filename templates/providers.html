@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Universal Streaming Search</title>
-        <link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
+{% extends "base2.html" %}
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
-
+{% block content %}
     <style>
     .c {
       float: left;
@@ -66,9 +57,8 @@
 
   </style>
 
-    <body style="margin: 150px;">
     <form>
-            <center><img src="/static/UniStreamSearch.png" height="100" width="700" style="margin-bottom: 100px; margin-top: -60px"></center>
+            <center><img src="/static/UniStreamSearch.png" height="100" width="700" style="margin-bottom: 100px;"></center>
         </form>
         <!-- Subscription -->
         {% if providers['flatrate'] %}
@@ -85,10 +75,10 @@
                 </div>
             {% endfor %}
 
-        {% if providers['flatrate'] %}
-        <p style="padding: 300px;"></p>
+        {% if providers['buy'] %}
+        <p style="padding-bottom: 50px; padding-top: 100px"></p>
         {% endif %}
-        <br><br><br>
+        <br><br><br><br><br><br><br><br><br>
 
         {% if providers['buy'] %}
             <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold">You can buy {{title}} at: </h1>
@@ -105,7 +95,7 @@
             </div>
         {% endfor %}
 
-        {% if providers['buy'] %}
+        {% if providers['rent'] %}
         <p style="padding:300px;"></p>
         {% endif %}
 
@@ -113,7 +103,7 @@
 
         <!-- Rent -->
         {% if providers['rent'] %}
-            <h1 style="padding-left: 90px; margin-bottom: 50px; font-family: cursive; font-weight: bold"> You can rent {{title}} from: </h1>
+            <h1 style="padding-left: 90px; margin-bottom: 50px; font-family: cursive; font-weight: bold; align: left;"> You can rent {{title}} from: </h1>
         {% else %}
             {{title}} is not available for rent.
         {% endif %}
@@ -126,7 +116,4 @@
                 </div>
             </div>
         {% endfor %}
-
-
-    </body>
-</html>
+{% endblock %}

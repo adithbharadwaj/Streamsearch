@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+    .c {
+      float: left;
+      display: grid;
+      align-items: center;
+      padding-left: 10px;
+      margin-left: 55px;
+      margin-bottom: 80px;
+    }
+    .media{
+      margin-left: 15px ;
+      margin-right: 15px;
+      height: 180px;
+      width: 160px;
+      border: 6px solid white;
+    }
+    body{
+      background: -webkit-linear-gradient(top left, rgba(0, 0, 0,1) 0%, rgba(10,10,10,1) 16%, rgba(50,50,50,1) 46%, rgba(80,80,80,1) 77%, rgba(110,110,110,1) 95%, rgba(150,150,150,1) 100%);
+      color: white;
+    }
+    .movie-image{
+        float: left;
+        width: 152px;
+        height: 214px;
+        position: relative;
+    }
+    /* Child Text Container */
+    .movie-image div{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: black;
+        color: white;
+        margin-bottom: 5px;
+        font-family: sans-serif;
+        width: 152px;
+        opacity: 0;
+        visibility: hidden;
+        -webkit-transition: visibility 0s, opacity 0.5s linear;
+        transition: visibility 0s, opacity 0.5s linear;
+    }
+
+    /* Hover on Parent Container */
+    .movie-image:hover{
+        cursor: pointer;
+    }
+
+    .movie-image:hover div{
+        width: 162px;
+        padding: 8px 15px;
+        visibility: visible;
+        opacity: 0.9;
+    }
+
+  </style>
+
+        <h1 class="title" style="margin-bottom: 125px; font-size: 50px; margin-top: 50px;">Your watchlist</h1>
+
+        {% for movie in watchlist %}
+        <div class="c">
+            <div class="movie-image">
+                <img src="{{movie[0]}}" class="media" alt="{{movie[1]}}"/></td>
+                <div>{{movie[1]}}</div>
+            </div>
+        </div>
+        {% endfor %}
+
+{% endblock %}

@@ -8,7 +8,11 @@
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Universal movie search</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
         <style>
           button{
             border: none;
@@ -33,7 +37,33 @@
     </head>
 
     <body style="background-image: url(/static/Moviebackground.png);">
-        <br><br>
+    <section class="hero is-primary" style="background: -webkit-linear-gradient(top left, rgba(5,255,222,1) 0%, rgba(5,255,222,1) 16%, rgba(41,184,229,1) 46%, rgba(41,184,229,1) 77%, rgba(153,224,247,1) 95%, rgba(153,224,247,1) 100%);">
+    <div class="hero-head" >
+            <nav class="navbar">
+                <div class="container">
+                    <div id="navbarMenuHeroA" class="navbar-menu">
+                        <div class="navbar-end">
+                            <a href="{{ url_for('main') }}" class="navbar-item">
+                                Home
+                            </a>
+                            <a href="{{ url_for('show_watchlist') }}" class="navbar-item">
+                                Watchlist
+                            </a>
+                            <a href="{{ url_for('login') }}" class="navbar-item">
+                                Login
+                            </a>
+                            <a href="{{ url_for('signup') }}" class="navbar-item">
+                                Sign Up
+                            </a>
+                            <a href="{{ url_for('logout') }}" class="navbar-item">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </section>
         
         <form>
             <center><img src="/static/UniStreamSearch.png" height="100" width="700"></center>

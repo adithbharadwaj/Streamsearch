@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" >
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<title>movie search</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
+{% extends "base2.html" %}
+
+{% block content %}
   <style>
     .c {
       float: left;
@@ -60,9 +55,8 @@
     }
   </style>
 
-    <body style="margin: 150px;">
         <form>
-            <center><img src="/static/UniStreamSearch.png" height="100" width="700" style="margin-bottom: 100px; margin-top: -80px"></center>
+            <center><img src="/static/UniStreamSearch.png" height="100" width="700" style="margin-bottom: 100px;"></center>
         </form>
 
           {% for media in medias %}
@@ -73,10 +67,8 @@
                     <div>{{media.title}}</div>
                 </div>
               </a>
-<!--          <a href="http://localhost:5000/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> <button style="align: center; margin-left: 30px;">Add to watchlist</button> </a>>-->
+            <a href="http://localhost:5000/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> <button style="align: center; margin-left: 30px;">Add to watchlist</button> </a>
           </div>
           {% endfor %}
 
-        </div>
-    </body>
-</html>
+{% endblock %}

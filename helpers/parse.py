@@ -1,5 +1,6 @@
 import pycountry
 
+from users.user import User
 from .model import *
 
 ALL_LOCALES = sorted(list(pycountry.countries), key=lambda country: country.name)
@@ -36,3 +37,13 @@ def filter_on_region(medias, locale_code):
             res.append(media)
 
     return res
+
+def get_watchlist(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    watch_list = []
+    for movie in user.movies:
+        print(movie.id)
+        watch_list.append([movie.path, movie.movie_name])
+
+    return watch_list
+
