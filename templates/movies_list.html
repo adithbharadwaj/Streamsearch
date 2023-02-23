@@ -61,13 +61,13 @@
 
           {% for media in medias %}
           <div class="c">
-              <a href="http://localhost:5000/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">
+              <a href="https://localhost:5000/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">
                 <div class="movie-image">
                     <img class="media" src="{{media.poster_path}}" />
                     <div>{{media.title}}</div>
                 </div>
               </a>
-            <a href="http://localhost:5000/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> <button style="align: center; margin-left: 30px;">Add to watchlist</button> </a>
+            <a href="https://localhost:5000/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> <button style="align: center; margin-left: 30px;">Add to watchlist</button> </a>
           </div>
           {% endfor %}
 
