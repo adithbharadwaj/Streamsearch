@@ -34,48 +34,53 @@
             font-family:Arial;
           }
         </style>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+        <script type="text/javascript" src="/static/js/coords.js"></script>
     </head>
 
     <body style="background-image: url(/static/Moviebackground.png);">
-    <section class="hero is-primary" style="background: -webkit-linear-gradient(top left, rgba(5,255,222,1) 0%, rgba(5,255,222,1) 16%, rgba(41,184,229,1) 46%, rgba(41,184,229,1) 77%, rgba(153,224,247,1) 95%, rgba(153,224,247,1) 100%);">
-    <div class="hero-head" >
-            <nav class="navbar">
-                <div class="container">
-                    <div id="navbarMenuHeroA" class="navbar-menu">
-                        <div class="navbar-end">
-                            <a href="{{ url_for('main') }}" class="navbar-item">
-                                Home
-                            </a>
-                            <a href="{{ url_for('show_watchlist') }}" class="navbar-item">
-                                Watchlist
-                            </a>
-                            <a href="{{ url_for('login') }}" class="navbar-item">
-                                Login
-                            </a>
-                            <a href="{{ url_for('signup') }}" class="navbar-item">
-                                Sign Up
-                            </a>
-                            <a href="{{ url_for('logout') }}" class="navbar-item">
-                                Logout
-                            </a>
+
+        <h1 background="white">Locale: {{locale}}</h1>
+        <section class="hero is-primary" style="background: -webkit-linear-gradient(top left, rgba(5,255,222,1) 0%, rgba(5,255,222,1) 16%, rgba(41,184,229,1) 46%, rgba(41,184,229,1) 77%, rgba(153,224,247,1) 95%, rgba(153,224,247,1) 100%);">
+            <div class="hero-head" >
+                <nav class="navbar">
+                    <div class="container">
+                        <div id="navbarMenuHeroA" class="navbar-menu">
+                            <div class="navbar-end">
+                                <a href="{{ url_for('main') }}" class="navbar-item">
+                                    Home
+                                </a>
+                                <a href="{{ url_for('show_watchlist') }}" class="navbar-item">
+                                    Watchlist
+                                </a>
+                                <a href="{{ url_for('login') }}" class="navbar-item">
+                                    Login
+                                </a>
+                                <a href="{{ url_for('signup') }}" class="navbar-item">
+                                    Sign Up
+                                </a>
+                                <a href="{{ url_for('logout') }}" class="navbar-item">
+                                    Logout
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </nav>
-        </div>
-    </section>
-        
+                </nav>
+            </div>
+        </section>
+
         <form>
             <center><img src="/static/UniStreamSearch.png" height="100" width="700"></center>
         </form>
-        
+
         <br><br>
 
         <form action="http://localhost:5000/search" method="POST" style="padding: 30px; text-align: center; margin-top: 40px;">
             <input type="text" name="search" placeholder="Enter movie or TV show" size=90 style="height: 60px; width: 700px; text-align: center; font-size: 25px;" required>
             <br><br><br><br><br>
 
-            <select name="locale" style="height: 35px;" required>
+            <select id="locale-dropdown" style="height: 35px;" required>
                 <option value="" style="text-align: center;">Choose country</option>
                 {% for locale_option in all_locales %}
                 <option value="{{locale_option.alpha_2}}">{{locale_option.name}}</option>

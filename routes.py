@@ -1,11 +1,13 @@
-from flask import Flask, redirect, url_for, request, render_template, session, flash
+import json
+
+from flask import Flask, redirect, url_for, request, render_template, session, flash, jsonify
 import pycountry
 from flask_login import login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
+from helpers.locale import coordsToLocale, ipToLocale
 from helpers.tmdb import send_search_request, send_metadata_request
 from helpers.parse import filter_on_region, parse_search_results, extract_providers, MediaType, ALL_LOCALES, get_watchlist
-
-from werkzeug.security import generate_password_hash, check_password_hash
 from users.user import User, Movies
 
 app = Flask(__name__)
@@ -13,15 +15,27 @@ app.secret_key = 'secret'
 app.debug = True
 
 
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 def login():
     return render_template('login.html')
 
 
-@app.route('/main')
+@app.route('/main', methods=['POST', 'GET'])
 @login_required
 def main():
-    return render_template('main.html', all_locales=ALL_LOCALES)
+    if request.method == 'POST':
+        # Auto-determining locale.
+        coords = json.loads(request.data.decode('utf-8'))
+        if coords != {}:
+            app.logger.debug(f'Used coordinates {coords} to determine locale.')
+            session['locale'] = coordsToLocale([coords['lat'], coords['long']])
+        else:
+            app.logger.debug(f'Used client IP {client_ip} to determine locale.')
+            client_ip = request.remote_addr
+            session['locale'] = ipToLocale(client_ip)
+        return jsonify(session['locale'])
+    else:
+        return render_template('main.html', all_locales=ALL_LOCALES)
 
 
 @app.route('/signup')
@@ -42,6 +56,7 @@ def show_watchlist():
     user_id = current_user.get_id()
     watch_list = get_watchlist(user_id)
     return render_template('watchlist.html', watchlist=watch_list)
+
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
@@ -86,16 +101,16 @@ def login_post():
 @app.route('/search', methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
-        locale = pycountry.countries.get(alpha_2=request.form['locale'])
         query = request.form['search']
-        results = send_search_request(query, locale.alpha_2)['results']
-        session['locale'] = locale.alpha_2
+        results = send_search_request(query, session['locale'])['results']
         medias = parse_search_results(results)
-        medias = filter_on_region(medias, locale.alpha_2)
+        medias = filter_on_region(medias, session['locale'])
+
         if medias:
             return render_template('movies_list.html', medias=medias, all_locales=ALL_LOCALES)
         else:
             return render_template('movies_not_found.html')
+
     else:
         return render_template('movies_list.html', all_locales=ALL_LOCALES)
 

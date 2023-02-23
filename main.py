@@ -24,5 +24,4 @@ if __name__ == '__main__':
         return User.query.get(int(user_id))
 
 
-    app.debug = True
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True, ssl_context='adhoc')
