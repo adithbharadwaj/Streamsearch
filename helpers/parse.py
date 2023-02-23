@@ -1,9 +1,4 @@
-from dataclasses import dataclass
-from enum import Enum
-
 import pycountry
-
-import helpers.tmdb as tmdb
 
 from .model import *
 

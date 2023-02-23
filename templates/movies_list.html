@@ -15,14 +15,11 @@
       margin: 55px;
       margin-bottom: 30px;
     }
-    #media{
+    .media{
       margin-left: 15px ;
       margin-right: 15px;
       height: 180px;
       width: 160px;
-      position: relative;
-      z-index:2;
-      display:inline;
       border: 6px solid white;
     }
     body{
@@ -43,6 +40,7 @@
         color: white;
         margin-bottom: 5px;
         font-family: sans-serif;
+        width: 152px;
         opacity: 0;
         visibility: hidden;
         -webkit-transition: visibility 0s, opacity 0.5s linear;
@@ -55,7 +53,7 @@
     }
 
     .movie-image:hover div{
-        width: 152px;
+        width: 162px;
         padding: 8px 15px;
         visibility: visible;
         opacity: 0.9;
@@ -71,10 +69,11 @@
           <div class="c">
               <a href="http://localhost:5000/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">
                 <div class="movie-image">
-                    <img id="media" src="{{media.poster_path}}" />
+                    <img class="media" src="{{media.poster_path}}" />
                     <div>{{media.title}}</div>
                 </div>
               </a>
+<!--          <a href="http://localhost:5000/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> <button style="align: center; margin-left: 30px;">Add to watchlist</button> </a>>-->
           </div>
           {% endfor %}
 

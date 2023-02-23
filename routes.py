@@ -5,6 +5,8 @@ from helpers.tmdb import send_search_request, send_metadata_request
 from helpers.parse import filter_on_region, parse_search_results, extract_providers, MediaType, ALL_LOCALES
 
 app = Flask(__name__)
+app.secret_key = 'secret'
+app.debug = True
 
 @app.route('/')
 def main():
@@ -28,7 +30,7 @@ def search():
 
 @app.route('/providers', methods=['POST', 'GET'])
 def select_movie():
-    locale_code = 'US'
+    locale_code = None
     if 'locale' in session:
         locale_code = session['locale']
     media_id, media_title, media_type = request.args['id'], request.args['title'], MediaType(request.args['media_type'])

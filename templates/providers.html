@@ -73,7 +73,9 @@
         <!-- Subscription -->
         {% if providers['flatrate'] %}
             <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold">You can watch {{title}} at the following subscription services:</h1>
-
+        {% else %}
+            {{title}} is not available on any subscription services.
+        {% endif %}
             {% for provider in providers['flatrate'] %}
                 <div class="c">
                     <div class="movie-image">
@@ -83,14 +85,16 @@
                 </div>
             {% endfor %}
 
-        {% else %}
-            {{title}} is not available on any subscription services.
+        {% if providers['flatrate'] %}
+        <p style="padding: 300px;"></p>
         {% endif %}
-
-        <p style="padding-bottom: 90px; padding-top: 200px"></p>
+        <br><br><br>
 
         {% if providers['buy'] %}
             <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold">You can buy {{title}} at: </h1>
+        {% else %}
+            {{title}} is not available for purchase.
+        {% endif %}
 
         {% for provider in providers['buy'] %}
             <div class="c">
@@ -101,15 +105,18 @@
             </div>
         {% endfor %}
 
-        {% else %}
-            {{title}} is not available for purchase.
+        {% if providers['buy'] %}
+        <p style="padding:300px;"></p>
         {% endif %}
 
-        <p style="padding-bottom: 80px; padding-top: 100px; padding:300px;"></p>
+        <br><br><br>
 
         <!-- Rent -->
         {% if providers['rent'] %}
             <h1 style="padding-left: 90px; margin-bottom: 50px; font-family: cursive; font-weight: bold"> You can rent {{title}} from: </h1>
+        {% else %}
+            {{title}} is not available for rent.
+        {% endif %}
 
         {% for provider in providers['rent'] %}
             <div class="c">
@@ -120,9 +127,6 @@
             </div>
         {% endfor %}
 
-        {% else %}
-            {{title}} is not available for rent.
-        {% endif %}
 
     </body>
 </html>
