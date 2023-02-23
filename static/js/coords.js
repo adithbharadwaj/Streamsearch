@@ -15,7 +15,6 @@ function sendCoordsToServer(coords) {
 }
 
 function updateLocaleDropdown(new_locale) {
-    console.log("Hoho!")
     $('#locale-dropdown').val(new_locale)
 }
 

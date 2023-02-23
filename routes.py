@@ -30,8 +30,8 @@ def main():
             app.logger.debug(f'Used coordinates {coords} to determine locale.')
             session['locale'] = coordsToLocale([coords['lat'], coords['long']])
         else:
+            client_ip = request.remote_addr     # IMP: Will not work if using proxy. Change if required.
             app.logger.debug(f'Used client IP {client_ip} to determine locale.')
-            client_ip = request.remote_addr
             session['locale'] = ipToLocale(client_ip)
         return jsonify(session['locale'])
     else:
