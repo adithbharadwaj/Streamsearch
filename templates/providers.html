@@ -103,7 +103,7 @@
 
         <!-- Rent -->
         {% if providers['rent'] %}
-            <h1 style="padding-left: 90px; margin-bottom: 50px; font-family: cursive; font-weight: bold; align: left;"> You can rent {{title}} from: </h1>
+            <h1 style="padding-left: 90px; margin-bottom: 50px; font-family: cursive; font-weight: bold;"> You can rent {{title}} from: </h1>
         {% else %}
             {{title}} is not available for rent.
         {% endif %}
@@ -116,4 +116,19 @@
                 </div>
             </div>
         {% endfor %}
+
+        <!-- VPNs -->
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold">You can use the following VPNs to watch {{title}}:</h1>
+        {% for v in vpn %}
+            <a href="{{v[1]}}" target="_blank">
+                <div class="c">
+                    <div class="movie-image">
+                        <img class="media" src="../static/{{v[0]}}.jpg"/>
+                        <div>{{v[0]}}</div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
 {% endblock %}
