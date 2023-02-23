@@ -8,6 +8,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from helpers.locale import coordsToLocale, ipToLocale
 from helpers.tmdb import send_search_request, send_metadata_request
 from helpers.parse import filter_on_region, parse_search_results, extract_providers, MediaType, ALL_LOCALES, get_watchlist
+from helpers.region_vpn_map import region_vpn_map
+
+from werkzeug.security import generate_password_hash, check_password_hash
 from users.user import User, Movies
 
 app = Flask(__name__)
@@ -122,8 +125,9 @@ def select_movie():
     media_id, media_title, media_type = request.args['id'], request.args['title'], MediaType(request.args['media_type'])
     results = send_metadata_request(media_id, media_type)['results']
     providers = extract_providers(results, locale_code)
+    vpn_list = region_vpn_map(session['locale'])
 
-    return render_template('providers.html', providers=providers, title=media_title)
+    return render_template('providers.html', providers=providers, title=media_title, vpn=vpn_list)
 
 
 @app.route('/watchlist')
