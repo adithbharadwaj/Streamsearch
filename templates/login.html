@@ -6,7 +6,7 @@
     <div class="box">
         {% if msg %}
             <div class="notification is-danger">
-                {{ msg }}. Go to <a href="{{ url_for('signup') }}">signup page</a>.
+                {{ msg }} Go to <a href="{{ url_for('signup') }}">signup page</a>.
             </div>
         {% endif %}
         <form method="POST" action="/login">
