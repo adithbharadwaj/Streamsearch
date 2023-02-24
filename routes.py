@@ -1,9 +1,7 @@
 import json
 
 from flask import Flask, redirect, url_for, request, render_template, session, flash, jsonify
-import pycountry
 from flask_login import login_user, login_required, logout_user, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from helpers.locale import coordsToLocale, ipToLocale
 from helpers.tmdb import send_search_request, send_metadata_request
@@ -16,6 +14,9 @@ from users.user import User, Movies
 app = Flask(__name__)
 app.secret_key = 'secret'
 app.debug = True
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -107,7 +108,7 @@ def search():
         query = request.form['search']
         results = send_search_request(query, session['locale'])['results']
         medias = parse_search_results(results)
-        medias = filter_on_region(medias, session['locale'])
+        #medias = filter_on_region(medias, session['locale'])
 
         if medias:
             return render_template('movies_list.html', medias=medias, all_locales=ALL_LOCALES)
