@@ -41,7 +41,6 @@
 
     <body style="background-image: url(/static/Moviebackground.png);">
 
-        <h1 background="white">Locale: {{locale}}</h1>
         <section class="hero is-primary" style="background: -webkit-linear-gradient(top left, rgba(5,255,222,1) 0%, rgba(5,255,222,1) 16%, rgba(41,184,229,1) 46%, rgba(41,184,229,1) 77%, rgba(153,224,247,1) 95%, rgba(153,224,247,1) 100%);">
             <div class="hero-head" >
                 <nav class="navbar">
@@ -76,7 +75,7 @@
 
         <br><br>
 
-        <form action="https://localhost:5000/search" method="POST" style="padding: 30px; text-align: center; margin-top: 40px;">
+        <form action="/search" method="POST" style="padding: 30px; text-align: center; margin-top: 40px;">
             <input type="text" name="search" placeholder="Enter movie or TV show" size=90 style="height: 60px; width: 700px; text-align: center; font-size: 25px;" required>
             <br><br><br><br><br>
 

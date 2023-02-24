@@ -75,13 +75,12 @@
                 </div>
             {% endfor %}
 
-        {% if providers['buy'] %}
-        <p style="padding-bottom: 50px; padding-top: 100px"></p>
-        {% endif %}
-        <br><br><br><br><br><br><br><br><br>
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
         {% if providers['buy'] %}
-            <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold">You can buy {{title}} at: </h1>
+            <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold; text-align: center;">You can buy {{title}} at: </h1>
         {% else %}
             {{title}} is not available for purchase.
         {% endif %}
@@ -95,11 +94,8 @@
             </div>
         {% endfor %}
 
-        {% if providers['rent'] %}
-        <p style="padding:300px;"></p>
-        {% endif %}
-
-        <br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
         <!-- Rent -->
         {% if providers['rent'] %}
@@ -118,7 +114,8 @@
         {% endfor %}
 
         <!-- VPNs -->
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold">You can use the following VPNs to watch {{title}}:</h1>
         {% for v in vpn %}
             <a href="{{v[1]}}" target="_blank">
