@@ -1,8 +1,8 @@
 from urllib.parse import urljoin
 
-from helpers.parse import MediaType
-
 import requests
+
+from .model import MediaType
 
 TMDB_BASE_URL = 'https://api.themoviedb.org/'
 TMDB_IMG_BASE_URL = 'https://image.tmdb.org/t/p/'

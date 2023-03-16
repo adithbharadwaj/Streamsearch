@@ -1,17 +1,7 @@
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-# from routes import app
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
-#
-# def init_db():
-#     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-#     db.init_app(app)
-#
-# def create_db():
-#     with app.app_context():
-#         db.create_all(app=init_db())
-
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy

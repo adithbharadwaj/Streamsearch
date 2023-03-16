@@ -1,28 +1,25 @@
 import json
 
-from flask import Flask, redirect, url_for, request, render_template, session, flash, jsonify
-from flask_login import login_user, login_required, logout_user, current_user
+from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
+from flask_login import current_user, login_required, login_user, logout_user
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers.locale import coordsToLocale, ipToLocale
-from helpers.tmdb import send_search_request, send_metadata_request
-from helpers.parse import filter_on_region, parse_search_results, extract_providers, MediaType, ALL_LOCALES, get_watchlist
+from helpers.parse import ALL_LOCALES, MediaType, extract_providers, get_watchlist, parse_search_results
 from helpers.region_vpn_map import region_vpn_map
-
-from werkzeug.security import generate_password_hash, check_password_hash
-from users.user import User, Movies
+from helpers.tmdb import send_metadata_request, send_search_request
+from helpers.user import Movies, User
 
 app = Flask(__name__)
 app.secret_key = 'secret'
 app.debug = True
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
 @app.route('/', methods=['POST', 'GET'])
 def login():
     return render_template('login.html')
-
 
 @app.route('/main', methods=['POST', 'GET'])
 @login_required
@@ -41,11 +38,9 @@ def main():
     else:
         return render_template('main.html', all_locales=ALL_LOCALES)
 
-
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
-
 
 @app.route('/logout')
 @login_required
@@ -53,14 +48,12 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-
 @app.route('/show-watchlist')
 @login_required
 def show_watchlist():
     user_id = current_user.get_id()
     watch_list = get_watchlist(user_id)
     return render_template('watchlist.html', watchlist=watch_list)
-
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
@@ -80,7 +73,6 @@ def signup_post():
     new_user.add_to_db()
 
     return redirect(url_for('login'))
-
 
 @app.route('/login', methods=['POST'])
 def login_post():
@@ -103,7 +95,6 @@ def login_post():
     login_user(user, remember=remember)
 
     return redirect(url_for('main'))
-
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
@@ -132,7 +123,6 @@ def select_movie():
     vpn_list = region_vpn_map(session['locale'])
 
     return render_template('providers.html', providers=providers, title=media_title, vpn=vpn_list)
-
 
 @app.route('/watchlist')
 @login_required

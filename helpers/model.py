@@ -1,6 +1,7 @@
 from enum import Enum
 
-import helpers.tmdb as tmdb
+# import helpers.tmdb
+
 
 class MediaType(Enum):
     MOVIE = 'movie'
@@ -39,7 +40,7 @@ class Media:
                 int(json_str.get('id', Media.UNKNOWN_ID)),
                 json_str.get('name', None) if media_type == MediaType.TV.value else json_str.get('title', None),
                 MediaType(media_type),
-                tmdb.to_image_path(json_str.get('poster_path', None), 'w92'),
+                helpers.tmdb.to_image_path(json_str.get('poster_path', None), 'w92'),
                 json_str.get('overview', None)[:Media.MAX_CHAR_OVERVIEW],
                 json_str.get('popularity', 0)
             )
@@ -60,7 +61,7 @@ class Provider:
         return Provider(
             json_str.get('provider_id', Provider.UNKNOWN_ID),
             json_str.get('provider_name', 'NA'),
-            tmdb.to_image_path(json_str.get('logo_path', None), 'w92')
+            helpers.tmdb.to_image_path(json_str.get('logo_path', None), 'w92')
         )
 
 class MediaAccessMode(Enum):

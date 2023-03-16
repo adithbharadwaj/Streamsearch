@@ -1,10 +1,7 @@
-from routes import app
-from users.user import db
 from flask_login import LoginManager
-from users.user import User
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+from routes import app
+from helpers.user import User, db
 
 db.init_app(app)
 
