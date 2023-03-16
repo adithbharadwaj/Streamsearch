@@ -57,10 +57,12 @@ class Provider:
 
     @staticmethod
     def from_json(json_str):
+        from helpers.tmdb import to_image_path
+
         return Provider(
             json_str.get('provider_id', Provider.UNKNOWN_ID),
             json_str.get('provider_name', 'NA'),
-            helpers.tmdb.to_image_path(json_str.get('logo_path', None), 'w92')
+            to_image_path(json_str.get('logo_path', None), 'w92')
         )
 
 class MediaAccessMode(Enum):
