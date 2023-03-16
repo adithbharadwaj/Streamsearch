@@ -1,8 +1,5 @@
 from enum import Enum
 
-# import helpers.tmdb
-
-
 class MediaType(Enum):
     MOVIE = 'movie'
     TV = 'tv'
@@ -34,13 +31,15 @@ class Media:
 
     @staticmethod
     def from_json(json_str):
+        from helpers.tmdb import to_image_path      # Don't move outside, leads to circular import.
+
         media_type = json_str['media_type']
         if media_type in MediaType.values():
             return Media(
                 int(json_str.get('id', Media.UNKNOWN_ID)),
                 json_str.get('name', None) if media_type == MediaType.TV.value else json_str.get('title', None),
                 MediaType(media_type),
-                helpers.tmdb.to_image_path(json_str.get('poster_path', None), 'w92'),
+                to_image_path(json_str.get('poster_path', None), 'w92'),
                 json_str.get('overview', None)[:Media.MAX_CHAR_OVERVIEW],
                 json_str.get('popularity', 0)
             )
