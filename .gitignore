@@ -1,5 +1,7 @@
 .vscode
 __pycache__
 .DS_Store
-/venv
+venv
 users.db
+*.zip
+*.csv
