@@ -1,33 +1,37 @@
 {% extends "base2.html" %}
 
 {% block content %}
-  <style>
+<style>
     .c {
-      float: left;
-      display: grid;
-      align-items: center;
-      padding-left: 10px;
-      margin: 55px;
-      margin-bottom: 30px;
+        float: left;
+        display: grid;
+        align-items: center;
+        padding-left: 10px;
+        margin: 55px;
+        margin-bottom: 30px;
     }
-    .media{
-      margin-left: 15px ;
-      margin-right: 15px;
-      height: 180px;
-      width: 160px;
-      border: 6px solid white;
+
+    .media {
+        margin-left: 15px;
+        margin-right: 15px;
+        height: 180px;
+        width: 160px;
+        border: 6px solid white;
     }
-    body{
-      background: -webkit-linear-gradient(top left, rgba(0, 0, 0,1) 0%, rgba(10,10,10,1) 16%, rgba(50,50,50,1) 46%, rgba(80,80,80,1) 77%, rgba(110,110,110,1) 95%, rgba(150,150,150,1) 100%);
+
+    body {
+        background: -webkit-linear-gradient(top left, rgba(0, 0, 0, 1) 0%, rgba(10, 10, 10, 1) 16%, rgba(50, 50, 50, 1) 46%, rgba(80, 80, 80, 1) 77%, rgba(110, 110, 110, 1) 95%, rgba(150, 150, 150, 1) 100%);
     }
+
     .movie-image {
-        float:left;
-        width:152px;
-        height:214px;
-        position:relative;
+        float: left;
+        width: 152px;
+        height: 214px;
+        position: relative;
     }
+
     /* Child Text Container */
-    .movie-image div{
+    .movie-image div {
         position: absolute;
         bottom: 0;
         right: 0;
@@ -43,32 +47,34 @@
     }
 
     /* Hover on Parent Container */
-    .movie-image:hover{
+    .movie-image:hover {
         cursor: pointer;
     }
 
-    .movie-image:hover div{
+    .movie-image:hover div {
         width: 162px;
         padding: 8px 15px;
         visibility: visible;
         opacity: 0.9;
     }
-  </style>
 
-        <form>
-            <center><img src="/static/UniStreamSearch.png" height="100" width="700" style="margin-bottom: 100px;"></center>
-        </form>
+</style>
 
-          {% for media in medias %}
-          <div class="c">
-              <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">
-                <div class="movie-image">
-                    <img class="media" src="{{media.poster_path}}" />
-                    <div>{{media.title}}</div>
-                </div>
-              </a>
-            <a href="/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> <button style="align: center; margin-left: 30px;">Add to watchlist</button> </a>
-          </div>
-          {% endfor %}
+<form>
+    <center><img src="/static/logo/main.svg" height="100" width="700" style="margin-bottom: 100px;"></center>
+</form>
+
+{% for media in medias %}
+<div class="c">
+    <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">
+        <div class="movie-image">
+            <img class="media" src="{{media.poster_path}}" />
+            <div>{{media.title}}</div>
+        </div>
+    </a>
+    <a href="/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> <button
+            style="margin-left: 30px;">Add to watchlist</button> </a>
+</div>
+{% endfor %}
 
 {% endblock %}
