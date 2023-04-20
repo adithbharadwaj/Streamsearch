@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="split split-left background-dark">
+    {% block split_left %}
+    {% endblock %}
+</div>
+
+<div class="split split-right background-light">
+    {% block split_right %}
+    {% endblock %}
+</div>
+{% endblock %}

@@ -8,14 +8,15 @@ function sendCoordsToServer(coords) {
             long: coords.longitude
         }),
         success: function (locale) {
-            alert("Detected your locale as " + locale + ".");
+            $('#locale-alert').alert();
+            console.log('Hi')
             updateLocaleDropdown(locale);
         }
     })
 }
 
 function updateLocaleDropdown(new_locale) {
-    $('#locale-dropdown').val(new_locale)
+    $('#locale-dropdown').selectpicker('val', new_locale);
 }
 
 if('geolocation' in navigator) {

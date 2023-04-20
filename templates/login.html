@@ -1,34 +1,37 @@
-{% extends "base.html" %}
+{% extends "base-split.html" %}
 
-{% block content %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title">Login</h3>
-    <div class="box">
-        {% if msg %}
-            <div class="notification is-danger">
-                {{ msg }} Go to <a href="{{ url_for('signup') }}">signup page</a>.
-            </div>
-        {% endif %}
-        <form method="POST" action="/login">
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="email" name="email" placeholder="Your Email" autofocus="">
-                </div>
-            </div>
+{% block split_left %}
+<img src="/static/logo/icon.svg" width=50% />
+<img src="/static/logo/text.svg" width=100% />
+{% endblock %}
 
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="password" name="password" placeholder="Your Password">
-                </div>
-            </div>
-            <div class="field">
-                <label class="checkbox">
-                    <input type="checkbox" name="remember">
-                    Remember me
-                </label>
-            </div>
-            <button class="button is-block is-info is-large is-fullwidth">Login</button>
-        </form>
+{% block split_right %}
+<h3 class="title">Login</h3>
+<div class="box">
+    {% if msg %}
+    <div class="notification is-danger">
+        {{ msg }} Go to <a href="{{ url_for('signup') }}">signup page</a>.
     </div>
+    {% endif %}
+    <form method="POST" action="/login">
+        <div class="field">
+            <div class="control">
+                <input class="input is-large" type="email" name="email" placeholder="Your Email" autofocus="">
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <input class="input is-large" type="password" name="password" placeholder="Your Password">
+            </div>
+        </div>
+        <div class="field">
+            <label class="checkbox">
+                <input type="checkbox" name="remember">
+                Remember me
+            </label>
+        </div>
+        <button class="button is-block is-info is-large is-fullwidth">Login</button>
+    </form>
 </div>
 {% endblock %}

@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="57.671841mm"
-   height="4.3941965mm"
-   viewBox="0 0 57.671841 4.3941965"
+   width="361.89136mm"
+   height="27.031284mm"
+   viewBox="0 0 361.89136 27.031284"
    version="1.1"
    id="svg13180"
    inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.8815627"
-     inkscape:cx="82.420556"
-     inkscape:cy="18.392798"
+     inkscape:zoom="0.65584966"
+     inkscape:cx="745.5977"
+     inkscape:cy="135.70183"
      inkscape:window-width="1440"
      inkscape:window-height="872"
      inkscape:window-x="0"
@@ -42,18 +42,17 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-79.670379,-94.152508)">
+     transform="translate(-15.312928,-107.1035)">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:4.23333px;line-height:1.15;font-family:Avenir;-inkscape-font-specification:'Avenir Medium';letter-spacing:0px;stroke-width:0.264583;fill:#d9992d;fill-opacity:1"
-       x="108.58108"
-       y="97.352905"
-       id="text1915"><tspan
+       style="font-size:26.0417px;line-height:1.25;font-family:'Courier New';-inkscape-font-specification:'Courier New';stroke-width:1.6276"
+       x="14.453552"
+       y="126.79102"
+       id="text1915-9"><tspan
          sodipodi:role="line"
-         id="tspan1913"
-         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Avenir;-inkscape-font-specification:'Avenir Medium';text-align:center;baseline-shift:baseline;text-anchor:middle;fill:#d9992d;fill-opacity:1;stroke-width:0.264583"
-         x="108.58108"
-         y="97.352905"
-         rotate="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0">Stop searching, start watching</tspan></text>
+         id="tspan1913-4"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Avenir;-inkscape-font-specification:'Avenir Medium';fill:#d9992d;fill-opacity:1;stroke-width:1.6276"
+         x="14.453552"
+         y="126.79102">Stop searching, start watching!</tspan></text>
   </g>
 </svg>

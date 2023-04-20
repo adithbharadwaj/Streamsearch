@@ -1,105 +1,30 @@
-<!DOCTYPE html>
-<html>
+{% extends "base-single.html" %}
 
-<head>
-    <title>Stream Search</title>
-    <link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
+{% block content %}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="/static/js/coords.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
-    <style>
-        button {
-            border: none;
-            cursor: pointer;
-            appearance: none;
-            background-color: inherit;
-            transition: transform .7s ease-in-out;
-            margin-left: 10px;
-        }
+<header>
+    <img src="/static/logo/main.svg" />
+</header>
 
-        #but {
-            width: 200px;
-            height: 150px;
-            border: none;
-            margin-top: -20px;
-        }
+<!-- <div id="locale-alert" class="alert alert-primary alert-dismissable fade show" style="width: 50rem;" role="alert">
+    Auto-detected your locale!
+    <button type="button" class="btn-close" aria-label="Close"></button>
+</div> -->
 
-        .text {
-            font-size: 60px;
-            color: #314de4;
-            font-family: Arial;
-        }
-
-    </style>
-
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/coords.js"></script>
-</head>
-
-<body style="background-image: url(/static/Moviebackground.png);">
-
-    <section class="hero is-primary"
-        style="background: #381333;">
-        <div class="hero-head">
-            <nav class="navbar">
-                <div class="container">
-                    <div id="navbarMenuHeroA" class="navbar-menu">
-                        <div class="navbar-end">
-                            <a href="{{ url_for('main') }}" class="navbar-item">
-                                Home
-                            </a>
-                            <a href="{{ url_for('show_watchlist') }}" class="navbar-item">
-                                Watchlist
-                            </a>
-                            <a href="{{ url_for('login') }}" class="navbar-item">
-                                Login
-                            </a>
-                            <a href="{{ url_for('signup') }}" class="navbar-item">
-                                Sign Up
-                            </a>
-                            <a href="{{ url_for('logout') }}" class="navbar-item">
-                                Logout
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </section>
-
-    <form>
-        <center><img src="/static/logo/main.svg" height="100" width="700"></center>
-    </form>
-
-    <br><br>
-
-    <form action="/search" method="POST" style="padding: 30px; text-align: center; margin-top: 40px;">
-        <input type="text" name="search" placeholder="Enter movie or TV show" size=90
-            style="height: 60px; width: 700px; text-align: center; font-size: 25px;" required>
-        <br><br><br><br><br>
-
-        <select id="locale-dropdown" style="height: 35px;" required>
-            <option value="" style="text-align: center;">Choose country</option>
+<form action="/search" method="POST" style="padding: 5rem; text-align: center;">
+    <input type="text" class="form-control-lg search-box" style="text-align: center;" placeholder="What would you like to watch today?" required/>
+    <div style="padding: 1rem;">
+        <select id="locale-dropdown" class="selectpicker show-tick" title="Choose country" data-live-search="true" style="margin-top: 1rem;" required>
             {% for locale_option in all_locales %}
-            <option value="{{locale_option.alpha_2}}">{{locale_option.name}}</option>
+            <option value="{{locale_option.alpha_2}}" title="{{locale_option.name}}">{{locale_option.name}}</option>
             {% endfor %}
-        </select><br />
+        </select><br/>
+    </div>
+    <div style="padding-top: 1.5rem">
+        <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 1.5rem; padding-right: 1.5rem;">Search</button>
+    </div>
+</form>
 
-        <br><br><br><br><br>
-
-        <button type="submit">
-            <img id="but" src="/static/search-icon-blue.png" />
-        </button>
-    </form>
-
-    <p style="padding-bottom: 20px; "></p>
-</body>
-
-</html>
+{% endblock %}

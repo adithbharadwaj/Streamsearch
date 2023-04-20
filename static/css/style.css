@@ -1,0 +1,56 @@
+html, body {
+  font-family: Avenir, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #D9992D;
+  height: 100%;
+}
+
+html {
+  overflow-x: hidden
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  margin: auto;
+}
+
+header {
+  background-color: #381333;
+  background-size: cover;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  text-align: center;
+}
+
+.content {
+  background-color: #FAF0E6;
+  height: 100%;
+}
+
+.split {
+  width: 50%;
+  position: fixed;
+  overflow-x: hidden;
+}
+
+.split-left {
+  left: 0;
+}
+
+.split-right {
+  right: 0;
+}
+
+.search-box {
+  width: 50%
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+  background-color: #381333 !important;
+  border-color: #381333 !important;
+}

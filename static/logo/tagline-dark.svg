@@ -2,19 +2,19 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="160.95316mm"
-   height="20.000027mm"
-   viewBox="0 0 160.95316 20.000026"
+   width="361.89136mm"
+   height="27.031284mm"
+   viewBox="0 0 361.89136 27.031284"
    version="1.1"
-   id="svg5"
+   id="svg1421"
    inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
-   sodipodi:docname="text.svg"
+   sodipodi:docname="tagline-dark.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
-     id="namedview7"
+     id="namedview1423"
      pagecolor="#ffffff"
      bordercolor="#999999"
      borderopacity="1"
@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="6.0496261"
-     inkscape:cx="298.86145"
-     inkscape:cy="44.465558"
+     inkscape:zoom="0.63525538"
+     inkscape:cx="682.40272"
+     inkscape:cy="188.90041"
      inkscape:window-width="1440"
      inkscape:window-height="872"
      inkscape:window-x="0"
@@ -37,22 +37,22 @@
      fit-margin-right="0"
      fit-margin-bottom="0" />
   <defs
-     id="defs2" />
+     id="defs1418" />
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(34.728599,-18.295022)">
+     transform="translate(113.72526,-86.655957)">
     <text
        xml:space="preserve"
        style="font-size:26.0417px;line-height:1.25;font-family:'Courier New';-inkscape-font-specification:'Courier New';stroke-width:1.6276"
-       x="-35.3536"
-       y="37.982548"
-       id="text1915"><tspan
+       x="-114.58464"
+       y="106.34348"
+       id="text1915-9"><tspan
          sodipodi:role="line"
-         id="tspan1913"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:Avenir;-inkscape-font-specification:'Avenir Ultra-Bold';fill:#d9992d;fill-opacity:1;stroke-width:1.6276"
-         x="-35.3536"
-         y="37.982548">streamsearch</tspan></text>
+         id="tspan1913-4"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Avenir;-inkscape-font-specification:'Avenir Medium';fill:#381333;fill-opacity:1;stroke-width:1.6276"
+         x="-114.58464"
+         y="106.34348">Stop searching, start watching!</tspan></text>
   </g>
 </svg>
