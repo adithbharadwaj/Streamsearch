@@ -1,0 +1,23 @@
+{% extends "base-headered.html" %}
+
+{% block header_aux %}
+
+<!-- Rolling custom navbar as Bootstrap's doesn't really fit with our theme. -->
+<div class="navbar-container">
+    <div class="btn-group">
+        <button type="button" class="btn navbar-button">About us</button>
+        <button type="button" class="btn navbar-button">Watchlist</button>
+        <button type="button" class="btn navbar-button">Profile</button>
+        <button type="button" class="btn navbar-button">Logout</button>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block content_headered %}
+
+{% block content_search %}
+
+{% endblock %}
+
+{% endblock %}

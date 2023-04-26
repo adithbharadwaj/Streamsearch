@@ -12,7 +12,7 @@
     <input type="text" id="search-textbox" name="search" class="form-control-lg textbox-rounded-lg mb-3" placeholder="What would you like to watch today?" required autofocus/>
     <i class="bi bi-0-circle"></i>
     <div width="100%">
-        <select id="locale-dropdown" class="form-select-lg selectpicker show-tick" title="Choose country" data-live-search="true" data-width="auto" data-size="5" required>
+        <select id="locale-dropdown" class="form-select-lg selectpicker show-tick" name="locale" title="Choose country" data-live-search="true" data-width="auto" data-size="5" required>
             {% for locale_option in all_locales %}
             <option value="{{locale_option.alpha_2}}" title="{{locale_option.name}}">{{locale_option.name}}</option>
             {% endfor %}

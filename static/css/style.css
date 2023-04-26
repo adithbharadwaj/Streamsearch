@@ -15,12 +15,12 @@ header {
   position: sticky;
   top: 0;
   background-color: #381333;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .header-img {
-  height: 2rem;
+  height: 2.5rem;
   padding-left: 1rem;
 }
 
@@ -36,15 +36,15 @@ header {
 }
 
 .navbar-container {
-  display: inline-block;
   vertical-align: middle;
   padding-left: 3rem;
   padding-right: 3rem;
+  float: right;
 }
 
 .navbar-button {
   background-color: transparent;
-  font-size: 1rem;
+  font-size: 1.25rem;
   color: #DEDEDE;
 }
 
@@ -55,7 +55,6 @@ header {
 .split {
   width: 50%;
   position: fixed;
-  overflow-x: hidden;
 }
 
 .split-left {
@@ -122,6 +121,18 @@ header {
 #login-card-content {
   padding: 1rem;
   text-align: center;
+}
+
+.media-card {
+  background: #2E2E2E;
+  margin: auto;
+  width: 75%;
+  text-align: center;
+  transition: transform 0.5s;
+}
+
+.media-card:hover {
+  transform: scale(1.1, 1.1)
 }
 
 .sso-button {

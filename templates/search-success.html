@@ -1,30 +1,20 @@
-{% extends "base-headered.html" %}
+{% extends "search.html" %}
 
-{% block header_aux %}
+{% block content_search %}
 
-<!-- Rolling custom navbar as Bootstrap's doesn't really fit with our theme. -->
-<div class="navbar-container dflex align-items-center">
-    <div class="btn-group">
-        <button type="button" class="btn navbar-button">About us</button>
-        <button type="button" class="btn navbar-button">Logout</button>
+<div id="search-results-container" class="centered">
+    {% for media in medias %}
+    <div class="media-card mt-3 mb-3">
+        <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">
+            <div class="movie-image">
+                <img class="media" src="{{media.poster_path}}" />
+                <div>{{media.title}}</div>
+            </div>
+        </a>
+        <a href="/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> <button
+                style="margin-left: 30px;">Add to watchlist</button> </a>
     </div>
+    {% endfor %}
 </div>
-
-{% endblock %}
-
-{% block content_headered %}
-
-{% for media in medias %}
-<div class="c">
-    <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">
-        <div class="movie-image">
-            <img class="media" src="{{media.poster_path}}" />
-            <div>{{media.title}}</div>
-        </div>
-    </a>
-    <a href="/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> <button
-            style="margin-left: 30px;">Add to watchlist</button> </a>
-</div>
-{% endfor %}
 
 {% endblock %}
