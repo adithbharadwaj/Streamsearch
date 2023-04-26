@@ -1,29 +1,25 @@
-{% extends "base-single.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
 <script type="text/javascript" src="/static/js/coords.js"></script>
 
-<header>
-    <img src="/static/logo/main.svg" />
+<header class="header-lg">
+    <img src="/static/logo/main.svg" class="header-img-lg"/>
 </header>
 
-<!-- <div id="locale-alert" class="alert alert-primary alert-dismissable fade show" style="width: 50rem;" role="alert">
-    Auto-detected your locale!
-    <button type="button" class="btn-close" aria-label="Close"></button>
-</div> -->
-
-<form action="/search" method="POST" style="padding: 5rem; text-align: center;">
-    <input type="text" class="form-control-lg search-box" style="text-align: center;" placeholder="What would you like to watch today?" required/>
-    <div style="padding: 1rem;">
-        <select id="locale-dropdown" class="selectpicker show-tick" title="Choose country" data-live-search="true" style="margin-top: 1rem;" required>
+<form action="/search" method="POST" class="mt-5 mb-5 centered">
+    <input type="text" id="search-textbox" name="search" class="form-control-lg textbox-rounded-lg mb-3" placeholder="What would you like to watch today?" required autofocus/>
+    <i class="bi bi-0-circle"></i>
+    <div width="100%">
+        <select id="locale-dropdown" class="form-select-lg selectpicker show-tick" title="Choose country" data-live-search="true" data-width="auto" data-size="5" required>
             {% for locale_option in all_locales %}
             <option value="{{locale_option.alpha_2}}" title="{{locale_option.name}}">{{locale_option.name}}</option>
             {% endfor %}
         </select><br/>
     </div>
-    <div style="padding-top: 1.5rem">
-        <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 1.5rem; padding-right: 1.5rem;">Search</button>
+    <div class="mt-4">
+        <button type="submit" id="search-button" class="btn btn-primary btn-padding btn-rounded">Search</button>
     </div>
 </form>
 

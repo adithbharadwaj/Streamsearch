@@ -99,18 +99,18 @@ def login_post():
 @app.route('/search', methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
-        query = request.form['search']
+        query = request.form.get('search')
         results = send_search_request(query, session['locale'])['results']
         medias = parse_search_results(results)
-        #medias = filter_on_region(medias, session['locale'])
+        # medias = filter_on_region(medias, session['locale'])
 
         if medias:
-            return render_template('movies_list.html', medias=medias, all_locales=ALL_LOCALES)
+            return render_template('search-success.html', medias=medias, all_locales=ALL_LOCALES)
         else:
-            return render_template('movies_not_found.html')
+            return render_template('search-failure.html')
 
     else:
-        return render_template('movies_list.html', all_locales=ALL_LOCALES)
+        return render_template('search-success.html', all_locales=ALL_LOCALES)
 
 @app.route('/providers', methods=['POST', 'GET'])
 def select_movie():

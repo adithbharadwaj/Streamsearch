@@ -9,7 +9,6 @@ function sendCoordsToServer(coords) {
         }),
         success: function (locale) {
             $('#locale-alert').alert();
-            console.log('Hi')
             updateLocaleDropdown(locale);
         }
     })

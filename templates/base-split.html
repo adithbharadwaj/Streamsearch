@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="split split-left background-dark">
+
+<div class="split split-left background-dark d-flex align-items-center justify-content-center">
     {% block split_left %}
     {% endblock %}
 </div>
 
-<div class="split split-right background-light">
+<div class="split split-right background-light d-flex align-items-center justify-content-center">
     {% block split_right %}
     {% endblock %}
 </div>
+
 {% endblock %}

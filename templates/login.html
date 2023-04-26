@@ -1,37 +1,60 @@
 {% extends "base-split.html" %}
 
 {% block split_left %}
-<img src="/static/logo/icon.svg" width=50% />
-<img src="/static/logo/text.svg" width=100% />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="centered">
+    <img id="login-icon" src="/static/logo/icon.svg" class="center-block" /><br />
+    <img id="login-text" src="/static/logo/text.svg" class="center-block" />
+</div>
+
 {% endblock %}
 
 {% block split_right %}
-<h3 class="title">Login</h3>
-<div class="box">
+
+<div class="centered">
+    <div id="login-tagline">
+        Stop searching, start watching!
+    </div>
+
     {% if msg %}
     <div class="notification is-danger">
         {{ msg }} Go to <a href="{{ url_for('signup') }}">signup page</a>.
     </div>
     {% endif %}
-    <form method="POST" action="/login">
-        <div class="field">
-            <div class="control">
-                <input class="input is-large" type="email" name="email" placeholder="Your Email" autofocus="">
-            </div>
-        </div>
 
-        <div class="field">
-            <div class="control">
-                <input class="input is-large" type="password" name="password" placeholder="Your Password">
-            </div>
-        </div>
-        <div class="field">
-            <label class="checkbox">
-                <input type="checkbox" name="remember">
+    <div id="login-card">
+        <div id="login-card-content">
+            <form method="POST" action="/login">
+                <div class="input-group mx-auto mb-2" style="width: 15rem;">
+                    <input type="email" name="email" class="form-control textbox-rounded" placeholder="Email" autofocus>
+                </div>
+                <div class="input-group mx-auto mb-2" style="width: 15rem;">
+                    <input type="password" name="password" class="form-control textbox-rounded" placeholder="Password">
+                </div>
+                <input type="checkbox" class="mb-3" name="remember">
                 Remember me
-            </label>
+                </input><br />
+                <div id="sso-buttons" class="mx-auto mb-3" style="width: 15rem;">
+                    <div class="mb-1">
+                        <a href="" class="btn btn-outline-dark btn-block" role="button">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Lohgo.svg.png" class="sso-button"/>
+                            &nbspLogin with Google
+                        </a>
+                    </div>
+                    <div class="mx-auto">
+                        <a href="" class="btn btn-outline-dark btn-block" role="button">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" class="sso-button"/>
+                            &nbspLogin with Facebook
+                        </a>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-padding btn-rounded mb-3">Login</button>
+            </form>
+            Sign up with email
         </div>
-        <button class="button is-block is-info is-large is-fullwidth">Login</button>
-    </form>
+    </div>
 </div>
+
 {% endblock %}
