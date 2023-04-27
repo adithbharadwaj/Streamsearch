@@ -100,7 +100,6 @@ def login_post():
 def search():
     if request.method == 'POST':
         query = request.form.get('search')
-        print(session.values)
         results = send_search_request(query, session['locale'])['results']
         medias = parse_search_results(results)
         # medias = filter_on_region(medias, session['locale'])

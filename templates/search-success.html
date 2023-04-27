@@ -2,18 +2,35 @@
 
 {% block content_search %}
 
-<div id="search-results-container" class="centered">
+<div id="container" class="centered">
     {% for media in medias %}
-    <div class="media-card mt-3 mb-3">
-        <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}">
-            <div class="movie-image">
-                <img class="media" src="{{media.poster_path}}" />
-                <div>{{media.title}}</div>
+    <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}"
+        class="unstyled-link">
+        <div class="media-card mt-3 mb-3">
+            <div class="row justify-content-md-left">
+                <div class="col col-sm-3">
+                    <img class="media-card-poster" src="{{media.poster_path}}" />
+                </div>
+                <div class="col col-sm">
+                    <div class="media-description">
+                        <div class="media-card-title mt-4 mb-3">
+                            {{media.title}}
+                        </div>
+                        <div class="media-card-overview">
+                            {{media.overview}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-sm-2 right-aligned">
+                    <!-- <a href="/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> -->
+                    <button class="btn btn-light" style="border-radius: 1rem;">
+                        +
+                    </button>
+                    <!-- </a> -->
+                </div>
             </div>
-        </a>
-        <a href="/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> <button
-                style="margin-left: 30px;">Add to watchlist</button> </a>
-    </div>
+        </div>
+    </a>
     {% endfor %}
 </div>
 
