@@ -3,19 +3,34 @@
 {% block content_headered %}
 
 <div class="container centered">
-    <div class="row">
-        <div class="col col-lg-2">
-            <img class="media-card-poster" src="{{media.poster_path}}" />
+    <div class="row mt-5 mb-3">
+        <div class="col col-lg-4">
+            <div class="media-poster left-aligned">
+                <img class="media-poster" src="{{media.poster_path}}" />
+            </div>
         </div>
         <div class="col col-lg">
-
+            <div class="row">
+                <div class="media-title left-aligned">
+                    {{media.title}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="media-overview justified">
+                    {{media.overview}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="media-providers justified overflow-auto">
+                    {% for provider in providers %}
+                        {{provider}}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
-
-    </div>
-    <div class="row">
-
+        Recommendations
     </div>
 </div>
 

@@ -53,8 +53,16 @@ header {
   text-align: center;
 }
 
+.left-aligned {
+  text-align: left;
+}
+
 .right-aligned {
   text-align: right;
+}
+
+.justified {
+  text-align: justify;
 }
 
 .split {
@@ -164,6 +172,16 @@ header {
   color: #DEDEDE;
   text-align: justify;
   font-size: 1rem;
+}
+
+.media-area {
+  width: 30rem;
+}
+
+.media-poster {
+  height: 30rem;
+  border-radius: 2rem;
+  overflow: hidden;
 }
 
 .watch-later-button-container {

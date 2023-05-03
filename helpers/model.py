@@ -1,6 +1,10 @@
 from enum import Enum
 
+import pycountry
+
 from .user import User
+
+ALL_LOCALES = sorted(list(pycountry.countries), key=lambda country: country.name)
 
 class MediaType(Enum):
     MOVIE = 'movie'
@@ -10,7 +14,6 @@ class MediaType(Enum):
     def values(cls):
         return [e.value for e in cls]
 
-# TODO: Convert to dataclass.
 class Media:
     UNKNOWN_ID = -1
     MAX_CHAR_OVERVIEW = 1000
@@ -31,9 +34,16 @@ class Media:
         self.overview = overview
         self.popularity = popularity
 
+    def __hash__(self):
+        return hash(id)
+
+    def __eq__(self, other):
+        return self.id == other.id
+
     @staticmethod
     def from_json(json_str, media_type=None):
-        from helpers.tmdb import to_image_path      # Don't move outside, leads to circular import.
+        from helpers.tmdb import \
+            to_image_path  # Don't move outside, leads to circular import.
 
         if media_type is None:
             # If `media_type` is not explicitly passed, search for it in json.
@@ -51,7 +61,9 @@ class Media:
             json_str.get('popularity', 0)
         )
 
-# TODO: Convert to dataclass.
+    def __str__(self):
+        return f'{self.__class__.__name__}({self.id}, \"{self.title}\", {self.media_type})'
+
 class Provider:
     UNKNOWN_ID = -1
 
@@ -59,6 +71,12 @@ class Provider:
         self.id = id
         self.name = name
         self.logo_path = logo_path
+
+    def __hash__(self):
+        return hash(id)
+
+    def __eq__(self, other):
+        return self.id == other.id
 
     @staticmethod
     def from_json(json_str):
@@ -70,6 +88,9 @@ class Provider:
             to_image_path(json_str.get('logo_path', None), 'w92')
         )
 
+    def __str__(self):
+        return f'{self.__class__.__name__}({self.id}, \"{self.name}\")'
+
 class MediaAccessMode(Enum):
     SUBSCRIBE = 'flatrate'
     RENT = 'rent'
@@ -79,7 +100,6 @@ def get_watchlist(user_id):
     user = User.query.filter_by(id=user_id).first()
     watch_list = []
     for movie in user.movies:
-        print(movie.id)
         watch_list.append([movie.path, movie.movie_name])
 
     return watch_list

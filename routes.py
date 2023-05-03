@@ -1,14 +1,15 @@
 import json
 
-from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
+from flask import (Flask, flash, jsonify, redirect, render_template, request,
+                   session, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers.locale import coordsToLocale, ipToLocale
-from helpers.parse import ALL_LOCALES
-from helpers.model import MediaType, get_watchlist
+from helpers.model import ALL_LOCALES, MediaType, get_watchlist
 from helpers.region_vpn_map import region_vpn_map
-from helpers.tmdb import fetch_search_results, fetch_providers, fetch_media
+from helpers.tmdb import (fetch_media, fetch_providers, fetch_search_results,
+                          ungroup_providers)
 from helpers.user import Movies, User
 
 app = Flask(__name__)
@@ -120,11 +121,10 @@ def select_media():
     media_id, media_title, media_type = request.args['id'], request.args['title'], MediaType(request.args['media_type'])
     media = fetch_media(media_id, media_type)
     providers = fetch_providers(media_id, media_type, locale_code)
-    vpn_list = region_vpn_map(session['locale'])
+    providers = ungroup_providers(providers)
+    # vpn_list = region_vpn_map(session['locale'])
 
-    print(media)
-
-    return render_template('providers.html', providers=providers, media=media, vpn=vpn_list)
+    return render_template('providers.html', providers=providers, media=media)
 
 @app.route('/watchlist')
 @login_required

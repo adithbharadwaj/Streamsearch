@@ -1,8 +1,9 @@
+from functools import reduce
 from urllib.parse import urljoin
 
 import requests
 
-from .model import Media, MediaType, MediaAccessMode, Provider
+from .model import Media, MediaAccessMode, MediaType, Provider
 
 TMDB_BASE_URL = 'https://api.themoviedb.org/'
 TMDB_IMG_BASE_URL = 'https://image.tmdb.org/t/p/'
@@ -78,6 +79,14 @@ def fetch_providers(media_id, media_type, locale):
         MediaAccessMode.RENT.value: map(Provider.from_json, results.get(MediaAccessMode.RENT.value, [])),
         MediaAccessMode.BUY.value: map(Provider.from_json, results.get(MediaAccessMode.BUY.value, []))
     }
+
+def ungroup_providers(grouped_providers):
+    return set(
+        reduce(
+            lambda x, y: x.union(y),
+            map(set, grouped_providers.values())
+        )
+    )
 
 def to_image_path(filename, size):
     if filename is not None:
