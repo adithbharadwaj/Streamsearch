@@ -47,8 +47,6 @@ def send_media_request(media_id, media_type):
 
 def fetch_media(media_id, media_type):
     result = send_media_request(media_id, media_type)
-    print(type(result))
-    print(result.keys())
     return Media.from_json(result, media_type=media_type)
 
 def send_providers_request(media_id, media_type):
@@ -81,12 +79,13 @@ def fetch_providers(media_id, media_type, locale):
     }
 
 def ungroup_providers(grouped_providers):
-    return set(
-        reduce(
-            lambda x, y: x.union(y),
-            map(set, grouped_providers.values())
-        )
-    )
+    if grouped_providers is None:
+        return None
+    providers = map(set, grouped_providers.values())
+    providers = reduce(lambda x, y: x.union(y), providers)
+    providers = list(providers)
+    providers.sort(key=lambda provider: provider.display_priority)
+    return providers
 
 def to_image_path(filename, size):
     if filename is not None:

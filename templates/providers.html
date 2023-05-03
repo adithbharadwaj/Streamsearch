@@ -3,35 +3,85 @@
 {% block content_headered %}
 
 <div class="container centered">
-    <div class="row mt-5 mb-3">
-        <div class="col col-lg-4">
-            <div class="media-poster left-aligned">
+    <div class="row mt-5 mb-5">
+        <div class="col col-lg-3">
+            <div class="media-poster centered">
                 <img class="media-poster" src="{{media.poster_path}}" />
             </div>
         </div>
-        <div class="col col-lg">
+        <div class="col col-lg ms-5">
             <div class="row">
-                <div class="media-title left-aligned">
+                <div class="media-title mb-3 left-aligned">
                     {{media.title}}
                 </div>
             </div>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="media-overview justified">
                     {{media.overview}}
                 </div>
             </div>
             <div class="row">
-                <div class="media-providers justified overflow-auto">
-                    {% for provider in providers %}
-                        {{provider}}
+                {% if providers %}
+                <div class="media-subheading left-aligned">
+                    Watch {{media.title}} at
+                </div>
+                <div class="media-provider-container left-aligned">
+                    {% for provider in providers[:20] %}
+                    <!-- {{provider.name}} -->
+                    <img title="{{provider.name}}" class="media-provider-logo m-2" src="{{provider.logo_path}}" />
                     {% endfor %}
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
+    <hr />
+    {% if media.media_type.value == 'movie' %}
     <div class="row">
-        Recommendations
+        <div class="media-subheading centered mt-4">
+            Similar movies you can't miss
+        </div>
     </div>
+    {% elif media.media_type.value == 'tv' %}
+    <div class="row">
+        <div class="media-subheading centered mt-4">
+            Similar TV shows you can't miss
+        </div>
+    </div>
+    {% endif %}
+    {% for rec in recs %}
+    <a href="/providers?id={{rec.id}}&title={{rec.title}}&media_type={{rec.media_type.value}}"
+        class="unstyled-link">
+        <div class="media-card mt-3 mb-3">
+            <div class="row justify-content-md-left">
+                <div class="col col-sm-3">
+                    <img class="media-card-poster" src="{{rec.poster_path}}" />
+                </div>
+                <div class="col col-sm">
+                    <div class="media-description">
+                        <div class="media-card-title mt-4 mb-3">
+                            {{rec.title}}
+                        </div>
+                        <div class="media-card-overview">
+                            {% if rec.overview|length < 250 %}
+                                {{rec.overview}}
+                            {% else %}
+                                {{rec.overview[:250]}}...
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-sm-1 right-aligned">
+                    <!-- <a href="/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> -->
+                    <!-- <button class="btn btn-light" style="border-radius: 1rem;">
+                        +
+                    </button> -->
+                    <!-- </a> -->
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
 </div>
 
 {% endblock %}

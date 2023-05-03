@@ -67,10 +67,11 @@ class Media:
 class Provider:
     UNKNOWN_ID = -1
 
-    def __init__(self, id, name, logo_path):
+    def __init__(self, id, name, logo_path, display_priority):
         self.id = id
         self.name = name
         self.logo_path = logo_path
+        self.display_priority = display_priority
 
     def __hash__(self):
         return hash(id)
@@ -85,7 +86,8 @@ class Provider:
         return Provider(
             json_str.get('provider_id', Provider.UNKNOWN_ID),
             json_str.get('provider_name', 'NA'),
-            to_image_path(json_str.get('logo_path', None), 'w92')
+            to_image_path(json_str.get('logo_path', None), 'original'),
+            json_str.get('display_priority', float('inf'))
         )
 
     def __str__(self):

@@ -1,4 +1,5 @@
 import json
+import os
 
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                    session, url_for)
@@ -7,6 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers.locale import coordsToLocale, ipToLocale
 from helpers.model import ALL_LOCALES, MediaType, get_watchlist
+from helpers.recommender import load_similarity, topn_similar
 from helpers.region_vpn_map import region_vpn_map
 from helpers.tmdb import (fetch_media, fetch_providers, fetch_search_results,
                           ungroup_providers)
@@ -113,18 +115,30 @@ def search():
     else:
         return render_template('search-success.html', all_locales=ALL_LOCALES)
 
+# Load once
+SIMILARITY_MOVIE = load_similarity(os.path.join('static', 'recommender', 'similarity-5000.pkl'))
+SIMILARITY_TV = None
+
 @app.route('/providers', methods=['POST', 'GET'])
 def select_media():
     locale_code = None
     if 'locale' in session:
         locale_code = session['locale']
+
     media_id, media_title, media_type = request.args['id'], request.args['title'], MediaType(request.args['media_type'])
     media = fetch_media(media_id, media_type)
-    providers = fetch_providers(media_id, media_type, locale_code)
-    providers = ungroup_providers(providers)
-    # vpn_list = region_vpn_map(session['locale'])
 
-    return render_template('providers.html', providers=providers, media=media)
+    providers = fetch_providers(media.id, media.media_type, locale_code)
+    providers = ungroup_providers(providers)
+
+    if media.media_type == MediaType.MOVIE:
+        similar_ids = topn_similar(SIMILARITY_MOVIE, media.id, n=10)
+        recs = [fetch_media(similar_id, media.media_type) for similar_id in similar_ids]
+    elif media.media_type == MediaType.TV:
+        # TODO
+        recs = []
+
+    return render_template('providers.html', providers=providers, media=media, recs=recs)
 
 @app.route('/watchlist')
 @login_required

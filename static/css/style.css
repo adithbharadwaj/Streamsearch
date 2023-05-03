@@ -179,9 +179,43 @@ header {
 }
 
 .media-poster {
-  height: 30rem;
+  width: 20rem;
   border-radius: 2rem;
   overflow: hidden;
+  transition: transform 0.25s;
+}
+
+.media-poster:hover {
+  transform: scale(1.05, 1.05);
+}
+
+.media-title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #D9992D;
+}
+
+.media-overview {
+  font-size: 1.25rem;
+}
+
+.media-subheading {
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+.media-provider-container {
+  overflow-x: scroll;
+}
+
+.media-provider-logo {
+  height: 5rem;
+  border-radius: 1.5rem;
+  transition: transform 0.25s;
+}
+
+.media-provider-logo:hover {
+  transform: scale(1.2, 1.2)
 }
 
 .watch-later-button-container {

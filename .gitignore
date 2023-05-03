@@ -1,7 +1,8 @@
+*.csv
+*.pkl
+*.zip
+.DS_Store
 .vscode
 __pycache__
-.DS_Store
-venv
 users.db
-*.zip
-*.csv
+venv
