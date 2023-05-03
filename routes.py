@@ -5,9 +5,10 @@ from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers.locale import coordsToLocale, ipToLocale
-from helpers.parse import ALL_LOCALES, MediaType, extract_providers, get_watchlist, parse_search_results
+from helpers.parse import ALL_LOCALES
+from helpers.model import MediaType, get_watchlist
 from helpers.region_vpn_map import region_vpn_map
-from helpers.tmdb import send_metadata_request, send_search_request
+from helpers.tmdb import fetch_search_results, fetch_providers, fetch_media
 from helpers.user import Movies, User
 
 app = Flask(__name__)
@@ -100,8 +101,7 @@ def login_post():
 def search():
     if request.method == 'POST':
         query = request.form.get('search')
-        results = send_search_request(query, session['locale'])['results']
-        medias = parse_search_results(results)
+        medias = fetch_search_results(query, session['locale'])
         # medias = filter_on_region(medias, session['locale'])
 
         if medias:
@@ -113,16 +113,18 @@ def search():
         return render_template('search-success.html', all_locales=ALL_LOCALES)
 
 @app.route('/providers', methods=['POST', 'GET'])
-def select_movie():
+def select_media():
     locale_code = None
     if 'locale' in session:
         locale_code = session['locale']
     media_id, media_title, media_type = request.args['id'], request.args['title'], MediaType(request.args['media_type'])
-    results = send_metadata_request(media_id, media_type)['results']
-    providers = extract_providers(results, locale_code)
+    media = fetch_media(media_id, media_type)
+    providers = fetch_providers(media_id, media_type, locale_code)
     vpn_list = region_vpn_map(session['locale'])
 
-    return render_template('providers.html', providers=providers, title=media_title, vpn=vpn_list)
+    print(media)
+
+    return render_template('providers.html', providers=providers, media=media, vpn=vpn_list)
 
 @app.route('/watchlist')
 @login_required

@@ -9,6 +9,7 @@ html, body {
 
 body {
   height: fit-content;
+  color: #DEDEDE;
 }
 
 header {
@@ -125,6 +126,7 @@ header {
 #login-card-content {
   padding: 1rem;
   text-align: center;
+  color: #381333;
 }
 
 .media-card {
@@ -160,12 +162,16 @@ header {
 
 .media-card-overview {
   color: #DEDEDE;
-  /* font-weight: 900; */
+  text-align: justify;
   font-size: 1rem;
 }
 
 .watch-later-button-container {
   background-color: #D9992D;
+}
+
+.search-failure-box {
+  font-size: 2rem;
 }
 
 .sso-button {

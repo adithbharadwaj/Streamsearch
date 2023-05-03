@@ -2,7 +2,7 @@
 
 {% block content_search %}
 
-<div id="container" class="centered">
+<div class="container centered">
     {% for media in medias %}
     <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}"
         class="unstyled-link">
@@ -17,15 +17,19 @@
                             {{media.title}}
                         </div>
                         <div class="media-card-overview">
-                            {{media.overview}}
+                            {% if media.overview|length < 250 %}
+                                {{media.overview}}
+                            {% else %}
+                                {{media.overview[:250]}}...
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                <div class="col col-sm-2 right-aligned">
+                <div class="col col-sm-1 right-aligned">
                     <!-- <a href="/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> -->
-                    <button class="btn btn-light" style="border-radius: 1rem;">
+                    <!-- <button class="btn btn-light" style="border-radius: 1rem;">
                         +
-                    </button>
+                    </button> -->
                     <!-- </a> -->
                 </div>
             </div>

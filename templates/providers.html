@@ -1,131 +1,22 @@
-{% extends "base.html" %}
+{% extends "base-headered.html" %}
 
-{% block content %}
-    <style>
-    .c {
-      float: left;
-      display: grid;
-      align-items: center;
-      padding-left: 10px;
-      margin-left: 55px;
-      margin-bottom: 80px;
-    }
-    .media{
-      margin-left: 15px ;
-      margin-right: 15px;
-      height: 180px;
-      width: 160px;
-      border: 6px solid white;
-    }
-    body{
-      background: -webkit-linear-gradient(top left, rgba(0, 0, 0,1) 0%, rgba(10,10,10,1) 16%, rgba(50,50,50,1) 46%, rgba(80,80,80,1) 77%, rgba(110,110,110,1) 95%, rgba(150,150,150,1) 100%);
-      color: white;
-    }
-    .movie-image{
-        float: left;
-        width: 152px;
-        height: 214px;
-        position: relative;
-    }
-    /* Child Text Container */
-    .movie-image div{
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        background: black;
-        color: white;
-        margin-bottom: 5px;
-        font-family: sans-serif;
-        width: 152px;
-        opacity: 0;
-        visibility: hidden;
-        -webkit-transition: visibility 0s, opacity 0.5s linear;
-        transition: visibility 0s, opacity 0.5s linear;
-    }
+{% block content_headered %}
 
-    /* Hover on Parent Container */
-    .movie-image:hover{
-        cursor: pointer;
-    }
+<div class="container centered">
+    <div class="row">
+        <div class="col col-lg-2">
+            <img class="media-card-poster" src="{{media.poster_path}}" />
+        </div>
+        <div class="col col-lg">
 
-    .movie-image:hover div{
-        width: 162px;
-        padding: 8px 15px;
-        visibility: visible;
-        opacity: 0.9;
-    }
+        </div>
+    </div>
+    <div class="row">
 
-  </style>
+    </div>
+    <div class="row">
 
-    <form>
-            <center><img src="/static/UniStreamSearch.png" height="100" width="700" style="margin-bottom: 100px;"></center>
-        </form>
-        <!-- Subscription -->
-        {% if providers['flatrate'] %}
-            <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold">You can watch {{title}} at the following subscription services:</h1>
-        {% else %}
-            {{title}} is not available on any subscription services.
-        {% endif %}
-            {% for provider in providers['flatrate'] %}
-                <div class="c">
-                    <div class="movie-image">
-                        <img class="media" src="{{provider.logo_path}}"/>
-                        <div>{{provider.name}}</div>
-                    </div>
-                </div>
-            {% endfor %}
-
-
-<br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-        {% if providers['buy'] %}
-            <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold; text-align: center;">You can buy {{title}} at: </h1>
-        {% else %}
-            {{title}} is not available for purchase.
-        {% endif %}
-
-        {% for provider in providers['buy'] %}
-            <div class="c">
-                <div class="movie-image">
-                    <img class="media"  src="{{provider.logo_path}}"/>
-                    <div>{{provider.name}}</div>
-                </div>
-            </div>
-        {% endfor %}
-
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-        <!-- Rent -->
-        {% if providers['rent'] %}
-            <h1 style="padding-left: 90px; margin-bottom: 50px; font-family: cursive; font-weight: bold;"> You can rent {{title}} from: </h1>
-        {% else %}
-            {{title}} is not available for rent.
-        {% endif %}
-
-        {% for provider in providers['rent'] %}
-            <div class="c">
-                <div class="movie-image">
-                    <img class="media"  src="{{provider.logo_path}}"/>
-                    <div>{{provider.name}}</div>
-                </div>
-            </div>
-        {% endfor %}
-
-        <!-- VPNs -->
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <h1 style="padding-left: 80px; margin-bottom: 50px; font-family: cursive; font-weight: bold">You can use the following VPNs to watch {{title}}:</h1>
-        {% for v in vpn %}
-            <a href="{{v[1]}}" target="_blank">
-                <div class="c">
-                    <div class="movie-image">
-                        <img class="media" src="../static/{{v[0]}}.jpg"/>
-                        <div>{{v[0]}}</div>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}
