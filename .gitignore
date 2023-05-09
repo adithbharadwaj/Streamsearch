@@ -4,5 +4,7 @@
 .DS_Store
 .vscode
 __pycache__
+experiments/data
+experiments/models
 users.db
 venv
