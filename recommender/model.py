@@ -4,6 +4,7 @@ import os
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
+from scipy.sparse import hstack
 
 from .preprocessing import *
 
@@ -39,13 +40,17 @@ class Recommender:
         logging.info('Injecting \'keywords\' into \'overview\'')
         media = inject_keywords(media)
 
-        logging.info(f'Encoding \'overview\'...')
+        logging.info(f'Vectorizing \'overview\'...')
         time_start = timer()
-        media, encoder_overview, _ = encode_overview(media, vocab_size=vocab_size)
-        self.vocab = encoder_overview.get_feature_names_out()
-        logging.info(f'Encoding \'overview\' took {round(timer() - time_start, 4)} s, for a vocabulary size of {len(self.vocab)}.')
+        # `vectorized_overview` is a sparse matrix.
+        vectorized_overview, vectorizer_overview = vectorize_overview(media, vocab_size=vocab_size)
+        media = media.drop(columns=['overview'])
+        self.vocab = vectorizer_overview.get_feature_names_out()
+        logging.info(f'Vectorizing \'overview\' took {round(timer() - time_start, 4)} s, for a vocabulary size of {len(self.vocab)}.')
 
-        self.embeddings = media.values
+        logging.info(f'Stacking vectorized overview onto encoded \'genres\'...')
+        self.embeddings = hstack([media.values, vectorized_overview])
+        logging.info(f'Done generating embeddings')
 
         if embedding_dim:
             logging.info(f'Reducing embeddings to {embedding_dim}-length vectors...')
@@ -55,7 +60,7 @@ class Recommender:
 
         logging.info('Computing cosine similarity...')
         time_start = timer()
-        self.similarity = cosine_similarity(media)
+        self.similarity = cosine_similarity(media, dense_output=False)
         logging.info(f'Computing cosine similarity took {round(timer() - time_start, 4)} s.')
 
     def recommend(self, id, n=10):
@@ -78,7 +83,7 @@ class Recommender:
         # Optional fields not required for inference.
         if not inference:
             np.save(os.path.join(model_path, FILENAME_EMBEDDINGS), self.embeddings)
-            np.save(os.path.join(model_path, FILENAME_VOCAB), self.similarity)
+            np.save(os.path.join(model_path, FILENAME_VOCAB), self.vocab)
 
     @classmethod
     def load(cls, model_path, inference=True):
@@ -88,7 +93,7 @@ class Recommender:
         rec.similarity = np.load(os.path.join(model_path, FILENAME_SIMILARITY))
 
         if not inference:
-            rec.embeddings = np.load(os.path.join(model_path, FILENAME_EMBEDDINGS))
-            rec.vocab = np.load(os.path.join(model_path, FILENAME_VOCAB))
+            rec.embeddings = np.load(os.path.join(model_path, FILENAME_EMBEDDINGS), allow_pickle=True)
+            rec.vocab = np.load(os.path.join(model_path, FILENAME_VOCAB), allow_pickle=True)
 
         return rec

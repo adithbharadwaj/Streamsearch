@@ -20,16 +20,16 @@ def extract_genre_names(json_str):
     return set(genres)
 
 def encode_genres(media):
-    encoder_genres = MultiLabelBinarizer()
-    genres_enc = encoder_genres.fit_transform(media['genres'])
+    encoder = MultiLabelBinarizer()
+    encoded = encoder.fit_transform(media['genres'])
 
-    genre_columns = list(map(lambda genre: f'is_{genre}', encoder_genres.classes_))
-    genres_enc = pd.DataFrame(genres_enc, columns=genre_columns, index=media.index)
+    genre_columns = list(map(lambda genre: f'is_{genre}', encoder.classes_))
+    encoded_df = pd.DataFrame(encoded, columns=genre_columns, index=media.index)
 
-    media = media.join(genres_enc)
+    media = media.join(encoded_df)
     media = media.drop(columns=['genres'])
 
-    return media, encoder_genres, genre_columns
+    return media, encoder, genre_columns
 
 def tokenize(raw_str):
     try:
@@ -79,7 +79,7 @@ def inject_keywords(media):
     media = media.drop(columns=['keywords'])
     return media
 
-def encode_overview(media, vocab_size=None):
+def vectorize_overview(media, vocab_size=None):
     try:
         stopwords.words('english')
     except LookupError:
@@ -87,7 +87,7 @@ def encode_overview(media, vocab_size=None):
         nltk.download('stopwords')
 
     # IMP: Don't use the `stop_words` parameter as it doesn't work when using a custom `analyzer`.
-    encoder_overview = TfidfVectorizer(
+    vectorizer = TfidfVectorizer(
         strip_accents=False,
         lowercase=False,
         preprocessor=None,
@@ -96,15 +96,9 @@ def encode_overview(media, vocab_size=None):
         norm='l2',
         max_features=vocab_size
     )
-    overview_enc = encoder_overview.fit_transform(media['overview'])
+    vectorized = vectorizer.fit_transform(media['overview'])
 
-    overview_columns = list(map(lambda token: f'tfidf_{token}', encoder_overview.get_feature_names_out()))
-    overview_enc = pd.DataFrame(overview_enc.todense(), columns=overview_columns, index=media.index)
-
-    media = media.join(overview_enc)
-    media = media.drop(columns=['overview'])
-
-    return media, encoder_overview, overview_columns
+    return vectorized, vectorizer
 
 def reduce_embedding_dim(embeddings, new_embedding_dim):
     assert new_embedding_dim < embeddings.shape[1]
