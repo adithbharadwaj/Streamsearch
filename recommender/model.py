@@ -8,6 +8,7 @@ import numpy as np
 from scipy.sparse import csr_matrix, hstack, vstack
 from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MultiLabelBinarizer
 
 from .preprocessing import *
@@ -164,5 +165,40 @@ class Embedder:
         return embeddings, ids
 
 class Recommender:
-    def __init__(self):
-        pass
+    def __init__(self, embeddings_dir):
+        self.embeddings, self.ids = Embedder.load_embeddings(embeddings_dir)
+
+    def recommend(self, embedding, n=10):
+        similarity = cosine_similarity(self.embeddings, embedding).flatten()
+
+        most_similar_rows = np.argsort(-similarity)
+        if most_similar_rows[0] == 1:
+            most_similar_rows = most_similar_rows[1:(n+1)]
+        else:
+            most_similar_rows = most_similar_rows[:n]
+
+        most_similar_ids = [
+            int(self.ids[row])
+            for row in most_similar_rows
+        ]
+
+        return most_similar_ids
+
+    def recommend_by_id(self, id, n=10):
+        assert id in self.ids
+
+        row = list(self.ids).index(id)
+        embedding = self.embeddings[row]
+
+        return self.recommend(embedding, n=n)
+
+    def recommend_pprint(self, id, titles, n=10):
+        query_title = ids_to_titles(id, titles)
+        print(f'Top {n} similar movies to "{query_title}":')
+        for similar_id in self.recommend_by_id(id, n=n):
+            print(f'* {ids_to_titles(similar_id, titles)}')
+
+def ids_to_titles(ids, titles):
+    if type(ids) == int:
+        return titles[ids]
+    return list(map(titles.__getitem__, ids))
