@@ -20,4 +20,4 @@ def load_user(user_id):
 if __name__ == '__main__':
     import os
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', ssl_context='adhoc', debug=True)
