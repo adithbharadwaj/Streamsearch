@@ -64,8 +64,8 @@ class Embedder:
         logging.info('Preprocessing \'overview\'')
         media['overview'] = media['overview'].fillna('')
 
-        logging.info('Injecting \'keywords\' into \'overview\'')
-        media = inject_keywords(media)
+        # logging.info('Injecting \'keywords\' into \'overview\'')
+        # media = inject_keywords(media)
 
         logging.info(f'Vectorizing \'overview\'...')
         time_start = timer()
@@ -165,8 +165,14 @@ class Embedder:
         return embeddings, ids
 
 class Recommender:
-    def __init__(self, embeddings_dir):
-        self.embeddings, self.ids = Embedder.load_embeddings(embeddings_dir)
+    def __init__(self, embeddings, ids):
+        self.embeddings = embeddings
+        self.ids = ids
+
+    @classmethod
+    def from_dir(cls, embeddings_dir):
+        embeddings, ids = Embedder.load_embeddings(embeddings_dir)
+        return cls(embeddings, ids)
 
     def recommend(self, embedding, n=10):
         similarity = cosine_similarity(self.embeddings, embedding).flatten()
@@ -190,7 +196,7 @@ class Recommender:
         row = list(self.ids).index(id)
         embedding = self.embeddings[row]
 
-        return self.recommend(embedding, n=n)
+        return self.recommend(embedding, n=n+1)[1:]
 
     def recommend_pprint(self, id, titles, n=10):
         query_title = ids_to_titles(id, titles)
