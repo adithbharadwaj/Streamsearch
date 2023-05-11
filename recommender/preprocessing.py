@@ -1,16 +1,12 @@
 import json
 import unicodedata
 from functools import partial
-from timeit import default_timer as timer
 
-import pandas as pd
 from nltk.corpus import stopwords, wordnet
 from nltk.stem import WordNetLemmatizer
 from nltk.tag import pos_tag
 from nltk.tokenize import word_tokenize
-from sklearn.decomposition import PCA
-from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, TfidfVectorizer
-from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 
 STOPWORDS = ENGLISH_STOP_WORDS.union(stopwords.words('english'))
 
@@ -18,18 +14,6 @@ def extract_genre_names(json_str):
     genres = map(lambda genre: genre['name'], json.loads(json_str))
     genres = map(lambda genre: genre.lower().replace(' ', '-'), genres)
     return set(genres)
-
-def encode_genres(media):
-    encoder = MultiLabelBinarizer()
-    encoded = encoder.fit_transform(media['genres'])
-
-    genre_columns = list(map(lambda genre: f'is_{genre}', encoder.classes_))
-    encoded_df = pd.DataFrame(encoded, columns=genre_columns, index=media.index)
-
-    media = media.join(encoded_df)
-    media = media.drop(columns=['genres'])
-
-    return media, encoder, genre_columns
 
 def tokenize(raw_str):
     try:
@@ -78,32 +62,3 @@ def inject_keywords(media):
     media['overview'] = media['overview'] + media['keywords']
     media = media.drop(columns=['keywords'])
     return media
-
-def vectorize_overview(media, vocab_size=None):
-    try:
-        stopwords.words('english')
-    except LookupError:
-        import nltk
-        nltk.download('stopwords')
-
-    # IMP: Don't use the `stop_words` parameter as it doesn't work when using a custom `analyzer`.
-    vectorizer = TfidfVectorizer(
-        strip_accents=False,
-        lowercase=False,
-        preprocessor=None,
-        tokenizer=None,
-        analyzer=normalize,
-        norm='l2',
-        max_features=vocab_size
-    )
-    vectorized = vectorizer.fit_transform(media['overview'])
-
-    return vectorized, vectorizer
-
-def reduce_embedding_dim(embeddings, new_embedding_dim):
-    assert new_embedding_dim < embeddings.shape[1]
-
-    pca = PCA(n_components=new_embedding_dim)
-    embeddings = pca.fit_transform(embeddings)
-
-    return embeddings, pca
