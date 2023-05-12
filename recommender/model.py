@@ -96,7 +96,7 @@ class Embedder:
                 logging.info(f'Dimensionality reduction took {round(timer() - time_start)} s.')
         else:
             if self.svd:
-                logging.info(f'Reducing dimension to {embedding_dim}...')
+                logging.info(f'Reducing dimension to {self.get_embedding_dim()}...')
                 time_start = timer()
                 embeddings = self.svd.transform(embeddings)
                 logging.info(f'Dimensionality reduction took {round(timer() - time_start)} s.')
@@ -116,7 +116,7 @@ class Embedder:
         return self.vectorizer_overview.get_feature_names_out()
 
     def get_embedding_dim(self):
-        return self.svd.n_components_
+        return self.svd.n_components
 
     def save(self, model_path):
         with open(os.path.join(model_path, FILENAME_ENCODER_GENRES), 'w') as f:
