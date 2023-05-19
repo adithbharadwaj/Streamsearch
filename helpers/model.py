@@ -102,6 +102,6 @@ def get_watchlist(user_id):
     user = User.query.filter_by(id=user_id).first()
     watch_list = []
     for movie in user.movies:
-        watch_list.append([movie.path, movie.movie_name])
+        watch_list.append([movie.path, movie.movie_name, movie.movie_id])
 
     return watch_list
