@@ -15,6 +15,7 @@ from helpers.region_vpn_map import region_vpn_map
 from helpers.tmdb import (fetch_media, fetch_providers, fetch_search_results,
                           ungroup_providers)
 from helpers.user import Movies, User
+from helpers.send_email import send_email
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -230,3 +231,21 @@ def watchlist():
 
     return render_template('watchlist.html', watchlist=watch_list)
 
+@app.route('/send_email')
+@login_required
+def email():
+    user_id = current_user.get_id()
+    user = User.query.filter_by(id=user_id).first()
+    watch_list = get_watchlist(user_id)
+    medias = [fetch_media(movies[2], MediaType.MOVIE) for movies in watch_list]
+
+    recs = []
+    for media in medias:
+        if media.media_type == MediaType.MOVIE:
+            similar_ids = topn_similar(SIMILARITY_MOVIE, media.id, n=10)
+            for similar_id in similar_ids:
+                recs.append(fetch_media(similar_id, media.media_type))
+
+    send_email(user.email, recs)
+
+    return render_template('watchlist.html', watchlist=watch_list)
