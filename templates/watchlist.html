@@ -116,28 +116,22 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <div id="share-buttons">
-          <a class="facebook" target="blank"><i class="fab fa-facebook"></i></a>
-          <a class="twitter" target="blank"><i class="fab fa-twitter"></i></a>
-          <a class="linkedin" target="blank"><i class="fab fa-linkedin"></i></a>
-          <a class="reddit" target="blank"><i class="fab fa-reddit"></i></a>
-          <a class="whatsapp" target="blank"><i class="fab fa-whatsapp"></i></a>
-          <a class="telegram" target="blank"><i class="fab fa-telegram"></i></a>
+            <a class="twitter" target="blank"><i class="fab fa-twitter"></i></a>
+            <a class="reddit" target="blank"><i class="fab fa-reddit"></i></a>
+            <a class="whatsapp" target="blank"><i class="fab fa-whatsapp"></i></a>
+            <a class="telegram" target="blank"><i class="fab fa-telegram"></i></a>
+            <a class="facebook" target="blank"><i class="fab fa-facebook"></i></a>
+            <a class="linkedin" target="blank"><i class="fab fa-linkedin"></i></a>
         </div>
 
         <script>
             const url = window.location.origin;
             const link = encodeURIComponent(url)+ "/show-watchlist/{{ user_id }}";
-            const msg = encodeURIComponent('Hey, I found this article');
+            const msg = encodeURIComponent('Check out my movies watchlist!');
             const title = encodeURIComponent('Article or Post Title Here');
 
-            const fb = document.querySelector('.facebook');
-            fb.href = `https://www.facebook.com/share.php?u=${link}`;
-
             const twitter = document.querySelector('.twitter');
-            twitter.href = `http://twitter.com/share?&url=${link}&text=${msg}&hashtags=javascript,programming`;
-
-            const linkedIn = document.querySelector('.linkedin');
-            linkedIn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${link}`;
+            twitter.href = `http://twitter.com/share?&url=${link}&text=${msg}&hashtags=universal,streaming,search`;
 
             const reddit = document.querySelector('.reddit');
             reddit.href = `http://www.reddit.com/submit?url=${link}&title=${title}`;
@@ -147,6 +141,14 @@
 
             const telegram = document.querySelector('.telegram');
             telegram.href = `https://telegram.me/share/url?url=${link}&text=${msg}`;
+
+            const fb = document.querySelector('.facebook');
+            fb.href = `https://www.facebook.com/share.php?u=${link}`;
+
+            const linkedIn = document.querySelector('.linkedin');
+            linkedIn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${link}`;
+
+
         </script>
 
 {% endblock %}
