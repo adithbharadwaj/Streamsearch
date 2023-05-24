@@ -1,5 +1,7 @@
 import json
 import os
+import uuid
+
 import requests
 
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
@@ -80,8 +82,10 @@ def signup_post():
     if user:  # if a user is found, we want to redirect back to signup page so user can try again
         return render_template('signup.html', msg='email already exists. please try a different email')
 
+    user_id = int(str(uuid.uuid1().int)[:16])
+    print("uuid id: ", user_id)
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+    new_user = User(id=user_id, email=email, name=name, password=generate_password_hash(password, method='sha256'))
     new_user.add_to_db()
 
     return redirect(url_for('login'))
