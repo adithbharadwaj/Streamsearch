@@ -62,6 +62,11 @@ def show_watchlist():
     watch_list = get_watchlist(user_id)
     return render_template('watchlist.html', watchlist=watch_list)
 
+@app.route('/show-watchlist/<int:user_id>')
+def show_watchlist_userid(user_id):
+    watch_list = get_watchlist(user_id)
+    return render_template('watchlist.html', watchlist=watch_list)
+
 @app.route('/signup', methods=['POST'])
 def signup_post():
     # code to validate and add user to database goes here
@@ -229,7 +234,7 @@ def watchlist():
 
     watch_list = get_watchlist(user_id)
 
-    return render_template('watchlist.html', watchlist=watch_list)
+    return render_template('watchlist.html', watchlist=watch_list, user_id=user_id)
 
 @app.route('/send_email')
 @login_required
