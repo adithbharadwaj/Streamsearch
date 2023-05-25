@@ -225,8 +225,6 @@ def select_media():
 def watchlist():
     media_id = request.args['media_id']
     media_type = request.args['media_type']
-    # movie_name = request.args['title']
-    # media_path = request.args['path']
 
     user_id = current_user.get_id()
 

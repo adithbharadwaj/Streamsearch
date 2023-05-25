@@ -18,7 +18,9 @@ class User(UserMixin, db.Model):
         db.session.commit()
 
 class UserMedia(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    dummy_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # `media_id` and `media_type` together uniquely identify a `model.Media`.
     media_id = db.Column(db.Integer)

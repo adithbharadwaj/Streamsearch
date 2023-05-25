@@ -6,24 +6,35 @@
     integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<h1 class="title">Your watchlist</h1>
+<h1 class="centered mt-4">Your watchlist</h1>
 
-<div class="row left-aligned" style="padding-bottom: 20px; padding-left: 20px;">
-    <a href="/send_email">
-        <button class="btn btn-light" style="border-radius: 1rem;">
-            Send Recommendations
-        </button>
-    </a>
-</div>
-
-{{watchlist}}
 {% for media in watchlist %}
-    {{media.title}}
+    <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}"
+        class="unstyled-link">
+        <div class="media-card mt-3 mb-3">
+            <div class="row justify-content-md-start">
+                <div class="col col-sm-3">
+                    <img class="media-card-poster" src="{{media.poster_path}}" />
+                </div>
+                <div class="col col-sm">
+                    <div class="media-description" style="padding-left: 10px; padding-right: 10px;">
+                        <div class="media-card-title mt-4 mb-3">
+                            {{media.title}}
+                        </div>
+                        <div class="media-card-overview">
+                            {% if media.overview|length < 250 %} {{media.overview}} {% else %} {{media.overview[:250]}}... {%
+                                endif %} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
 {% endfor %}
 
-<h3>Share my watchlist to</h3>
-<div class="socials-container">
-    <table class="table table-sm table-borderless text-center">
+<h3 class="centered">Share my watchlist to</h3>
+<div class="socials-container centered">
+    <table class="table table-sm table-borderless centered">
         <tr>
             <td>
                 <a class="social-icon icon-facebook unstyled-link" target="blank"><i class="fab fa-facebook"></i></a>
@@ -71,5 +82,13 @@
     const linkedin = document.querySelector('.icon-linkedin');
     linkedin.href = `https://www.linkedin.com/sharing/share-offsite/?url=${link}`;
 </script>
+
+<!-- <div class="row left-aligned" style="padding-bottom: 20px; padding-left: 20px;">
+    <a href="/send_email">
+        <button class="btn btn-light" style="border-radius: 1rem;">
+            Send Recommendations
+        </button>
+    </a>
+</div> -->
 
 {% endblock %}
