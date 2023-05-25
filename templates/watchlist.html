@@ -9,31 +9,30 @@
 <h1 class="centered mt-4">Your watchlist</h1>
 
 {% for media in watchlist %}
-    <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}"
-        class="unstyled-link">
-        <div class="media-card mt-3 mb-3">
-            <div class="row justify-content-md-start">
-                <div class="col col-sm-3">
-                    <img class="media-card-poster" src="{{media.poster_path}}" />
-                </div>
-                <div class="col col-sm">
-                    <div class="media-description" style="padding-left: 10px; padding-right: 10px;">
-                        <div class="media-card-title mt-4 mb-3">
-                            {{media.title}}
-                        </div>
-                        <div class="media-card-overview">
-                            {% if media.overview|length < 250 %} {{media.overview}} {% else %} {{media.overview[:250]}}... {%
-                                endif %} </div>
-                        </div>
+<a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}" class="unstyled-link">
+    <div class="media-card mt-3 mb-3">
+        <div class="row justify-content-md-start">
+            <div class="col col-sm-3">
+                <img class="media-card-poster" src="{{media.poster_path}}" />
+            </div>
+            <div class="col col-sm">
+                <div class="media-description" style="padding-left: 10px; padding-right: 10px;">
+                    <div class="media-card-title mt-4 mb-3">
+                        {{media.title}}
+                    </div>
+                    <div class="media-card-overview">
+                        {% if media.overview|length < 250 %} {{media.overview}} {% else %} {{media.overview[:250]}}...
+                            {% endif %} </div>
                     </div>
                 </div>
             </div>
         </div>
-    </a>
+    </div>
+</a>
 {% endfor %}
 
 <h3 class="centered">Share my watchlist to</h3>
-<div class="socials-container centered">
+<div class="container socials-container centered">
     <table class="table table-sm table-borderless centered">
         <tr>
             <td>
