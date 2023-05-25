@@ -248,10 +248,12 @@ header {
   font-size: 2.5rem;
   display: flex;
   align-items: center;
+  transition: transform 0.5s;
 }
 
 .social-icon:hover {
   opacity: 1;
+  transform: scale(1.15, 1.15);
 }
 
 /* https://about.meta.com/brand/resources/facebookapp/logo/ */
