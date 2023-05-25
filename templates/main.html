@@ -10,7 +10,6 @@
 
 <form action="/search" method="POST" class="mt-5 mb-5 centered">
     <input type="text" id="search-textbox" name="search" class="form-control-lg textbox-rounded-lg mb-3" placeholder="What would you like to watch today?" required autofocus/>
-    <i class="bi bi-0-circle"></i>
     <div width="100%">
         <select id="locale-dropdown" class="form-select-lg selectpicker show-tick" name="locale" title="Choose country" data-live-search="true" data-width="auto" data-size="5" required>
             {% for locale_option in all_locales %}

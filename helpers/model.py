@@ -2,8 +2,6 @@ from enum import Enum
 
 import pycountry
 
-from .user import User
-
 ALL_LOCALES = sorted(list(pycountry.countries), key=lambda country: country.name)
 
 class MediaType(Enum):
@@ -38,7 +36,7 @@ class Media:
         return hash(id)
 
     def __eq__(self, other):
-        return self.id == other.id
+        return (self.id == other.id) and (self.media_type == other.media_type)
 
     @staticmethod
     def from_json(json_str, media_type=None):
@@ -57,7 +55,7 @@ class Media:
             json_str.get('name', None) if media_type == MediaType.TV.value else json_str.get('title', None),
             media_type,
             to_image_path(json_str.get('poster_path', None), 'original'),
-            json_str.get('overview', None)[:Media.MAX_CHAR_OVERVIEW],
+            json_str.get('overview', None),
             json_str.get('popularity', 0)
         )
 
@@ -97,11 +95,3 @@ class MediaAccessMode(Enum):
     SUBSCRIBE = 'flatrate'
     RENT = 'rent'
     BUY = 'buy'
-
-def get_watchlist(user_id):
-    user = User.query.filter_by(id=user_id).first()
-    watch_list = []
-    for movie in user.movies:
-        watch_list.append([movie.path, movie.movie_name, movie.movie_id])
-
-    return watch_list

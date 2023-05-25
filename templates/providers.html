@@ -22,9 +22,9 @@
             </div>
             <div class="row">
                 {% if providers %}
-                <div class="media-subheading left-aligned">
+                <h2 class="left-aligned">
                     Watch {{media.title}} at
-                </div>
+                </h2>
                 <div class="media-provider-container left-aligned">
                     {% for provider in providers[:20] %}
                     <!-- {{provider.name}} -->
@@ -34,9 +34,9 @@
                 {% endif %}
             </div>
             <div class="row left-aligned" style="padding-top: 1.5rem;">
-                <a href="/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}">
+                <a href="/watchlist?media_id={{media.id}}&media_type={{media.type}}">
                     <button class="btn btn-light" style="border-radius: 1rem;">
-                        Add to Watchlist
+                        Add to watchlist
                     </button>
                 </a>
             </div>
@@ -45,15 +45,15 @@
     <hr />
     {% if media.media_type.value == 'movie' %}
     <div class="row">
-        <div class="media-subheading centered mt-4">
+        <h2 class="centered mt-4">
             Similar movies you can't miss
-        </div>
+        </h2>
     </div>
     {% elif media.media_type.value == 'tv' %}
     <div class="row">
-        <div class="media-subheading centered mt-4">
+        <h2 class="centered mt-4">
             Similar TV shows you can't miss
-        </div>
+        </h2>
     </div>
     {% endif %}
     {% for rec in recs %}

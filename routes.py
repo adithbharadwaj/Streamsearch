@@ -3,21 +3,20 @@ import os
 import uuid
 
 import requests
-
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                    session, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers.locale import coordsToLocale, ipToLocale
-from helpers.model import ALL_LOCALES, MediaType, get_watchlist
-from helpers.oauth import get_google_provider_cfg, client, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+from helpers.model import ALL_LOCALES, MediaType
+from helpers.oauth import (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, client,
+                           get_google_provider_cfg)
 from helpers.recommender import load_similarity, topn_similar
-from helpers.region_vpn_map import region_vpn_map
+from helpers.send_email import send_email
 from helpers.tmdb import (fetch_media, fetch_providers, fetch_search_results,
                           ungroup_providers)
-from helpers.user import Movies, User
-from helpers.send_email import send_email
+from helpers.user import User, UserMedia, get_watchlist
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -61,13 +60,13 @@ def logout():
 @login_required
 def show_watchlist():
     user_id = current_user.get_id()
-    watch_list = get_watchlist(user_id)
-    return render_template('watchlist.html', watchlist=watch_list)
+    watchlist = get_watchlist(user_id)
+    return render_template('watchlist.html', watchlist=watchlist)
 
 @app.route('/show-watchlist/<int:user_id>')
 def show_watchlist_userid(user_id):
-    watch_list = get_watchlist(user_id)
-    return render_template('watchlist.html', watchlist=watch_list)
+    watchlist = get_watchlist(user_id)
+    return render_template('watchlist.html', watchlist=watchlist)
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
@@ -224,17 +223,18 @@ def select_media():
 @app.route('/watchlist')
 @login_required
 def watchlist():
-    movie_id = request.args['id']
-    movie_name = request.args['title']
-    media_path = request.args['path']
+    media_id = request.args['media_id']
+    media_type = request.args['media_type']
+    # movie_name = request.args['title']
+    # media_path = request.args['path']
 
     user_id = current_user.get_id()
 
-    movie = Movies(user_id=user_id, movie_id=movie_id, movie_name=movie_name, path=media_path)
+    user_media = UserMedia(user_id=user_id, media_id=media_id, media_type=media_type)
 
-    mov = Movies.query.filter_by(movie_id=movie_id, user_id=user_id).first()
-    if not mov:
-        movie.add_to_db()
+    found = UserMedia.query.filter_by(user_id=user_id, media_id=media_id, media_type=media_type).first()
+    if not found:
+        user_media.add_to_db()
 
     watch_list = get_watchlist(user_id)
 

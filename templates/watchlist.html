@@ -1,154 +1,75 @@
-{% extends "base.html" %}
+{% extends "base-headered.html" %}
 
-{% block content %}
-    <style>
-    .c {
-      float: left;
-      display: grid;
-      align-items: center;
-      padding-left: 10px;
-      margin-left: 55px;
-      margin-bottom: 80px;
-    }
-    .media{
-      margin-left: 15px ;
-      margin-right: 15px;
-      height: 180px;
-      width: 160px;
-      border: 6px solid white;
-    }
-    body{
-      background: -webkit-linear-gradient(top left, rgba(0, 0, 0,1) 0%, rgba(10,10,10,1) 16%, rgba(50,50,50,1) 46%, rgba(80,80,80,1) 77%, rgba(110,110,110,1) 95%, rgba(150,150,150,1) 100%);
-      color: white;
-    }
-    .movie-image{
-        float: left;
-        width: 152px;
-        height: 214px;
-        position: relative;
-    }
-    /* Child Text Container */
-    .movie-image div{
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        background: black;
-        color: white;
-        margin-bottom: 5px;
-        font-family: sans-serif;
-        width: 152px;
-        opacity: 0;
-        visibility: hidden;
-        -webkit-transition: visibility 0s, opacity 0.5s linear;
-        transition: visibility 0s, opacity 0.5s linear;
-    }
+{% block content_headered %}
 
-    /* Hover on Parent Container */
-    .movie-image:hover{
-        cursor: pointer;
-    }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+    integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    .movie-image:hover div{
-        width: 162px;
-        padding: 8px 15px;
-        visibility: visible;
-        opacity: 0.9;
-    }
+<h1 class="title">Your watchlist</h1>
 
-    #share-container span {
-      display: block;
-      margin: 3rem auto;
-      font-size: 50px;
-      padding: 1rem;
-      margin: 1rem;
-    }
+<div class="row left-aligned" style="padding-bottom: 20px; padding-left: 20px;">
+    <a href="/send_email">
+        <button class="btn btn-light" style="border-radius: 1rem;">
+            Send Recommendations
+        </button>
+    </a>
+</div>
 
-    #share-buttons i {
-      font-size: 100px;
-      margin: 20px;
-    }
-    .facebook {
-          color: #3b5998;
-    }
-    .twitter {
-        color: #55acee;
-    }
-    .linkedin {
-        color: #0077b5;
-    }
-    .reddit {
-        color: #cb2027;
-    }
-    .whatsapp {
-        color: #25D366;
-    }
-    .telegram {
-        color: #229ED9;
-    }
-    .facebook, .twitter, .linkedin, .reddit, .whatsapp, .telegram {
-      opacity: 0.6;
-    }
-    .facebook:hover, .twitter:hover, .linkedin:hover, .reddit:hover, .whatsapp:hover, .telegram:hover {
-      opacity: 0.9;
-    }
+{{watchlist}}
+{% for media in watchlist %}
+    {{media.title}}
+{% endfor %}
 
-  </style>
+<h3>Share my watchlist to</h3>
+<div class="socials-container">
+    <table class="table table-sm table-borderless text-center">
+        <tr>
+            <td>
+                <a class="social-icon icon-facebook unstyled-link" target="blank"><i class="fab fa-facebook"></i></a>
+            </td>
+            <td>
+                <a class="social-icon icon-twitter unstyled-link" target="blank"><i class="fab fa-twitter"></i></a>
+            </td>
+            <td>
+                <a class="social-icon icon-reddit unstyled-link" target="blank"><i class="fab fa-reddit"></i></a>
+            </td>
+            <td>
+                <a class="social-icon icon-whatsapp unstyled-link" target="blank"><i class="fab fa-whatsapp"></i></a>
+            </td>
+            <td>
+                <a class="social-icon icon-telegram unstyled-link" target="blank"><i class="fab fa-telegram"></i></a>
+            </td>
+            <td>
+                <a class="social-icon icon-linkedin unstyled-link" target="blank"><i class="fab fa-linkedin"></i></a>
+            </td>
+        </tr>
+    </table>
+</div>
 
-        <h1 class="title" style="padding-left: 20px; margin-bottom: 25px; font-size: 50px; margin-top: 50px;">Your watchlist</h1>
-        <div class="row left-aligned" style="padding-bottom: 20px; padding-left: 20px;">
-          <a href="/send_email">
-              <button class="btn btn-light" style="border-radius: 1rem;">
-                  Send Recommendations
-              </button>
-          </a>
-        </div>
-        
-        {% for movie in watchlist %}
-        <div class="c">
-            <div class="movie-image">
-                <img src="{{movie[0]}}" class="media" alt="{{movie[1]}}"/></td>
-                <div>{{movie[1]}}</div>
-            </div>
-        </div>
-        {% endfor %}
+<script>
+    const url = window.location.origin;
+    const link = encodeURIComponent(url) + "/show-watchlist/{{ user_id }}";
+    const msg = encodeURIComponent('Check out my watchlist!');
+    const title = encodeURIComponent('Article or Post Title Here');
 
-        <!-- Font Awesome CDN -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    const fb = document.querySelector('.icon-facebook');
+    fb.href = `https://www.facebook.com/share.php?u=${link}`;
 
-        <div id="share-buttons">
-            <a class="twitter" target="blank"><i class="fab fa-twitter"></i></a>
-            <a class="reddit" target="blank"><i class="fab fa-reddit"></i></a>
-            <a class="whatsapp" target="blank"><i class="fab fa-whatsapp"></i></a>
-            <a class="telegram" target="blank"><i class="fab fa-telegram"></i></a>
-            <a class="facebook" target="blank"><i class="fab fa-facebook"></i></a>
-            <a class="linkedin" target="blank"><i class="fab fa-linkedin"></i></a>
-        </div>
+    const twitter = document.querySelector('.icon-twitter');
+    twitter.href = `http://twitter.com/share?&url=${link}&text=${msg}&hashtags=universal,streaming,search`;
 
-        <script>
-            const url = window.location.origin;
-            const link = encodeURIComponent(url)+ "/show-watchlist/{{ user_id }}";
-            const msg = encodeURIComponent('Check out my movies watchlist!');
-            const title = encodeURIComponent('Article or Post Title Here');
+    const reddit = document.querySelector('.icon-reddit');
+    reddit.href = `http://www.reddit.com/submit?url=${link}&title=${title}`;
 
-            const twitter = document.querySelector('.twitter');
-            twitter.href = `http://twitter.com/share?&url=${link}&text=${msg}&hashtags=universal,streaming,search`;
+    const whatsapp = document.querySelector('.icon-whatsapp');
+    whatsapp.href = `https://api.whatsapp.com/send?text=${msg}: ${link}`;
 
-            const reddit = document.querySelector('.reddit');
-            reddit.href = `http://www.reddit.com/submit?url=${link}&title=${title}`;
+    const telegram = document.querySelector('.icon-telegram');
+    telegram.href = `https://telegram.me/share/url?url=${link}&text=${msg}`;
 
-            const whatsapp = document.querySelector('.whatsapp');
-            whatsapp.href = `https://api.whatsapp.com/send?text=${msg}: ${link}`;
-
-            const telegram = document.querySelector('.telegram');
-            telegram.href = `https://telegram.me/share/url?url=${link}&text=${msg}`;
-
-            const fb = document.querySelector('.facebook');
-            fb.href = `https://www.facebook.com/share.php?u=${link}`;
-
-            const linkedIn = document.querySelector('.linkedin');
-            linkedIn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${link}`;
-
-
-        </script>
+    const linkedin = document.querySelector('.icon-linkedin');
+    linkedin.href = `https://www.linkedin.com/sharing/share-offsite/?url=${link}`;
+</script>
 
 {% endblock %}
