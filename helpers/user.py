@@ -30,6 +30,16 @@ class UserMedia(db.Model):
         db.session.add(self)
         db.session.commit()
 
+class Settings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    email = db.Column(db.String(100), unique=True)
+    frequency = db.Column(db.Integer)
+
+    def add_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
 def get_watchlist(user_id):
     user = User.query.filter_by(id=user_id).first()
     watchlist = []

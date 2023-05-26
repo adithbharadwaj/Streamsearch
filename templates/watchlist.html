@@ -8,6 +8,20 @@
 
 <h1 class="centered mt-4">Your watchlist</h1>
 
+<form action="/send_email" method="POST" class="mt-5 mb-5 centered">
+            <div width="100%">
+                <select id="frequency-dropdown" class="form-select-lg selectpicker show-tick" name="settings" title="Frequency (Days)" data-live-search="true" data-width="auto" data-size="5" required>
+                    <option value="1" title="">1</option>
+                    <option value="7" title="">7</option>
+                    <option value="14" title="">14</option>
+                    <option value="31" title="">31</option>
+                </select><br/>
+            </div>
+            <div class="mt-4">
+                <button type="submit" id="settings-button" class="btn btn-primary btn-padding btn-rounded">Submit</button>
+            </div>
+        </form>
+
 {% for media in watchlist %}
 <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}" class="unstyled-link">
     <div class="media-card mt-3 mb-3">
@@ -36,9 +50,6 @@
     <table class="table table-sm table-borderless centered">
         <tr>
             <td>
-                <a class="social-icon icon-facebook unstyled-link" target="blank"><i class="fab fa-facebook"></i></a>
-            </td>
-            <td>
                 <a class="social-icon icon-twitter unstyled-link" target="blank"><i class="fab fa-twitter"></i></a>
             </td>
             <td>
@@ -49,6 +60,9 @@
             </td>
             <td>
                 <a class="social-icon icon-telegram unstyled-link" target="blank"><i class="fab fa-telegram"></i></a>
+            </td>
+            <td>
+                <a class="social-icon icon-facebook unstyled-link" target="blank"><i class="fab fa-facebook"></i></a>
             </td>
             <td>
                 <a class="social-icon icon-linkedin unstyled-link" target="blank"><i class="fab fa-linkedin"></i></a>

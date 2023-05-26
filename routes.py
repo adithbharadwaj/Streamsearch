@@ -13,10 +13,10 @@ from helpers.model import ALL_LOCALES, MediaType
 from helpers.oauth import (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, client,
                            get_google_provider_cfg)
 from helpers.recommender import load_similarity, topn_similar
-from helpers.send_email import send_email
+from helpers.send_email import send_email, start_threads
 from helpers.tmdb import (fetch_media, fetch_providers, fetch_search_results,
                           ungroup_providers)
-from helpers.user import User, UserMedia, get_watchlist
+from helpers.user import User, UserMedia, get_watchlist, Settings
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -61,7 +61,7 @@ def logout():
 def show_watchlist():
     user_id = current_user.get_id()
     watchlist = get_watchlist(user_id)
-    return render_template('watchlist.html', watchlist=watchlist)
+    return render_template('watchlist.html', watchlist=watchlist, user_id=user_id)
 
 @app.route('/show-watchlist/<int:user_id>')
 def show_watchlist_userid(user_id):
@@ -238,13 +238,14 @@ def watchlist():
 
     return render_template('watchlist.html', watchlist=watch_list, user_id=user_id)
 
-@app.route('/send_email')
+@app.route('/send_email', methods=['POST'])
 @login_required
 def email():
     user_id = current_user.get_id()
-    user = User.query.filter_by(id=user_id).first()
+    query = int(request.form.get('settings'))
     watch_list = get_watchlist(user_id)
-    medias = [fetch_media(movies[2], MediaType.MOVIE) for movies in watch_list]
+
+    medias = [fetch_media(movies.title, MediaType.MOVIE) for movies in watch_list]
 
     recs = []
     for media in medias:
@@ -253,6 +254,15 @@ def email():
             for similar_id in similar_ids:
                 recs.append(fetch_media(similar_id, media.media_type))
 
-    send_email(user.email, recs)
+    user = User.query.filter_by(id=user_id).first()
+    setting = Settings(user_id=user_id, frequency=query, email=user.email)
+    setting.add_to_db()
+
+    freq = Settings.query.filter_by(frequency=1).all()
+    res = []
+    for frequency in freq:
+        res.append(frequency)
+
+    start_threads(res)
 
     return render_template('watchlist.html', watchlist=watch_list)
