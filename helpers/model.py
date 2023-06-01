@@ -23,7 +23,8 @@ class Media:
         media_type,
         poster_path,
         overview,
-        popularity
+        popularity,
+        genre_ids
     ):
         self.id = id
         self.title = title
@@ -31,6 +32,7 @@ class Media:
         self.poster_path = poster_path
         self.overview = overview
         self.popularity = popularity
+        self.genre_ids = genre_ids
 
     def __hash__(self):
         return hash(id)
@@ -56,7 +58,8 @@ class Media:
             media_type,
             to_image_path(json_str.get('poster_path', None), 'original'),
             json_str.get('overview', None),
-            json_str.get('popularity', 0)
+            json_str.get('popularity', 0),
+            json_str.get('genre_ids', [])
         )
 
     def __str__(self):
