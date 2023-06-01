@@ -15,7 +15,7 @@ from helpers.oauth import (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, client,
 from helpers.recommender import load_similarity, topn_similar
 from helpers.send_email import send_email, start_threads
 from helpers.tmdb import (fetch_media, fetch_providers, fetch_search_results,
-                          ungroup_providers)
+                          ungroup_providers, generate_genre_list, generate_genre_map, filter_on_genre)
 from helpers.user import User, UserMedia, get_watchlist, Settings
 
 app = Flask(__name__)
@@ -24,6 +24,9 @@ app.debug = True
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+
+# load once
+GENRE_MAP = generate_genre_map()
 
 @app.route('/', methods=['POST', 'GET'])
 def login():
@@ -44,7 +47,7 @@ def main():
             session['locale'] = ipToLocale(client_ip)
         return jsonify(session['locale'])
     else:
-        return render_template('main.html', all_locales=ALL_LOCALES)
+        return render_template('main.html', all_locales=ALL_LOCALES, genres=generate_genre_list())
 
 @app.route('/signup')
 def signup():
@@ -185,6 +188,7 @@ def search():
     if request.method == 'POST':
         query = request.form.get('search')
         medias = fetch_search_results(query, session['locale'])
+        medias = filter_on_genre(medias, request.form.get('genre'), GENRE_MAP)
         # medias = filter_on_region(medias, session['locale'])
 
         if medias:

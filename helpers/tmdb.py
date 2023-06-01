@@ -30,6 +30,62 @@ def fetch_search_results(query, locale):
     results = sorted(results, key=lambda media: -media.popularity)  # Sorting by decreasing popularity.
     return results
 
+def send_movie_genre_mapping_request():
+    endpoint = f'{TMDB_VERSION}/genre/movie/list'
+    params = {
+        'api_key': TMDB_API_KEY,
+        'language': 'en-US'
+    }
+
+    return requests.get(urljoin(TMDB_BASE_URL, endpoint), params=params).json()
+
+def send_tv_genre_mapping_request():
+    endpoint = f'{TMDB_VERSION}/genre/tv/list'
+    params = {
+        'api_key': TMDB_API_KEY,
+        'language': 'en-US'
+    }
+
+    return requests.get(urljoin(TMDB_BASE_URL, endpoint), params=params).json()
+
+def generate_genre_map():
+    genre_map = {}
+
+    movie_genres = send_movie_genre_mapping_request()['genres']
+    tv_genres = send_tv_genre_mapping_request()['genres']
+
+    for genre in movie_genres:
+        genre_map[genre['name']] = genre['id']
+
+    for genre in tv_genres:
+        genre_map[genre['name']] = genre['id']
+
+    return genre_map
+
+def generate_genre_list():
+    genre_list = []
+
+    movie_genres = send_movie_genre_mapping_request()['genres']
+    tv_genres = send_tv_genre_mapping_request()['genres']
+
+    for genre in movie_genres:
+        genre_list.append(genre['name'])
+
+    for genre in tv_genres:
+        genre_list.append(genre['name'])
+
+    return genre_list
+
+def filter_on_genre(medias, genre, GENRE_MAP):
+    filtered_media = []
+    genre_id = GENRE_MAP[genre]
+
+    for media in medias:
+        if genre_id in media.genre_ids:
+            filtered_media.append(media)
+
+    return filtered_media
+
 def send_media_request(media_id, media_type):
     params = {
         'api_key': TMDB_API_KEY,
