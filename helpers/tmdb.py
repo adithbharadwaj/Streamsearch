@@ -86,6 +86,15 @@ def filter_on_genre(medias, genre, GENRE_MAP):
 
     return filtered_media
 
+def filter_on_language(medias, language):
+    filtered_media = []
+
+    for media in medias:
+        if media.original_language == language:
+            filtered_media.append(media)
+
+    return filtered_media
+
 def send_media_request(media_id, media_type):
     params = {
         'api_key': TMDB_API_KEY,

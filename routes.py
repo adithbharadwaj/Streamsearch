@@ -14,7 +14,7 @@ from helpers.oauth import (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, client,
                            get_google_provider_cfg)
 from helpers.recommender import load_similarity, topn_similar
 from helpers.send_email import send_email, start_threads
-from helpers.tmdb import fetch_media, fetch_providers, fetch_search_results,ungroup_providers, generate_genre_list, generate_genre_map, filter_on_genre, get_trailer, ungroup_providers
+from helpers.tmdb import fetch_media, fetch_providers, fetch_search_results,ungroup_providers, generate_genre_list, generate_genre_map, filter_on_genre, get_trailer, ungroup_providers, filter_on_language
 from helpers.user import User, UserMedia, get_watchlist, Settings
 
 app = Flask(__name__)
@@ -187,19 +187,45 @@ def search():
     if request.method == 'POST':
         query = request.form.get('search')
         medias = fetch_search_results(query, session['locale'])
-        # medias = filter_on_region(medias, session['locale'])
+        session['query'] = query
 
         genre = request.form.get('genre')
+        session['genre'] = genre
         if genre != 'All Genres' and genre != '':
             medias = filter_on_genre(medias, genre, GENRE_MAP)
 
+        languages = ["All languages"]
+        for media in medias:
+            languages.append(media.original_language)
+
+        languages = sorted(list(set(languages)))
+        session['languages'] = languages
+
         if medias:
-            return render_template('search-success.html', medias=medias, all_locales=ALL_LOCALES)
+            return render_template('search-success.html', medias=medias, languages=languages, all_locales=ALL_LOCALES)
         else:
             return render_template('search-failure.html')
 
     else:
         return render_template('search-success.html', all_locales=ALL_LOCALES)
+
+@app.route('/filter', methods=['POST', 'GET'])
+def filter():
+    language = request.form.get('language')
+    query = session['query']
+    medias = fetch_search_results(query, session['locale'])
+
+    genre = session['genre']
+    if genre != 'All Genres' and genre != '':
+        medias = filter_on_genre(medias, genre, GENRE_MAP)
+
+    if language != 'All languages' and language != '':
+        medias = filter_on_language(medias, language)
+
+    if medias:
+        return render_template('search-success.html', medias=medias, languages=session['languages'], all_locales=ALL_LOCALES)
+    else:
+        return render_template('search-failure.html')
 
 # Load once
 SIMILARITY_MOVIE = load_similarity(os.path.join('static', 'recommender', 'similarity-5000.pkl'))

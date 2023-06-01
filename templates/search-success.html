@@ -2,6 +2,19 @@
 
 {% block content_search %}
 
+<form action="/filter" method="POST" class="mt-5 mb-5 centered">
+    <div width="100%">
+        <select id="language-dropdown" class="form-select-lg selectpicker show-tick" name="language" title="Choose language" data-live-search="true" data-width="auto" data-size="5">
+            {% for language in languages %}
+            <option value="{{language}}" title="{{language}}">{{language}}</option>
+            {% endfor %}
+        </select><br/>
+    </div>
+    <div class="mt-4">
+        <button type="submit" id="search-button" class="btn btn-primary btn-padding btn-rounded">Search</button>
+    </div>
+</form>
+
 <div class="container centered">
     {% for media in medias %}
     <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}"
