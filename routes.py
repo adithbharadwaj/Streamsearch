@@ -9,7 +9,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers.locale import coordsToLocale, ipToLocale
-from helpers.model import ALL_LOCALES, MediaType
+from helpers.model import ALL_LOCALES, ALL_LANGUAGES_MAP, MediaType
 from helpers.oauth import (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, client,
                            get_google_provider_cfg)
 from helpers.recommender import load_similarity, topn_similar
@@ -194,15 +194,17 @@ def search():
         if genre != 'All Genres' and genre != '':
             medias = filter_on_genre(medias, genre, GENRE_MAP)
 
-        languages = ["All languages"]
+        language_codes = []
         for media in medias:
-            languages.append(media.original_language)
+            language_codes.append(media.original_language)
 
-        languages = sorted(list(set(languages)))
-        session['languages'] = languages
+        english_languages = list(set([ALL_LANGUAGES_MAP[language_code] for language_code in language_codes]))
+        english_languages.append("All languages")
+        english_languages = sorted(english_languages)
+        session['english_languages'] = english_languages
 
         if medias:
-            return render_template('search-success.html', medias=medias, languages=languages, all_locales=ALL_LOCALES)
+            return render_template('search-success.html', medias=medias, languages=english_languages, all_locales=ALL_LOCALES)
         else:
             return render_template('search-failure.html')
 
@@ -211,7 +213,6 @@ def search():
 
 @app.route('/filter', methods=['POST', 'GET'])
 def filter():
-    language = request.form.get('language')
     query = session['query']
     medias = fetch_search_results(query, session['locale'])
 
@@ -219,11 +220,13 @@ def filter():
     if genre != 'All Genres' and genre != '':
         medias = filter_on_genre(medias, genre, GENRE_MAP)
 
+    language = request.form.get('language')
     if language != 'All languages' and language != '':
-        medias = filter_on_language(medias, language)
+        language_code = list(ALL_LANGUAGES_MAP.keys())[list(ALL_LANGUAGES_MAP.values()).index(language)]
+        medias = filter_on_language(medias, language_code)
 
     if medias:
-        return render_template('search-success.html', medias=medias, languages=session['languages'], all_locales=ALL_LOCALES)
+        return render_template('search-success.html', medias=medias, languages=session['english_languages'], all_locales=ALL_LOCALES)
     else:
         return render_template('search-failure.html')
 
