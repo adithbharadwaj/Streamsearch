@@ -187,8 +187,11 @@ def search():
     if request.method == 'POST':
         query = request.form.get('search')
         medias = fetch_search_results(query, session['locale'])
-        medias = filter_on_genre(medias, request.form.get('genre'), GENRE_MAP)
         # medias = filter_on_region(medias, session['locale'])
+
+        genre = request.form.get('genre')
+        if genre != 'All Genres' and genre != '':
+            medias = filter_on_genre(medias, genre, GENRE_MAP)
 
         if medias:
             return render_template('search-success.html', medias=medias, all_locales=ALL_LOCALES)

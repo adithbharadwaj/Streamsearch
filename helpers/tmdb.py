@@ -63,7 +63,7 @@ def generate_genre_map():
     return genre_map
 
 def generate_genre_list():
-    genre_list = []
+    genre_list = ["All Genres"]
 
     movie_genres = send_movie_genre_mapping_request()['genres']
     tv_genres = send_tv_genre_mapping_request()['genres']

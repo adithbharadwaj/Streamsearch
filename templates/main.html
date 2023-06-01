@@ -18,7 +18,7 @@
         </select><br/>
     </div>
     <div width="100%">
-        <select id="genre-dropdown" class="form-select-lg selectpicker show-tick" name="genre" title="Choose genre" data-live-search="true" data-width="auto" data-size="5" required>
+        <select id="genre-dropdown" class="form-select-lg selectpicker show-tick" name="genre" title="Choose genre" data-live-search="true" data-width="auto" data-size="5">
             {% for genre in genres %}
             <option value="{{genre}}" title="{{genre}}">{{genre}}</option>
             {% endfor %}
