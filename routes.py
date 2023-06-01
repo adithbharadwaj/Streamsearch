@@ -14,9 +14,7 @@ from helpers.oauth import (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, client,
                            get_google_provider_cfg)
 from helpers.recommender import load_similarity, topn_similar
 from helpers.send_email import send_email, start_threads
-from helpers.tmdb import (fetch_media, fetch_providers, fetch_search_results,
-                          ungroup_providers, generate_genre_list, generate_genre_map, filter_on_genre)
-                          ungroup_providers, get_trailer)
+from helpers.tmdb import fetch_media, fetch_providers, fetch_search_results,ungroup_providers, generate_genre_list, generate_genre_map, filter_on_genre, get_trailer, ungroup_providers
 from helpers.user import User, UserMedia, get_watchlist, Settings
 
 app = Flask(__name__)
