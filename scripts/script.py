@@ -92,7 +92,7 @@ def do_work(tmdbid):
         # with open("dump/movies.csv", "a") as f:
         #     f.write(jres["title"], jres["genres"], jres["overview"], jres["popularity"])
 
-        with open('dump/movies.csv', 'a', newline='') as csvfile:
+        with open('../dump/movies.csv', 'a', newline='') as csvfile:
             # Create a CSV writer object
             writer = csv.writer(csvfile)
 
