@@ -15,7 +15,7 @@ from helpers.oauth import (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, client,
 from helpers.recommender import load_similarity, topn_similar
 from helpers.send_email import send_email, start_threads
 from helpers.tmdb import (fetch_media, fetch_providers, fetch_search_results,
-                          ungroup_providers)
+                          ungroup_providers, get_trailer)
 from helpers.user import User, UserMedia, get_watchlist, Settings
 
 app = Flask(__name__)
@@ -211,6 +211,8 @@ def select_media():
     providers = fetch_providers(media.id, media.media_type, locale_code)
     providers = ungroup_providers(providers)
 
+    trailer = get_trailer(media_id)
+
     if media.media_type == MediaType.MOVIE:
         similar_ids = topn_similar(SIMILARITY_MOVIE, media.id, n=10)
         recs = [fetch_media(similar_id, media.media_type) for similar_id in similar_ids]
@@ -218,7 +220,7 @@ def select_media():
         # TODO
         recs = []
 
-    return render_template('providers.html', providers=providers, media=media, recs=recs)
+    return render_template('providers.html', providers=providers, media=media, recs=recs, trailer=trailer)
 
 @app.route('/watchlist')
 @login_required

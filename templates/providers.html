@@ -9,6 +9,7 @@
                 <img class="media-poster" src="{{media.poster_path}}" />
             </div>
         </div>
+
         <div class="col col-lg ms-5">
             <div class="row">
                 <div class="media-title mb-3 left-aligned">
@@ -33,6 +34,7 @@
                 </div>
                 {% endif %}
             </div>
+
             <div class="row left-aligned" style="padding-top: 1.5rem;">
                 <a href="/watchlist?media_id={{media.id}}&media_type={{media.type}}">
                     <button class="btn btn-light" style="border-radius: 1rem;">
@@ -43,6 +45,14 @@
         </div>
     </div>
     <hr />
+
+    <div class="col col-lg mt-5 mb-5">
+        <div class="centered">
+            <iframe width="1080" height="720"
+                src="{{trailer}}">
+            </iframe>
+        </div>
+    </div>
     {% if media.media_type.value == 'movie' %}
     <div class="row">
         <h2 class="centered mt-4">
@@ -84,6 +94,7 @@
                         +
                     </button> -->
                     <!-- </a> -->
+
                 </div>
             </div>
         </div>

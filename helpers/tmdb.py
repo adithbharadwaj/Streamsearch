@@ -87,6 +87,20 @@ def ungroup_providers(grouped_providers):
     providers.sort(key=lambda provider: provider.display_priority)
     return providers
 
+def get_trailer(id):
+    url = "https://api.themoviedb.org/3/movie/{}/videos?api_key=502ba2adb453be2c9f48a7f5137ba2f4".format(id)
+    response = requests.get(url).json()
+    response = response['results']
+    key = ""
+    for item in response:
+        if item['official'] == True and item['type'] == 'Trailer' and item['site'] == "YouTube":
+            key = item['key']
+
+    youtube = "https://www.youtube.com/embed/{}".format(key)
+    return youtube
+
+
+
 def to_image_path(filename, size):
     if filename is not None:
         return urljoin(f'{TMDB_IMG_BASE_URL}', f'{size}/{filename.lstrip("/")}')
