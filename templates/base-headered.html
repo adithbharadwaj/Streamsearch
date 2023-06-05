@@ -10,20 +10,14 @@
     <!-- Rolling custom navbar as Bootstrap's doesn't really fit with our theme. -->
     <div class="navbar-container">
         <div class="btn-group">
-            <button type="button" class="btn navbar-button">About us</button>
-            <button type="button" class="btn navbar-button">Watchlist</button>
-            <button type="button" class="btn navbar-button">Profile</button>
-            <button type="button" class="btn navbar-button">Logout</button>
+            <a href="/about" class="btn navbar-text">About us</a>
+            <a href="/watchlist" class="btn navbar-text">Watchlist</a>
+            <a href="/logout" class="btn navbar-text">Logout</a>
         </div>
     </div>
-
-    {% block header_aux %}
-
-    {% endblock %}
 </header>
 
 {% block content_headered %}
-
 {% endblock %}
 
 {% endblock %}

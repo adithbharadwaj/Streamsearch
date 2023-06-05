@@ -9,18 +9,19 @@
 <h1 class="centered mt-4">Your watchlist</h1>
 
 <form action="/send_email" method="POST" class="mt-5 mb-5 centered">
-            <div width="100%">
-                <select id="frequency-dropdown" class="form-select-lg selectpicker show-tick" name="settings" title="Frequency (Days)" data-live-search="true" data-width="auto" data-size="5" required>
-                    <option value="1" title="">1</option>
-                    <option value="7" title="">7</option>
-                    <option value="14" title="">14</option>
-                    <option value="31" title="">31</option>
-                </select><br/>
-            </div>
-            <div class="mt-4">
-                <button type="submit" id="settings-button" class="btn btn-primary btn-padding btn-rounded">Submit</button>
-            </div>
-        </form>
+    <div width="100%">
+        <select id="frequency-dropdown" class="form-select-lg selectpicker show-tick" name="settings"
+            title="Frequency (Days)" data-live-search="true" data-width="auto" data-size="5" required>
+            <option value="1" title="">1</option>
+            <option value="7" title="">7</option>
+            <option value="14" title="">14</option>
+            <option value="31" title="">31</option>
+        </select><br />
+    </div>
+    <div class="mt-4">
+        <button type="submit" id="settings-button" class="btn btn-primary btn-padding btn-rounded">Submit</button>
+    </div>
+</form>
 
 {% for media in watchlist %}
 <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}" class="unstyled-link">
@@ -46,7 +47,7 @@
 {% endfor %}
 
 <div class="mt-5">
-    <h3 class="centered">Share my watchlist to</h3>
+    <h3 class="centered">Share watchlist to</h3>
 </div>
 <div class="container socials-container centered">
     <table class="table table-sm table-borderless centered">
@@ -75,9 +76,9 @@
 
 <script>
     const url = window.location.origin;
-    const link = encodeURIComponent(url) + "/show-watchlist/{{ user_id }}";
+    const link = encodeURIComponent(url) + "/watchlist/{{ user_id }}";
     const msg = encodeURIComponent('Check out my watchlist!');
-    const title = encodeURIComponent('Article or Post Title Here');
+    const title = encodeURIComponent('StreamSearch watchlist');
 
     const fb = document.querySelector('.icon-facebook');
     fb.href = `https://www.facebook.com/share.php?u=${link}`;
@@ -97,13 +98,5 @@
     const linkedin = document.querySelector('.icon-linkedin');
     linkedin.href = `https://www.linkedin.com/sharing/share-offsite/?url=${link}`;
 </script>
-
-<!-- <div class="row left-aligned" style="padding-bottom: 20px; padding-left: 20px;">
-    <a href="/send_email">
-        <button class="btn btn-light" style="border-radius: 1rem;">
-            Send Recommendations
-        </button>
-    </a>
-</div> -->
 
 {% endblock %}

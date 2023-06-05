@@ -28,7 +28,6 @@
                 </h2>
                 <div class="media-provider-container left-aligned">
                     {% for provider in providers[:20] %}
-                    <!-- {{provider.name}} -->
                     <img title="{{provider.name}}" class="media-provider-logo m-2" src="{{provider.logo_path}}" />
                     {% endfor %}
                 </div>
@@ -36,7 +35,7 @@
             </div>
 
             <div class="row left-aligned" style="padding-top: 1.5rem;">
-                <a href="/watchlist?media_id={{media.id}}&media_type={{media.type}}">
+                <a href="/add_to_watchlist?media_id={{media.id}}&media_type={{media.type}}">
                     <button class="btn btn-light" style="border-radius: 1rem;">
                         Add to watchlist
                     </button>
@@ -87,14 +86,6 @@
                             {% endif %}
                         </div>
                     </div>
-                </div>
-                <div class="col col-sm-1 right-aligned">
-                    <!-- <a href="/watchlist?id={{media.id}}&title={{media.title}}&path={{media.poster_path}}"> -->
-                    <!-- <button class="btn btn-light" style="border-radius: 1rem;">
-                        +
-                    </button> -->
-                    <!-- </a> -->
-
                 </div>
             </div>
         </div>

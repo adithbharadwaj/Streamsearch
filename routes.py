@@ -27,10 +27,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 # load once
 GENRE_MAP = generate_genre_map()
 
-@app.route('/', methods=['POST', 'GET'])
-def login():
-    return render_template('login.html')
-
 @app.route('/main', methods=['POST', 'GET'])
 @login_required
 def main():
@@ -52,21 +48,51 @@ def main():
 def signup():
     return render_template('signup.html')
 
+@app.route('/')
+def landing():
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+
+    elif request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        remember = True if request.form.get('remember') else False
+
+        user = User.query.filter_by(email=email).first()
+
+        # check if the user actually exists
+        # take the user-supplied password, hash it, and compare it to the hashed password in the database
+        if not user or not check_password_hash(user.password, password):
+            flash('Please check your login details and try again.')
+            if not user:
+                msg = 'User does not exist. Please sign up.'
+            else:
+                msg = f'Wrong password, try again.'
+            return render_template('login.html', msg=msg)  # if the user doesn't exist or password is wrong, reload the page
+
+        login_user(user, remember=remember)
+
+        return redirect(url_for('main'))
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/show-watchlist')
+@app.route('/watchlist')
 @login_required
-def show_watchlist():
+def watchlist():
     user_id = current_user.get_id()
     watchlist = get_watchlist(user_id)
     return render_template('watchlist.html', watchlist=watchlist, user_id=user_id)
 
-@app.route('/show-watchlist/<int:user_id>')
-def show_watchlist_userid(user_id):
+@app.route('/watchlist/<int:user_id>')
+def watchlist_userid(user_id):
     watchlist = get_watchlist(user_id)
     return render_template('watchlist.html', watchlist=watchlist)
 
@@ -106,7 +132,7 @@ def login_oauth():
     )
     return redirect(request_uri)
 
-@app.route("/login_oauth/callback")
+@app.route('/login_oauth/callback')
 def callback():
     # Get authorization code Google sent back to you
     code = request.args.get("code")
@@ -159,28 +185,6 @@ def callback():
 
     # Send user back to homepage
     return redirect(url_for("main"))
-
-@app.route('/login', methods=['POST'])
-def login_post():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    remember = True if request.form.get('remember') else False
-
-    user = User.query.filter_by(email=email).first()
-
-    # check if the user actually exists
-    # take the user-supplied password, hash it, and compare it to the hashed password in the database
-    if not user or not check_password_hash(user.password, password):
-        flash('Please check your login details and try again.')
-        if not user:
-            msg = 'User does not exist. Please sign up.'
-        else:
-            msg = f'Wrong password, try again.'
-        return render_template('login.html', msg=msg)  # if the user doesn't exist or password is wrong, reload the page
-
-    login_user(user, remember=remember)
-
-    return redirect(url_for('main'))
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
@@ -257,23 +261,22 @@ def select_media():
 
     return render_template('providers.html', providers=providers, media=media, recs=recs, trailer=trailer)
 
-@app.route('/watchlist')
+@app.route('/add_to_watchlist')
 @login_required
-def watchlist():
+def add_to_watchlist():
     media_id = request.args['media_id']
     media_type = request.args['media_type']
 
     user_id = current_user.get_id()
-
     user_media = UserMedia(user_id=user_id, media_id=media_id, media_type=media_type)
 
     found = UserMedia.query.filter_by(user_id=user_id, media_id=media_id, media_type=media_type).first()
     if not found:
         user_media.add_to_db()
 
-    watch_list = get_watchlist(user_id)
+    watchlist = get_watchlist(user_id)
 
-    return render_template('watchlist.html', watchlist=watch_list, user_id=user_id)
+    return render_template('watchlist.html', watchlist=watchlist, user_id=user_id)
 
 @app.route('/send_email', methods=['POST'])
 @login_required
@@ -303,3 +306,7 @@ def email():
     start_threads(res)
 
     return render_template('watchlist.html', watchlist=watch_list)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
