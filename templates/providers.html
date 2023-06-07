@@ -6,7 +6,7 @@
     <div class="row mt-5 mb-5">
         <div class="col col-lg-3">
             <div class="media-poster centered">
-                <img class="media-poster" src="{{media.poster_path}}" />
+                <img title="{{media.title}}" class="media-poster" src="{{media.poster_path}}" />
             </div>
         </div>
 
@@ -24,7 +24,7 @@
             <div class="row">
                 {% if providers %}
                 <h2 class="left-aligned">
-                    Watch {{media.title}} at
+                    Watch at
                 </h2>
                 <div class="media-provider-container left-aligned">
                     {% for provider in providers[:20] %}
@@ -36,31 +36,34 @@
 
             <div class="row left-aligned" style="padding-top: 1.5rem;">
                 <a href="/add_to_watchlist?media_id={{media.id}}&media_type={{media.type}}">
-                    <button class="btn btn-light" style="border-radius: 1rem;">
+                    <button class="btn ss-button">
                         Add to watchlist
                     </button>
                 </a>
             </div>
         </div>
     </div>
-    <hr />
 
-    <div class="col col-lg mt-5 mb-5">
+    <hr class="my-5" />
+
+    <h2 class="mb-4">Here's the trailer</h2>
+    <div class="col col-lg">
         <div class="centered">
-            <iframe width="1080" height="720"
-                src="{{trailer}}">
-            </iframe>
+            <iframe class="trailer" width="640" height="360" src="{{trailer}}"></iframe>
         </div>
     </div>
+
+    <hr class="my-5" />
+
     {% if media.media_type.value == 'movie' %}
     <div class="row">
-        <h2 class="centered mt-4">
+        <h2 class="centered mb-4">
             Similar movies you can't miss
         </h2>
     </div>
     {% elif media.media_type.value == 'tv' %}
     <div class="row">
-        <h2 class="centered mt-4">
+        <h2 class="centered mb-4">
             Similar TV shows you can't miss
         </h2>
     </div>
@@ -68,7 +71,7 @@
     {% for rec in recs %}
     <a href="/providers?id={{rec.id}}&title={{rec.title}}&media_type={{rec.media_type.value}}"
         class="unstyled-link">
-        <div class="media-card mt-3 mb-3">
+        <div class="media-card my-3">
             <div class="row justify-content-md-left">
                 <div class="col col-sm-3">
                     <img class="media-card-poster" src="{{rec.poster_path}}" />

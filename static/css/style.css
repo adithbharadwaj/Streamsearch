@@ -93,8 +93,8 @@ header {
 }
 
 .ss-button {
-  color: #DEDEDE;
-  background-color: #381333;
+  color: #381333;
+  background-color: #D9992D;
 }
 
 .ss-button:hover {
@@ -177,11 +177,15 @@ header {
 }
 
 #search-button {
-  background-color: #381333;
+  /* background-color: #381333; */
   border-width: 0;
   width: 10rem;
   height: 3rem;
   border-radius: 1.5rem;
+}
+
+.search-failure-box {
+  font-size: 2rem;
 }
 
 .media-card {
@@ -265,12 +269,8 @@ header {
   transform: scale(1.2, 1.2)
 }
 
-.watch-later-button-container {
-  background-color: #D9992D;
-}
-
-.search-failure-box {
-  font-size: 2rem;
+.trailer {
+  border-radius: 2rem;
 }
 
 .socials-container {
