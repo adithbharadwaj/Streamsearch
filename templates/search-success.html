@@ -5,7 +5,8 @@
 <form action="/filter" method="POST" class="mt-5 mb-5 centered">
     <div width="100%">
         <select id="language-dropdown" class="form-select-lg selectpicker show-tick" name="language"
-            onchange="this.form.submit()"title="Filter by language" data-live-search="true" data-width="auto" data-size="10">
+            onchange="this.form.submit()" title="Filter by language" data-live-search="true" data-width="auto"
+            data-size="10">
             {% for language in languages %}
             <option value="{{language}}" title="{{language}}">{{language}}</option>
             {% endfor %}
@@ -28,12 +29,16 @@
                             {{media.title}}
                         </div>
                         <div class="media-card-overview">
-                            {% if media.overview|length < 250 %} {{media.overview}} {% else %}
-                                {{media.overview[:250]}}... {% endif %} </div>
+                            {% if media.overview|length < 250 %}
+                                {{media.overview}}
+                            {% else %}
+                                {{media.overview[:250]}}...
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </a>
     {% endfor %}
 </div>

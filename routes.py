@@ -193,8 +193,8 @@ def search():
 
         genre = request.form.get('genre')
         session['genre'] = genre
-        if genre != 'All Genres' and genre != '':
-            medias = filter_on_genre(medias, genre, GENRE_MAP)
+
+        medias = filter_on_genre(medias, genre, GENRE_MAP)
 
         language_codes = []
         for media in medias:
@@ -219,8 +219,8 @@ def filter():
     medias = fetch_search_results(query, session['locale'])
 
     genre = session['genre']
-    if genre != 'All Genres' and genre != '':
-        medias = filter_on_genre(medias, genre, GENRE_MAP)
+
+    medias = filter_on_genre(medias, genre, GENRE_MAP)
 
     language = request.form.get('language')
     if language != 'All languages' and language != '':

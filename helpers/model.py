@@ -44,8 +44,7 @@ class Media:
 
     @staticmethod
     def from_json(json_str, media_type=None):
-        from helpers.tmdb import \
-            to_image_path  # Don't move outside, leads to circular import.
+        from helpers.tmdb import to_image_path  # Don't move outside, leads to circular import.
 
         if media_type is None:
             # If `media_type` is not explicitly passed, search for it in json.
@@ -54,9 +53,22 @@ class Media:
             else:
                 return None     # Handles `media_type` like 'person', which we don't want.
 
+        # Fallbacks to use
+        title_candidates = [
+            json_str.get('title', None),
+            json_str.get('name', None),
+            json_str.get('original_title', None),
+            json_str.get('original_name', None)
+        ]
+        title_candidates = list(filter(lambda t: t is not None, title_candidates))
+        if title_candidates:
+            title = title_candidates[0]
+        else:
+            title = None
+
         return Media(
             int(json_str.get('id', Media.UNKNOWN_ID)),
-            json_str.get('name', None) if media_type == MediaType.TV.value else json_str.get('title', None),
+            title,
             media_type,
             to_image_path(json_str.get('poster_path', None), 'original'),
             json_str.get('overview', None),
