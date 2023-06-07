@@ -44,10 +44,6 @@ def main():
     else:
         return render_template('main.html', all_locales=ALL_LOCALES, genres=generate_genre_list())
 
-@app.route('/signup')
-def signup():
-    return render_template('signup.html')
-
 @app.route('/')
 def landing():
     return redirect(url_for('login'))
@@ -67,9 +63,8 @@ def login():
         # check if the user actually exists
         # take the user-supplied password, hash it, and compare it to the hashed password in the database
         if not user or not check_password_hash(user.password, password):
-            flash('Please check your login details and try again.')
             if not user:
-                msg = 'User does not exist. Please sign up.'
+                msg = 'Could not find a user with those credentials. Please sign up.'
             else:
                 msg = f'Wrong password, try again.'
             return render_template('login.html', msg=msg)  # if the user doesn't exist or password is wrong, reload the page
@@ -96,26 +91,29 @@ def watchlist_userid(user_id):
     watchlist = get_watchlist(user_id)
     return render_template('watchlist.html', watchlist=watchlist)
 
-@app.route('/signup', methods=['POST'])
-def signup_post():
-    # code to validate and add user to database goes here
-    email = request.form.get('email')
-    name = request.form.get('name')
-    password = request.form.get('password')
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'GET':
+        return render_template('signup.html')
 
-    user = User.query.filter_by(
-        email=email).first()  # if this returns a user, then the email already exists in database
+    elif request.method == 'POST':
+        # code to validate and add user to database goes here
+        email = request.form.get('email')
+        name = request.form.get('name')
+        password = request.form.get('password')
 
-    if user:  # if a user is found, we want to redirect back to signup page so user can try again
-        return render_template('signup.html', msg='email already exists. please try a different email')
+        user = User.query.filter_by(email=email).first()  # if this returns a user, then the email already exists in database
 
-    user_id = int(str(uuid.uuid1().int)[:16])
-    print("uuid id: ", user_id)
-    # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-    new_user = User(id=user_id, email=email, name=name, password=generate_password_hash(password, method='sha256'))
-    new_user.add_to_db()
+        if user:  # if a user is found, we want to redirect back to signup page so user can try again
+            return render_template('signup.html', msg='email already exists. please try a different email')
 
-    return redirect(url_for('login'))
+        user_id = int(str(uuid.uuid1().int)[:16])
+        print("uuid id: ", user_id)
+        # create a new user with the form data. Hash the password so the plaintext version isn't saved.
+        new_user = User(id=user_id, email=email, name=name, password=generate_password_hash(password, method='sha256'))
+        new_user.add_to_db()
+
+        return redirect(url_for('login'))
 
 @app.route('/login_oauth')
 def login_oauth():
