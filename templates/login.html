@@ -33,27 +33,33 @@
                 <div class="input-group mx-auto mb-2" style="width: 15rem;">
                     <input type="password" name="password" class="form-control textbox-rounded" placeholder="Password">
                 </div>
+
                 <input type="checkbox" class="mb-3" name="remember">
-                Remember me
+                    Remember me
                 </input><br />
 
-                <div id="sso-buttons" class="mx-auto mb-3" style="width: 15rem;">
+                <button class="btn login-button mb-3">Login</button>
+
+                <div class="separator">
+                    <div class="small-text mx-2">
+                        or
+                    </div>
+                </div>
+
+                <div id="sso-buttons" class="mx-auto mt-3 mb-3" style="width: 15rem;">
                     <div class="mb-1">
-                        <a href="/login_oauth" class="btn btn-outline-dark btn-block" role="button">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Lohgo.svg.png" class="sso-button"/>
+                        <a href="/login_oauth" class="btn login-button" role="button">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Lohgo.svg.png"
+                                class="sso-button" />
                             &nbspLogin with Google
                         </a>
                     </div>
-                    <div class="mx-auto">
-                        <a href="" class="btn btn-outline-dark btn-block" role="button">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" class="sso-button"/>
-                            &nbspLogin with Facebook
-                        </a>
-                    </div>
                 </div>
-                <button class="btn btn-primary btn-padding btn-rounded mb-3">Login</button>
             </form>
-            Sign up with email
+
+            <div class="small-text">
+                Don't have an account? <a href="/">Sign up</a>
+            </div>
         </div>
     </div>
 </div>
