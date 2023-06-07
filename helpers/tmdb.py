@@ -60,32 +60,21 @@ def generate_genre_map():
     for genre in tv_genres:
         genre_map[genre['name']] = genre['id']
 
-    return genre_map
+    genre_list = sorted(list(genre_map.keys()))
 
-def generate_genre_list():
-    genre_list = []
+    default_genre = 'All genres'
+    genre_map[default_genre] = None
+    genre_list = [default_genre] + genre_list
 
-    movie_genres = send_movie_genre_mapping_request()['genres']
-    tv_genres = send_tv_genre_mapping_request()['genres']
+    return genre_map, genre_list
 
-    for genre in movie_genres:
-        genre_list.append(genre['name'])
+def filter_on_genre(medias, genre, genre_map):
+    genre_id = genre_map[genre]
 
-    for genre in tv_genres:
-        genre_list.append(genre['name'])
+    if genre_id is None:    # All genres
+        return medias
 
-    genre_list = list(set(genre_list))
-    genre_list.sort()
-
-    return ["All genres"] + genre_list
-
-def filter_on_genre(medias, genre, GENRE_MAP):
-    filtered_media = []
-    genre_id = GENRE_MAP[genre]
-
-    for media in medias:
-        if genre_id in media.genre_ids:
-            filtered_media.append(media)
+    filtered_media = [media for media in medias if genre_id in media.genre_ids]
 
     return filtered_media
 
@@ -167,10 +156,10 @@ def get_trailer(id):
     youtube = "https://www.youtube.com/embed/{}".format(key)
     return youtube
 
-
-
 def to_image_path(filename, size):
     if filename is not None:
         return urljoin(f'{TMDB_IMG_BASE_URL}', f'{size}/{filename.lstrip("/")}')
     else:
         return None
+
+GENRE_MAP, GENRE_LIST = generate_genre_map()

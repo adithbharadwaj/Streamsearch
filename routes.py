@@ -3,19 +3,22 @@ import os
 import uuid
 
 import requests
-from flask import (Flask, flash, jsonify, redirect, render_template, request,
+from flask import (Flask, jsonify, redirect, render_template, request,
                    session, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers.locale import coordsToLocale, ipToLocale
-from helpers.model import ALL_LOCALES, ALL_LANGUAGES_MAP, MediaType
+from helpers.model import ALL_LANGUAGES_MAP, ALL_LOCALES, MediaType
 from helpers.oauth import (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, client,
                            get_google_provider_cfg)
 from helpers.recommender import load_similarity, topn_similar
-from helpers.send_email import send_email, start_threads
-from helpers.tmdb import fetch_media, fetch_providers, fetch_search_results,ungroup_providers, generate_genre_list, generate_genre_map, filter_on_genre, get_trailer, ungroup_providers, filter_on_language
-from helpers.user import User, UserMedia, get_watchlist, Settings
+from helpers.send_email import start_threads
+from helpers.tmdb import (fetch_media, fetch_providers, fetch_search_results,
+                          filter_on_genre, filter_on_language,
+                          GENRE_MAP, GENRE_LIST, get_trailer,
+                          ungroup_providers)
+from helpers.user import Settings, User, UserMedia, get_watchlist
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -23,9 +26,6 @@ app.debug = True
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-
-# load once
-GENRE_MAP = generate_genre_map()
 
 @app.route('/main', methods=['POST', 'GET'])
 @login_required
@@ -42,7 +42,7 @@ def main():
             session['locale'] = ipToLocale(client_ip)
         return jsonify(session['locale'])
     else:
-        return render_template('main.html', all_locales=ALL_LOCALES, genres=generate_genre_list())
+        return render_template('main.html', all_locales=ALL_LOCALES, genres=GENRE_LIST)
 
 @app.route('/')
 def landing():
