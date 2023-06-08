@@ -17,6 +17,19 @@ body {
   font-size: 0.8rem;
 }
 
+.large-text {
+  font-size: 1.3rem;
+  line-height: 2rem;
+}
+
+.primary-color {
+  color: #381333;
+}
+
+.secondary-color {
+  color: #D9992D;
+}
+
 .unstyled-link {
   color: inherit;
   text-decoration: none;
