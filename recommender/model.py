@@ -13,7 +13,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 
 from .preprocessing import *
 
-KEEP_COLUMNS = ['genres', 'overview', 'keywords']
+KEEP_COLUMNS = ['genres', 'overview']
 
 FILENAME_ENCODER_GENRES = 'encoder_genres.pkl'
 FILENAME_VECTORIZER_OVERVIEW = 'vectorizer_overview.pkl'
@@ -33,39 +33,59 @@ class Embedder:
         self.vectorizer_overview = None
         self.svd = None
 
-    def train(self, media, vocab_size=None, embedding_dim=None):
-        self.pipeline(media, EmbedderMode.TRAIN, vocab_size=vocab_size, embedding_dim=embedding_dim)
+    def train(self, medias, vocab_size=None, embedding_dim=None):
+        self.pipeline(medias, EmbedderMode.TRAIN, vocab_size=vocab_size, embedding_dim=embedding_dim)
 
-    def embed(self, media, save_path=None):
-        embeddings, ids = self.pipeline(media, EmbedderMode.INFER)
+    def embed(self, medias, save_path=None):
+        embeddings, ids = self.pipeline(medias, EmbedderMode.INFER)
         if save_path:
             logging.info(f'Saving embeddings to "{save_path}"')
             np.savez(save_path, embeddings=embeddings, ids=ids)
         return embeddings, ids
 
-    def pipeline(self, media, mode, vocab_size=None, embedding_dim=None):
+    def embed_batches(self, medias, batch_size, save_dir):
+        assert (batch_size > 0) and (batch_size <= medias.shape[0])
+
+        num_batches = int(np.ceil(medias.shape[0] / batch_size))
+
+        batch_idx = 1
+        lower = 0   # Lower row of batch
+
+        while lower < medias.shape[0]:
+            if lower + batch_size > medias.shape[0]:
+                upper = medias.shape[0]     # Upper row of batch (exclusive)
+            else:
+                upper = lower + batch_size
+
+            print(f'BATCH {batch_idx}/{num_batches}', end='\n\n')
+
+            self.embed(medias.iloc[lower:upper, :], save_path=os.path.join(save_dir, f'embeddings-{batch_idx}.npz'))
+
+            print('–' * 80)
+
+            lower = upper
+            batch_idx += 1
+
+    def pipeline(self, medias, mode, vocab_size=None, embedding_dim=None):
         assert mode.value in EmbedderMode.values()
 
         logging.info(f'{self.__class__.__name__} in [{mode.value}] mode.')
 
-        media = media.loc[:, KEEP_COLUMNS]
-        ids = media.index.to_numpy()
+        medias = medias.loc[:, KEEP_COLUMNS]
+        ids = medias.index.to_numpy()
 
         logging.info('Preprocessing \'genres\'')
-        media['genres'] = media['genres'].apply(extract_genre_names)
+        medias['genres'] = medias['genres'].apply(extract_genre_names)
 
         logging.info('Encoding \'genres\'')
         if mode == EmbedderMode.TRAIN:
             self.encoder_genres = MultiLabelBinarizer()
-            encoded_genres = self.encoder_genres.fit_transform(media['genres'])
+            encoded_genres = self.encoder_genres.fit_transform(medias['genres'])
         else:
-            encoded_genres = self.encoder_genres.transform(media['genres'])
+            encoded_genres = self.encoder_genres.transform(medias['genres'])
 
         logging.info('Preprocessing \'overview\'')
-        media['overview'] = media['overview'].fillna('')
-
-        # logging.info('Injecting \'keywords\' into \'overview\'')
-        # media = inject_keywords(media)
+        medias['overview'] = medias['overview'].fillna('')
 
         logging.info(f'Vectorizing \'overview\'...')
         time_start = timer()
@@ -79,9 +99,9 @@ class Embedder:
                 norm='l2',
                 max_features=vocab_size
             )
-            vectorized_overview = self.vectorizer_overview.fit_transform(media['overview'])
+            vectorized_overview = self.vectorizer_overview.fit_transform(medias['overview'])
         else:
-            vectorized_overview = self.vectorizer_overview.transform(media['overview'])
+            vectorized_overview = self.vectorizer_overview.transform(medias['overview'])
         logging.info(f'Vectorizing \'overview\' took {round(timer() - time_start, 4)} s, for a vocabulary size of {len(self.get_vocab())}.')
 
         logging.info(f'Stacking vectorized overview onto encoded \'genres\'')
@@ -119,25 +139,25 @@ class Embedder:
         return self.svd.n_components
 
     def save(self, model_path):
-        with open(os.path.join(model_path, FILENAME_ENCODER_GENRES), 'w') as f:
+        with open(os.path.join(model_path, FILENAME_ENCODER_GENRES), 'wb+') as f:
             pickle.dump(self.encoder_genres, f)
-        with open(os.path.join(model_path, FILENAME_VECTORIZER_OVERVIEW), 'w') as f:
+        with open(os.path.join(model_path, FILENAME_VECTORIZER_OVERVIEW), 'wb+') as f:
             pickle.dump(self.vectorizer_overview, f)
         if self.svd:
-            with open(os.path.join(model_path, FILENAME_SVD), 'w') as f:
+            with open(os.path.join(model_path, FILENAME_SVD), 'wb+') as f:
                 pickle.dump(self.svd, f)
 
     @classmethod
     def load(cls, model_path):
         embedder = cls()
-        with open(os.path.join(model_path, FILENAME_ENCODER_GENRES), 'r') as f:
+        with open(os.path.join(model_path, FILENAME_ENCODER_GENRES), 'rb') as f:
             embedder.encoder_genres = pickle.load(f)
-        with open(os.path.join(model_path, FILENAME_VECTORIZER_OVERVIEW), 'r') as f:
-            embedder.vectorizer_overview = pickle.dump(f)
+        with open(os.path.join(model_path, FILENAME_VECTORIZER_OVERVIEW), 'rb') as f:
+            embedder.vectorizer_overview = pickle.load(f)
 
         svd_path = os.path.join(model_path, FILENAME_SVD)
         if os.path.exists(svd_path):
-            with open(svd_path, 'r'):
+            with open(svd_path, 'rb') as f:
                 embedder.svd = pickle.load(f)
         else:
             embedder.svd = None

@@ -1,3 +1,4 @@
+import ast
 import json
 import unicodedata
 from functools import partial
@@ -10,8 +11,16 @@ from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 
 STOPWORDS = ENGLISH_STOP_WORDS.union(stopwords.words('english'))
 
+def single_to_double_quotes_json(json_str):
+    """Converts (incorrectly formatted) single-quoted JSON string to standard
+    double-quoted JSON string. (The dataset has such incorrectly formatted JSON
+    strings that need to be handled.)
+    """
+    return ast.literal_eval(json_str)
+
 def extract_genre_names(json_str):
-    genres = map(lambda genre: genre['name'], json.loads(json_str))
+    genres = single_to_double_quotes_json(json_str)
+    genres = map(lambda genre: genre['name'], genres)
     genres = map(lambda genre: genre.lower().replace(' ', '-'), genres)
     return set(genres)
 
