@@ -2,7 +2,7 @@ from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 
 from helpers.model import MediaType
-from helpers.password_reset import create_token, decode_token
+from helpers.email import create_token, decode_token
 from helpers.tmdb import fetch_media
 
 db = SQLAlchemy()
@@ -13,6 +13,9 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
     watchlist = db.relationship('UserMedia', lazy=True, backref='user')
+
+    # Whether the email address has been verified.
+    verified = db.Column(db.Boolean, default=False)
 
     def add_to_db(self):
         db.session.add(self)

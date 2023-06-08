@@ -1,18 +1,35 @@
 {% extends "base-headered-no-navbar.html" %}
 
-{% block content %}
+{% block content_headered %}
+
+<script src="/static/js/passwords-same.js"></script>
+
 <h2 class="centered mt-5 mb-4">
-    Forgot your password? No worries, we've got you covered!
+    Ready to dive in? Sign up now and let's get started!
 </h2>
 
 <div class="centered">
-    {% if msg %}
+    {% if is_successful %}
     <div class="container centered mt-3">
         <div class="row">
             <div class="col-md-2"></div>
             <div class="alert alert-success alert-dismissible fade show col-md">
-                {{msg}}
+                We've sent an email to your inbox with a link to verify and
+                activate your account. Please click on the link to complete the
+                process. Once you've done that, you'll be able to log in to your
+                account.
                 <button type="button" class="btn-close" data-dismiss="alert"></button>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+
+    {% elif error_msg %}
+    <div class="container centered mt-3">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="alert alert-success alert-dismissible fade show col-md">
+                {{error_msg}}
             </div>
             <div class="col-md-2"></div>
         </div>
@@ -21,18 +38,22 @@
 
     <div class="login-card mt-3">
         <div class="login-card-content">
-            <form method="POST" action="/signup">
+            <form method="POST" action="" oninput='passwordsSame();'>
                 <div class="input-group mx-auto mb-3" style="width: 15rem;">
-                    <input type="text" name="name" class="form-control textbox-rounded" placeholder="Name" autofocus>
+                    <input type="text" name="name" class="form-control
+                    textbox-rounded" placeholder="Name" autofocus required>
                 </div>
                 <div class="input-group mx-auto mb-3" style="width: 15rem;">
-                    <input type="email" name="email" class="form-control textbox-rounded" placeholder="Email">
+                    <input type="email" name="email" class="form-control
+                    textbox-rounded" placeholder="Email" required>
                 </div>
                 <div class="input-group mx-auto mb-3" style="width: 15rem;">
-                    <input type="password" name="password" class="form-control textbox-rounded" placeholder="New password">
+                    <input type="password" name="password" class="form-control
+                    textbox-rounded" placeholder="Password" required>
                 </div>
                 <div class="input-group mx-auto mb-3" style="width: 15rem;">
-                    <input type="password" name="password_copy" class="form-control textbox-rounded" placeholder="Retype new password">
+                    <input type="password" name="password_confirm"
+                    class="form-control textbox-rounded" placeholder="Confirm password" required>
                 </div>
                 <button class="btn ss-button login-button">
                     Submit
@@ -42,35 +63,4 @@
     </div>
 </div>
 
-<div class="column is-4 is-offset-4">
-    <h3 class="title">Sign Up</h3>
-    <div class="box">
-        {% if msg %}
-            <div class="notification is-danger">
-                {{ msg }}. Go to <a href="{{ url_for('login') }}">login page</a>.
-            </div>
-        {% endif %}
-        <form method="POST" action="/signup">
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
-                </div>
-            </div>
-
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="text" name="name" placeholder="Name" autofocus="">
-                </div>
-            </div>
-
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="password" name="password" placeholder="Password">
-                </div>
-            </div>
-
-            <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
-        </form>
-    </div>
-</div>
 {% endblock %}

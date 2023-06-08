@@ -48,3 +48,23 @@ def send_password_reset_email(mailer, user, lifetime=DEFAULT_LIFETIME):
         )
 
     mailer.send(msg)
+
+def send_account_activation_email(mailer, user, lifetime=DEFAULT_LIFETIME):
+    token = user.create_jwt(lifetime)
+
+    msg = Message(
+        subject='Account activation',
+        recipients=[f'{user.email}'],
+        sender='noreply@streamsearch.com'
+    )
+    msg.html = render_template('signup-confirmation-email.html', token=token, lifetime=lifetime)
+
+    with open(os.path.join('static', 'logo', 'main.png'), 'rb') as f:
+        msg.attach(
+            'streamsearch-logo.png','image/png',
+            f.read(),
+            'inline',
+            headers=[['Content-ID', 'streamsearch-logo'],]
+        )
+
+    mailer.send(msg)

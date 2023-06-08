@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="padding-bottom: 1.5rem;">
+    <img src="cid:streamsearch-logo" width="240px" />
+</div>
+
+<div style="font-family: Avenir, sans-serif;">
+    <!-- Change this URL after deployment. -->
+    Use <a href="https://localhost:5000/signup-verify/{{token}}">this</a> link
+    to activate your StreamSearch account.
+
+    The link expires in {{lifetime}} minutes.
+</div>
+
+{% endblock %}

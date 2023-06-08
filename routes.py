@@ -14,7 +14,7 @@ from helpers.locale import coordsToLocale, ipToLocale
 from helpers.model import ALL_LANGUAGES_MAP, ALL_LOCALES, MediaType
 from helpers.oauth import (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, client,
                            get_google_provider_cfg)
-from helpers.password_reset import DEFAULT_LIFETIME, decode_token, send_password_reset_email
+from helpers.email import DEFAULT_LIFETIME, decode_token, send_account_activation_email, send_password_reset_email
 from helpers.recommender import load_similarity, topn_similar
 from helpers.tmdb import (GENRE_LIST, GENRE_MAP, fetch_media, fetch_providers,
                           fetch_search_results, filter_on_genre,
@@ -71,15 +71,12 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
-        # check if the user actually exists
-        # take the user-supplied password, hash it, and compare it to the hashed password in the database
-        if not user or not check_password_hash(user.password, password):
-            msg = 'We couldn\'t find a user associated with those credentials.\nPlease double-check your password or sign up for a new account.'
-            return render_template('login.html', msg=msg)  # if the user doesn't exist or password is wrong, reload the page
+        if user and user.verified and check_password_hash(user.password, password):
+            login_user(user, remember=remember)
+            return redirect(url_for('main'))
 
-        login_user(user, remember=remember)
-
-        return redirect(url_for('main'))
+        error_msg = 'We couldn\'t find a user associated with those credentials.\nPlease double-check your password or sign up for a new account.'
+        return render_template('login.html', error_msg=error_msg)
 
 @app.route('/logout')
 @login_required
@@ -99,7 +96,7 @@ def watchlist_userid(user_id):
     watchlist = get_watchlist(user_id)
     return render_template('watchlist.html', watchlist=watchlist)
 
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'GET':
         return render_template('signup.html')
@@ -112,16 +109,33 @@ def signup():
 
         user = User.query.filter_by(email=email).first()  # if this returns a user, then the email already exists in database
 
+        error_msg = 'That email address is already in use. Try logging in with your password.'
         if user:  # if a user is found, we want to redirect back to signup page so user can try again
-            return render_template('signup.html', msg='email already exists. please try a different email')
+            return render_template('signup.html', error_msg=error_msg)
 
         user_id = int(str(uuid.uuid1().int)[:16])
-        print("uuid id: ", user_id)
+
         # create a new user with the form data. Hash the password so the plaintext version isn't saved.
         new_user = User(id=user_id, email=email, name=name, password=generate_password_hash(password, method='sha256'))
         new_user.add_to_db()
 
-        return redirect(url_for('login'))
+        send_account_activation_email(mailer, new_user, lifetime=60)
+
+        return render_template('signup.html', is_successful=True)
+
+@app.route('/signup-verify/<token>')
+def signup_verify(token):
+    if request.method == 'GET':
+        try:
+            user_id = decode_token(token)
+        except jwt.exceptions.ExpiredSignatureError:
+            return render_template('signup-verify.html', is_expired=True)
+
+        user = User.query.get(user_id)
+        user.verified = True
+        user.commit()
+
+        return 'Your account has been activated. You can login to StreamSearch now.'
 
 @app.route('/login_oauth')
 def login_oauth():
