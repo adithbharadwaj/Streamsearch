@@ -123,7 +123,7 @@ header {
   color: #D9992D;
 }
 
-#login-card {
+.login-card {
   background: #DEDEDE;
   border-radius: 2rem;
   margin: auto;
@@ -131,7 +131,7 @@ header {
   text-align: center;
 }
 
-#login-card-content {
+.login-card-content {
   padding: 1rem;
   text-align: center;
   color: #381333;

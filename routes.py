@@ -1,24 +1,27 @@
 import json
 import os
 import uuid
+import jwt
 
 import requests
-from flask import (Flask, jsonify, redirect, render_template, request,
-                   session, url_for)
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 from flask_login import current_user, login_required, login_user, logout_user
+from flask_mail import Mail
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers.locale import coordsToLocale, ipToLocale
 from helpers.model import ALL_LANGUAGES_MAP, ALL_LOCALES, MediaType
 from helpers.oauth import (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, client,
                            get_google_provider_cfg)
+from helpers.password_reset import DEFAULT_LIFETIME, decode_token, send_password_reset_email
 from helpers.recommender import load_similarity, topn_similar
-from helpers.send_email import start_threads
-from helpers.tmdb import (fetch_media, fetch_providers, fetch_search_results,
-                          filter_on_genre, filter_on_language,
-                          GENRE_MAP, GENRE_LIST, get_trailer,
-                          ungroup_providers)
-from helpers.user import Settings, User, UserMedia, get_watchlist
+from helpers.tmdb import (GENRE_LIST, GENRE_MAP, fetch_media, fetch_providers,
+                          fetch_search_results, filter_on_genre,
+                          filter_on_language, get_trailer, ungroup_providers)
+from helpers.user import User, UserMedia, get_watchlist
+
+EMAIL_PASSWD = os.environ['STREAMSEARCH_GMAIL_PASSWD']
 
 app = Flask(__name__)
 app.secret_key = 'secret'
@@ -26,6 +29,14 @@ app.debug = True
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587       # Using TLS
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'universalstreamsearch@gmail.com'
+app.config['MAIL_PASSWORD'] = EMAIL_PASSWD
+
+mailer = Mail(app)
 
 @app.route('/main', methods=['POST', 'GET'])
 @login_required
@@ -63,10 +74,7 @@ def login():
         # check if the user actually exists
         # take the user-supplied password, hash it, and compare it to the hashed password in the database
         if not user or not check_password_hash(user.password, password):
-            if not user:
-                msg = 'Could not find a user with those credentials. Please sign up.'
-            else:
-                msg = f'Wrong password, try again.'
+            msg = 'We couldn\'t find a user associated with those credentials.\nPlease double-check your password or sign up for a new account.'
             return render_template('login.html', msg=msg)  # if the user doesn't exist or password is wrong, reload the page
 
         login_user(user, remember=remember)
@@ -184,6 +192,44 @@ def callback():
     # Send user back to homepage
     return redirect(url_for("main"))
 
+@app.route('/forgot-password', methods=['POST', 'GET'])
+def forgot_password():
+    if request.method == 'GET':
+        return render_template('forgot-password.html')
+
+    elif request.method == 'POST':
+        email = request.form['email']
+        user = User.query.filter_by(email=email).first()
+
+        msg = 'We\'ve sent password reset instructions to that email address, if it\'s registered with us.'
+
+        if user:
+            send_password_reset_email(mailer, user, DEFAULT_LIFETIME)
+
+        return render_template('forgot-password.html', msg=msg)
+
+@app.route('/reset-password/<token>', methods=['POST', 'GET'])
+def reset_password(token):
+    if request.method == 'GET':
+        try:
+            user_id = decode_token(token)
+        except jwt.exceptions.ExpiredSignatureError:
+            return render_template('reset-password.html', is_expired=True)
+
+        return render_template('reset-password.html')
+
+    elif request.method == 'POST':
+        try:
+            user_id = decode_token(token)
+        except jwt.exceptions.ExpiredSignatureError:
+            return render_template('reset-password.html', is_expired=True)
+
+        user = User.query.get(user_id)
+        user.password = generate_password_hash(request.form['password'], method='sha256')
+        user.commit()
+
+        return render_template('reset-password.html', is_successful=True)
+
 @app.route('/search', methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
@@ -276,34 +322,34 @@ def add_to_watchlist():
 
     return render_template('watchlist.html', watchlist=watchlist, user_id=user_id)
 
-@app.route('/send_email', methods=['POST'])
-@login_required
-def email():
-    user_id = current_user.get_id()
-    query = int(request.form.get('settings'))
-    watch_list = get_watchlist(user_id)
+# @app.route('/send_email', methods=['POST'])
+# @login_required
+# def email():
+#     user_id = current_user.get_id()
+#     query = int(request.form.get('settings'))
+#     watch_list = get_watchlist(user_id)
 
-    medias = [fetch_media(movies.title, MediaType.MOVIE) for movies in watch_list]
+#     medias = [fetch_media(movies.title, MediaType.MOVIE) for movies in watch_list]
 
-    recs = []
-    for media in medias:
-        if media.media_type == MediaType.MOVIE:
-            similar_ids = topn_similar(SIMILARITY_MOVIE, media.id, n=10)
-            for similar_id in similar_ids:
-                recs.append(fetch_media(similar_id, media.media_type))
+#     recs = []
+#     for media in medias:
+#         if media.media_type == MediaType.MOVIE:
+#             similar_ids = topn_similar(SIMILARITY_MOVIE, media.id, n=10)
+#             for similar_id in similar_ids:
+#                 recs.append(fetch_media(similar_id, media.media_type))
 
-    user = User.query.filter_by(id=user_id).first()
-    setting = Settings(user_id=user_id, frequency=query, email=user.email)
-    setting.add_to_db()
+#     user = User.query.filter_by(id=user_id).first()
+#     setting = Settings(user_id=user_id, frequency=query, email=user.email)
+#     setting.add_to_db()
 
-    freq = Settings.query.filter_by(frequency=1).all()
-    res = []
-    for frequency in freq:
-        res.append(frequency)
+#     freq = Settings.query.filter_by(frequency=1).all()
+#     res = []
+#     for frequency in freq:
+#         res.append(frequency)
 
-    start_threads(res)
+#     start_threads(res)
 
-    return render_template('watchlist.html', watchlist=watch_list)
+#     return render_template('watchlist.html', watchlist=watch_list)
 
 @app.route('/about')
 def about():

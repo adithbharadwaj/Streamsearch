@@ -10,9 +10,9 @@
     <!-- Rolling custom navbar as Bootstrap's doesn't really fit with our theme. -->
     <div class="navbar-container">
         <div class="btn-group">
-            <a href="/about" class="btn navbar-text">About us</a>
-            <a href="/watchlist" class="btn navbar-text">Watchlist</a>
-            <a href="/logout" class="btn navbar-text">Logout</a>
+            <a href="{{url_for('about')}}" class="btn navbar-text">About us</a>
+            <a href="{{url_for('watchlist')}}" class="btn navbar-text">Watchlist</a>
+            <a href="{{url_for('logout')}}" class="btn navbar-text">Logout</a>
         </div>
     </div>
 </header>

@@ -19,13 +19,18 @@
     </div>
 
     {% if msg %}
-    <div class="notification is-danger">
-        {{ msg }} Go to <a href="{{ url_for('signup') }}">signup page</a>.
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="alert alert-danger alert-dismissible fade show col-md">
+            {{msg}}
+            <button type="button" class="btn-close" data-dismiss="alert"></button>
+        </div>
+        <div class="col-md-2"></div>
     </div>
     {% endif %}
 
-    <div id="login-card">
-        <div id="login-card-content">
+    <div class="login-card">
+        <div class="login-card-content">
             <form method="POST" action="/login">
                 <div class="input-group mx-auto mb-2" style="width: 15rem;">
                     <input type="email" name="email" class="form-control textbox-rounded" placeholder="Email" autofocus>
@@ -38,7 +43,14 @@
                     Remember me
                 </input><br />
 
-                <button class="btn ss-button login-button mb-3">Login</button>
+                <button class="btn ss-button login-button mb-2">Login</button>
+
+                <div class="small-text">
+                    New to StreamSearch? <a href="/signup">Sign up</a>
+                </div>
+                <div class="small-text mb-2">
+                    Forgot your password? <a href="/forgot-password">Reset it here</a>
+                </div>
 
                 <div class="separator">
                     <div class="small-text mx-2">
@@ -56,10 +68,6 @@
                     </div>
                 </div>
             </form>
-
-            <div class="small-text">
-                Don't have an account? <a href="/">Sign up</a>
-            </div>
         </div>
     </div>
 </div>

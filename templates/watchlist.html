@@ -6,41 +6,48 @@
     integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<h1 class="centered mt-4">Your watchlist</h1>
+<h1 class="centered mt-5 mb-4">Watchlist</h1>
 
-<form action="/send_email" method="POST" class="mt-5 mb-5 centered">
+<!-- <form action="/send_email" method="POST" class="centered">
     <div width="100%">
+        Email me recommendations every
         <select id="frequency-dropdown" class="form-select-lg selectpicker show-tick" name="settings"
             title="Frequency (Days)" data-live-search="true" data-width="auto" data-size="5" required>
             <option value="1" title="">1</option>
             <option value="7" title="">7</option>
             <option value="14" title="">14</option>
             <option value="31" title="">31</option>
-        </select><br />
+            <option value="0" title="">Never</option>
+        </select>
+        days
     </div>
     <div class="mt-4">
         <button type="submit" id="settings-button" class="btn btn-primary btn-padding btn-rounded">Submit</button>
     </div>
-</form>
+</form> -->
 
 {% for media in watchlist %}
 <a href="/providers?id={{media.id}}&title={{media.title}}&media_type={{media.media_type.value}}" class="unstyled-link">
     <div class="media-card mt-3 mb-3">
-        <div class="row justify-content-md-start">
+        <div class="row justify-content-md-left">
             <div class="col col-sm-3">
                 <img class="media-card-poster" src="{{media.poster_path}}" />
             </div>
             <div class="col col-sm">
-                <div class="media-description" style="padding-left: 10px; padding-right: 10px;">
+                <div class="media-description">
                     <div class="media-card-title mt-4 mb-3">
                         {{media.title}}
                     </div>
                     <div class="media-card-overview">
-                        {% if media.overview|length < 250 %} {{media.overview}} {% else %} {{media.overview[:250]}}...
-                            {% endif %} </div>
+                        {% if media.overview|length < 250 %}
+                            {{media.overview}}
+                        {% else %}
+                            {{media.overview[:250]}}...
+                        {% endif %}
                     </div>
                 </div>
             </div>
+            <div class="col col-sm-1"></div>
         </div>
     </div>
 </a>

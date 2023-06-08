@@ -2,6 +2,7 @@ from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 
 from helpers.model import MediaType
+from helpers.password_reset import create_token, decode_token
 from helpers.tmdb import fetch_media
 
 db = SQLAlchemy()
@@ -17,6 +18,13 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def commit(self):
+        """Useful for changes made to user elsewhere."""
+        db.session.commit()
+
+    def create_jwt(self, lifetime):
+        return create_token(self.id, lifetime)
+
 class UserMedia(db.Model):
     dummy_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 
@@ -30,7 +38,7 @@ class UserMedia(db.Model):
         db.session.add(self)
         db.session.commit()
 
-class Settings(db.Model):
+class EmailSettings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     email = db.Column(db.String(100), unique=True)
