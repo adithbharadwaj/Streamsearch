@@ -109,19 +109,24 @@ def signup():
 
         user = User.query.filter_by(email=email).first()  # if this returns a user, then the email already exists in database
 
-        error_msg = 'That email address is already in use. Try logging in with your password.'
-        if user:  # if a user is found, we want to redirect back to signup page so user can try again
-            return render_template('signup.html', error_msg=error_msg)
+        if user:
+            if not user.verified:
+                send_account_activation_email(mailer, user, lifetime=60)
+                error_msg = 'It seems you\'ve previously signed up for an account but didn\'t complete the activation process. Don\'t worry, we\'ve sent a new activation link to your email.'
+                return render_template('signup.html', error_msg=error_msg)
+            else:
+                error_msg = 'Sorry, that email address is already associated with an existing account. Please try logging in with your password.'
+                return render_template('signup.html', error_msg=error_msg)
 
-        user_id = int(str(uuid.uuid1().int)[:16])
+        else:
+            user_id = int(str(uuid.uuid1().int)[:16])
 
-        # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-        new_user = User(id=user_id, email=email, name=name, password=generate_password_hash(password, method='sha256'))
-        new_user.add_to_db()
+            new_user = User(id=user_id, email=email, name=name, password=generate_password_hash(password, method='sha256'))
+            new_user.add_to_db()
 
-        send_account_activation_email(mailer, new_user, lifetime=60)
+            send_account_activation_email(mailer, new_user, lifetime=60)
 
-        return render_template('signup.html', is_successful=True)
+            return render_template('signup.html', is_successful=True)
 
 @app.route('/signup-verify/<token>')
 def signup_verify(token):
@@ -135,7 +140,7 @@ def signup_verify(token):
         user.verified = True
         user.commit()
 
-        return 'Your account has been activated. You can login to StreamSearch now.'
+        return render_template('signup-confirmation.html')
 
 @app.route('/login_oauth')
 def login_oauth():

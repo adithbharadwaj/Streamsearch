@@ -1,0 +1,23 @@
+{% extends "base-headered-no-navbar.html" %}
+
+{% block content_headered %}
+
+<h2 class="centered mt-5 mb-4">
+    Ready to dive in? Sign up now and let's get started!
+</h2>
+
+<div class="centered">
+    <div class="container centered mt-3">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="alert alert-success alert-dismissible fade show col-md">
+                Great news! Your account has been activated and you can now <a
+                href="{{url_for('login')}}">login</a> to StreamSearch. We're so
+                excited to have you join the StreamSearch community!
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

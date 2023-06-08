@@ -18,11 +18,11 @@
         Stop searching, start watching!
     </div>
 
-    {% if msg %}
+    {% if error_msg %}
     <div class="row">
         <div class="col-md-2"></div>
         <div class="alert alert-danger alert-dismissible fade show col-md">
-            {{msg}}
+            {{error_msg}}
             <button type="button" class="btn-close" data-dismiss="alert"></button>
         </div>
         <div class="col-md-2"></div>
@@ -33,10 +33,12 @@
         <div class="login-card-content">
             <form method="POST" action="/login">
                 <div class="input-group mx-auto mb-2" style="width: 15rem;">
-                    <input type="email" name="email" class="form-control textbox-rounded" placeholder="Email" autofocus>
+                    <input type="email" name="email" class="form-control
+                    textbox-rounded" placeholder="Email" required autofocus>
                 </div>
                 <div class="input-group mx-auto mb-2" style="width: 15rem;">
-                    <input type="password" name="password" class="form-control textbox-rounded" placeholder="Password">
+                    <input type="password" name="password" class="form-control
+                    textbox-rounded" placeholder="Password" required>
                 </div>
 
                 <input type="checkbox" class="mb-3" name="remember">
